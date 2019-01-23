@@ -1,0 +1,54 @@
+shipsAndBullets.png
+size: 1269, 775
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cat
+  rotate: false
+  xy: 800, 524
+  size: 233, 249
+  orig: 244, 249
+  offset: 3, 0
+  index: -1
+dropBox
+  rotate: false
+  xy: 1, 1
+  size: 541, 773
+  orig: 1080, 1080
+  offset: 285, 172
+  index: -1
+evelship
+  rotate: false
+  xy: 1035, 524
+  size: 233, 173
+  orig: 283, 283
+  offset: 29, 98
+  index: -1
+kaktus
+  rotate: false
+  xy: 544, 254
+  size: 254, 518
+  orig: 259, 524
+  offset: 5, 3
+  index: -1
+sale
+  rotate: false
+  xy: 544, 1
+  size: 492, 251
+  orig: 492, 251
+  offset: 0, 0
+  index: -1
+ship
+  rotate: false
+  xy: 1038, 1
+  size: 224, 242
+  orig: 224, 243
+  offset: 0, 1
+  index: -1
+starwars
+  rotate: false
+  xy: 800, 254
+  size: 247, 268
+  orig: 247, 268
+  offset: 0, 0
+  index: -1

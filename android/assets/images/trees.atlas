@@ -1,0 +1,12 @@
+trees.png
+size: 210, 244
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+trees
+  rotate: false
+  xy: 1, 1
+  size: 208, 242
+  orig: 223, 244
+  offset: 1, 1
+  index: -1

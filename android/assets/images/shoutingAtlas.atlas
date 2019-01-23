@@ -1,0 +1,12 @@
+shoutingAtlas.png
+size: 285, 455
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shout
+  rotate: false
+  xy: 1, 1
+  size: 283, 453
+  orig: 341, 466
+  offset: 0, 0
+  index: -1
