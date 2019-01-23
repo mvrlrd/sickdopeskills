@@ -22,6 +22,7 @@ import javax.swing.plaf.FontUIResource;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.math.Rect;
+import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
 import ru.ibelykh.sickdopeskills.pools.TreePool;
 import ru.ibelykh.sickdopeskills.sprites.Flag;
@@ -326,18 +327,7 @@ public class GameScreen extends Base2DScreen {
 //        float minDist = rider.getHalfHeight();
         for (Flag flag : flagList) {
 
-//            if (isWrongWay(flag)) {
-//                countPoints = 0;
-////                gotPoint = false;
-////                isItNeedToShout = false;
-////                shouting.setSick(false);
-//                shouting.setFrame(1);
-//                isItNeedToShout = true;
-////                shouting.setSick(true);
-//            }
-                if ((isAccident(flag))||(isWrongWay(flag))) {
-
-
+              if ((isAccident(flag))||(isWrongWay(flag))) {
                     shouting.setFrame(1);
                     shouting.setSick(true);
                     countPoints = 0;
@@ -348,15 +338,23 @@ public class GameScreen extends Base2DScreen {
                     countClicks = 0;
                     rider.gameOver();
                     flag.setDestroyed(true);
-
                 }
-            if (isOnRightWay(flag)){
-                shouting.setFrame(2);
-                isItNeedToShout=true;
+            if (isOnRightWay(flag)) {
 
+//
+//                    a = Rnd.nextInt(0, 3);
+//                    if (a == 1) {
+//                        a = 2;
+//                    }
+//                }
+                shouting.setFrame(a);
+                isItNeedToShout = true;
+//            inter += delta;
+//            if ((inter > 0.8f)) {
+//                inter = 0f;
+//                isItNeedToShout=false;
 
             }
-
 
 
 //            if ((flag.pos.dst2(rider.pos) < minDist)) {
@@ -364,11 +362,11 @@ public class GameScreen extends Base2DScreen {
 //
 //
 //				inter+=delta;
-////				System.out.println(inter+"  INTER");
+////
 //				if ((inter>0.8f)){
-//					coolMoments++;
+//
 //					inter=0f;
-//					System.out.println(coolMoments+"  COooll");
+//
 //					a = Rnd.nextInt(0, 3);
 //					if (a == 1){
 //						a=2;
@@ -465,7 +463,8 @@ public boolean isOnRightWay(Flag flag){
 
     // WRONGWAY
     public boolean isWrongWay(Flag flag){
-        return ((rider.getBoardNose() > flag.getRight())
+        return ((rider.getBoardNose() > flag.getRight()+flag.getWidth())&&(rider.getBoardNose()-flag.getLeft()<
+                rider.getBoard().width)
                 &&
                 (((flag.isItRed())
                         && (rider.getBoardBottom() > flag.getTop())) //Выше красного
