@@ -53,7 +53,7 @@ public class Rider extends Sprite {
             v.set(0,0.0f);
             pos.mulAdd(v.add(velocity), delta);
         }
-        if (velocity.y < 0) {
+        if (velocity.y < 0f) {
             frame=3;
             state=1;
 
@@ -111,10 +111,10 @@ public class Rider extends Sprite {
         return board;
     }
 
-    public float getBoardLeft(){
+    public float getBoardBack(){
         return board.x;
     }
-    public float getBoardRight(){
+    public float getBoardNose(){
         return board.x+board.getWidth();
     }
     public float getBoardTop(){
@@ -126,5 +126,9 @@ public class Rider extends Sprite {
 
     public int getState() {
         return state;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
     }
 }

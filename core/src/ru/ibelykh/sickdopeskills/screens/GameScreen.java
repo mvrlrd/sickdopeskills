@@ -42,13 +42,14 @@ public class GameScreen extends Base2DScreen {
     private static final String FRAGS = "Frags: ";
     //	private static final String HP = "HP: ";
 //	private static final String LVL = "level: ";
-    private static final int SNOW_COUNT=10000;
+    private static final int SNOW_COUNT = 10000;
     private static final float FONT_SIZE = 0.08f;
 
     private TextureAtlas textureAtlas;
     private Snow[] snow;
 
     private boolean state;
+    private boolean isAllRight;
 
     private Rider rider;
     private TextureAtlas dogHouseAtl;
@@ -70,9 +71,9 @@ public class GameScreen extends Base2DScreen {
     private TextureAtlas shoutingAtlas;
     private Shouting shouting;
     private boolean isItNeedToShout;
-    private float interval=0f;
+    private float interval = 0f;
 
-    float inter=0f;
+    float inter = 0f;
     int a;
 
     private TreePool treePool;
@@ -82,7 +83,7 @@ public class GameScreen extends Base2DScreen {
     private YouCool youCool;
     private int coolMoments;
 
-    private  TextureAtlas alenaAtlas;
+    private TextureAtlas alenaAtlas;
 
     private int frags;
 
@@ -121,8 +122,8 @@ public class GameScreen extends Base2DScreen {
         //STAR
 
         snow = new Snow[SNOW_COUNT];
-        for (int i = 0; i <snow.length ; i++) {
-            snow[i]= new Snow(textureAtlas);
+        for (int i = 0; i < snow.length; i++) {
+            snow[i] = new Snow(textureAtlas);
         }
 
 //		rectangle = dogHouse1.getPath();
@@ -130,31 +131,30 @@ public class GameScreen extends Base2DScreen {
         alenaAtlas = new TextureAtlas("images/alena.atlas");
 
         flagPool = new FlagPool(rider, worldBounds);
-        flagEmitter = new FlagEmitter(worldBounds, flagPool, alenaAtlas );
+        flagEmitter = new FlagEmitter(worldBounds, flagPool, alenaAtlas);
 
         spriteBatch = new SpriteBatch();
 
         music.play();
         music.setLooping(true);
 
-        shapeRenderer= new ShapeRenderer();
-
+        shapeRenderer = new ShapeRenderer();
 
 
         shapeRenderer.setColor(Color.LIME);
-        shapeRenderer.rotate(0,0,0,0);
+        shapeRenderer.rotate(0, 0, 0, 0);
 
 
         shoutingAtlas = new TextureAtlas("images/shoutingAtlas.atlas");
-        shouting = new Shouting(shoutingAtlas,worldBounds);
+        shouting = new Shouting(shoutingAtlas, worldBounds);
 
         treeAtlas = new TextureAtlas("images/trees.atlas");
-        treePool= new TreePool(rider,worldBounds);
-        treeEmitter= new TreeEmitter(worldBounds,treePool,treeAtlas);
+        treePool = new TreePool(rider, worldBounds);
+        treeEmitter = new TreeEmitter(worldBounds, treePool, treeAtlas);
 
-        youCool = new YouCool(alenaAtlas,worldBounds);
+        youCool = new YouCool(alenaAtlas, worldBounds);
 
-        font = new Font("font/font.fnt" , "font/font.png");
+        font = new Font("font/font.fnt", "font/font.png");
         font.setFontSize(FONT_SIZE);
         font.setColor(Color.BLUE);
     }
@@ -170,7 +170,7 @@ public class GameScreen extends Base2DScreen {
 
     public void update(float delta) {
         //STAR
-        for (int i = 0; i <snow.length ; i++) {
+        for (int i = 0; i < snow.length; i++) {
             snow[i].update(delta);
         }
 
@@ -182,13 +182,13 @@ public class GameScreen extends Base2DScreen {
 ////					dogHouse1.getBoardTop()),dogHouse1.getState());
 //		}
 
-        if (((shouting.getFrame()==0)||(shouting.getFrame()==2))&&(isItNeedToShout)){
-            interval+=delta;
+        if (((shouting.getFrame() == 0) || (shouting.getFrame() == 2)) && (isItNeedToShout)) {
+            interval += delta;
         }
 
-        if (interval>1.2f){
-            isItNeedToShout=false;
-            interval=0;
+        if (interval > 1.2f) {
+            isItNeedToShout = false;
+            interval = 0;
         }
 
         treePool.updateActiveSprites(delta);
@@ -201,7 +201,7 @@ public class GameScreen extends Base2DScreen {
         youCool.update(delta);
 
         shouting.update(delta);
-//        checkCollisions(delta);
+        checkCollisions(delta);
     }
 
     public void draw() {
@@ -215,7 +215,7 @@ public class GameScreen extends Base2DScreen {
 ////			splash[i].draw(batch);
 //		}
 
-        if (coolMoments>3){
+        if (coolMoments > 3) {
 
             youCool.draw(batch);
 
@@ -225,7 +225,7 @@ public class GameScreen extends Base2DScreen {
         rider.draw(batch);
 
 
-        for (int i = 0; i <snow.length ; i++) {
+        for (int i = 0; i < snow.length; i++) {
             snow[i].draw(batch);
         }
         if (isItNeedToShout) {
@@ -239,7 +239,7 @@ public class GameScreen extends Base2DScreen {
 
         shapeRenderer.setProjectionMatrix(worldToGl);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(rider.getBoard().x,rider.getBoard().y,rider.getBoard().width,
+        shapeRenderer.rect(rider.getBoard().x, rider.getBoard().y, rider.getBoard().width,
                 rider.getBoard().height);
 
 
@@ -249,11 +249,11 @@ public class GameScreen extends Base2DScreen {
 
     }
 
-    public void printInfo(){
+    public void printInfo() {
         sbHp.setLength(0);
         sbLvl.setLength(0);
         sbFrags.setLength(0);
-        font.draw(batch, sbFrags.append(FRAGS).append(countPoints),worldBounds.getLeft(),worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
+        font.draw(batch, sbFrags.append(FRAGS).append(countPoints), worldBounds.getLeft(), worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
 
     }
 
@@ -267,7 +267,7 @@ public class GameScreen extends Base2DScreen {
         super.resize(worldBounds);
         rider.resize(worldBounds, worldBounds.getLeft() + 1.2f * rider.getWidth(), 0f);
         //STAR
-        for (int i = 0; i <snow.length ; i++) {
+        for (int i = 0; i < snow.length; i++) {
             snow[i].resize(worldBounds);
         }
 
@@ -315,24 +315,52 @@ public class GameScreen extends Base2DScreen {
     }
 
 
-
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
         rider.touchUp(touch, pointer);
         return super.touchUp(touch, pointer);
     }
 
-    private void checkCollisions(float delta){
+    private void checkCollisions(float delta) {
         List<Flag> flagList = flagPool.getActiveObjects();
+//        float minDist = rider.getHalfHeight();
+        for (Flag flag : flagList) {
+
+//            if (isWrongWay(flag)) {
+//                countPoints = 0;
+////                gotPoint = false;
+////                isItNeedToShout = false;
+////                shouting.setSick(false);
+//                shouting.setFrame(1);
+//                isItNeedToShout = true;
+////                shouting.setSick(true);
+//            }
+                if ((isAccident(flag))||(isWrongWay(flag))) {
 
 
-        for (Flag flag : flagList){
-// разобраться с мин дистанцией/ она наобум
+                    shouting.setFrame(1);
+                    shouting.setSick(true);
+                    countPoints = 0;
+                    isItNeedToShout = true;
+                    rider.isDestroyed();
+                    music.setVolume(0.3f);
+                    setIsPlaying(false);
+                    countClicks = 0;
+                    rider.gameOver();
+                    flag.setDestroyed(true);
 
-//<<<<<<< Updated upstream
-//
-            float minDist = rider.getHalfHeight()/2;
-            if ((flag.pos.dst2(rider.pos)<minDist)){
+                }
+            if (isOnRightWay(flag)){
+                shouting.setFrame(2);
+                isItNeedToShout=true;
+
+
+            }
+
+
+
+//            if ((flag.pos.dst2(rider.pos) < minDist)) {
+
 //
 //
 //				inter+=delta;
@@ -358,7 +386,6 @@ public class GameScreen extends Base2DScreen {
 
 
 
-//=======
 //			if (isRightWay(flag)) {
 
 //				ifCloseToFlag(flag, minDist, delta);
@@ -381,86 +408,85 @@ public class GameScreen extends Base2DScreen {
 //			}
 
 //		ifWasAnAccident(flag);
-//>>>>>>> Stashed changes
+
 
             }
-            what=gotPoint;
+//            what = gotPoint;
 //			pointsCounter();
-            gotPoint=false;
+//            gotPoint = false;
 
             //если неправильно объехал флажок
-            if ( (rider.getBoardLeft()<flag.getRight())
-                    &&
-                    (	(	(flag.isItRed())
-                            &&(rider.getBoardBottom()>flag.getTop())
-                            &&(rider.getBoardRight()>flag.getLeft()))
-                            ||(	(!flag.isItRed())
-                            &&(rider.getBoardBottom()<flag.getTop())
-                            &&(rider.getBoardRight()>flag.getLeft()))))
-            {
-
-                countPoints=0;
-                gotPoint=false;
-
-                isItNeedToShout=false;
-                shouting.setSick(false);
-                shouting.setFrame(1);
-
-                isItNeedToShout=true;
-                shouting.setSick(true);
 
 
 
 
-            }
-
-//			if ( (dogHouse1.getBoardLeft()<flag.getRight())
-//					&&
-//					(	(	(flag.isItRed())
-//							&&(dogHouse1.getBoardBottom()<flag.getTop())
-//							&&(dogHouse1.getBoardRight()>flag.getLeft()))
-//							||(	(!flag.isItRed())
-//							&&(dogHouse1.getBoardBottom()>flag.getTop())
-//							&&(dogHouse1.getBoardRight()>flag.getLeft())))) {
-//				state=true;
-//			}
-            //dogHouse1.getBoard().x,dogHouse1.getBoard().y,dogHouse1.getBoard().width,dogHouse1.getBoard().height)
-
-
-
-            if (
-                    !(flag.getRight() < (rider.getBoardLeft())
-                            || flag.getLeft() > (rider.getBoardRight())
-                            || flag.getBottom() > (rider.getBoardTop())
-                            || flag.getTop() <(rider.getBoardBottom()))
-
-            )
-            {
-                isItNeedToShout = false;
-                shouting.setFrame(1);
-                shouting.setSick(true);
-                countPoints=0;
-                isItNeedToShout = true;
-                rider.isDestroyed();
-                music.setVolume(0.3f);
-                setIsPlaying(false);
-                countClicks=0;
-                rider.gameOver();
-                flag.setDestroyed(true);
-            }
-        }
+//
+//
+//            if (
+//                    !(flag.getRight() < (rider.getBoardLeft())
+//                            || flag.getLeft() > (rider.getBoardRight())
+//                            || flag.getBottom() > (rider.getBoardTop())
+//                            || flag.getTop() < (rider.getBoardBottom()))
+//
+//            ) {
+//                isItNeedToShout = false;
+//                shouting.setFrame(1);
+//                shouting.setSick(true);
+//                countPoints = 0;
+//                isItNeedToShout = true;
+//                rider.isDestroyed();
+//                music.setVolume(0.3f);
+//                setIsPlaying(false);
+//                countClicks = 0;
+//                rider.gameOver();
+//                flag.setDestroyed(true);
+//            }
+//        }
     }
 
-    public void startNewGame(){
-        countPoints=0;
-        isItNeedToShout=false;
+
+
+public boolean isOnRightWay(Flag flag){
+    return ((rider.getBoardNose() > flag.getLeft())
+            &&
+            (((flag.isItRed())
+                    && (rider.getBoardTop() < flag.getBottom())) //ниже красного
+                    || ((!flag.isItRed())
+                    && (rider.getBoardBottom() > flag.getTop()))));//выше синего
+
+}
+
+    public boolean isAccident(Flag flag) {
+        return (!(rider.getBoardBack()>flag.getRight()
+                || rider.getBoardNose()<flag.getLeft()
+                || rider.getBoardTop()<flag.getBottom()
+                || rider.getBoardBottom()>flag.getTop()));
+    }
+
+    // WRONGWAY
+    public boolean isWrongWay(Flag flag){
+        return ((rider.getBoardNose() > flag.getRight())
+                &&
+                (((flag.isItRed())
+                        && (rider.getBoardBottom() > flag.getTop())) //Выше красного
+                || ((!flag.isItRed())
+                        && (rider.getBoardTop() < flag.getBottom()))));//ниже синего
+    }
+    /////
+
+
+
+
+    public void startNewGame() {
+        countPoints = 0;
+        isItNeedToShout = false;
         shouting.setSick(false);
         music.setVolume(1f);
-        isPlaying=true;
+        isPlaying = true;
         rider.setTheNewGame();
     }
 
-    public static boolean getIsPlaying(){
+    public static boolean getIsPlaying() {
         return isPlaying;
     }
 
@@ -469,17 +495,14 @@ public class GameScreen extends Base2DScreen {
     }
 
 
-    //<<<<<<< Updated upstream
-    private void pointsCounter(){
-        if ((what==gotPoint)&&(what==true)){
+    private void pointsCounter() {
+        if ((what == gotPoint) && (what == true)) {
             countPoints++;
         }
-//=======
-//private void pointsCounter(Flag flag){
-//		if ((what==gotPoint)&&(what==true)&&(isRightWay(flag))){
-//			countPoints++;
-//		}
-//>>>>>>> Stashed changes
-    }
 
+
+
+
+
+    }
 }
