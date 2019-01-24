@@ -463,7 +463,7 @@ public boolean isOnRightWay(Flag flag){
 
     // WRONGWAY
     public boolean isWrongWay(Flag flag){
-        return ((rider.getBoardNose() > flag.getRight()+flag.getWidth())&&(rider.getBoardNose()-flag.getLeft()<
+        return ((rider.getBoardNose() > flag.getRight())&&(rider.getBoardNose()-flag.getLeft()<
                 rider.getBoard().width)
                 &&
                 (((flag.isItRed())
