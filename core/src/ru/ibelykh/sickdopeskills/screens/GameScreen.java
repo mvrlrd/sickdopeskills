@@ -36,11 +36,9 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 
 public class GameScreen extends Base2DScreen {
 
-    private int countPoints;
-    private boolean gotPoint;
-    private boolean what;
+    private static int countPoints;
 
-    private static final String FRAGS = "Frags: ";
+    private static final String POINTS = "pts: ";
     //	private static final String HP = "HP: ";
 //	private static final String LVL = "level: ";
     private static final int SNOW_COUNT = 10000;
@@ -216,7 +214,7 @@ public class GameScreen extends Base2DScreen {
 ////			splash[i].draw(batch);
 //		}
 
-        if (coolMoments > 3) {
+        if ((countPoints%10==0)&&(countPoints!=0)) {
 
             youCool.draw(batch);
 
@@ -254,7 +252,7 @@ public class GameScreen extends Base2DScreen {
         sbHp.setLength(0);
         sbLvl.setLength(0);
         sbFrags.setLength(0);
-        font.draw(batch, sbFrags.append(FRAGS).append(countPoints), worldBounds.getLeft(), worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
+        font.draw(batch, sbFrags.append(POINTS).append(countPoints), worldBounds.getLeft(), worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
 
     }
 
@@ -493,15 +491,12 @@ public boolean isOnRightWay(Flag flag){
         GameScreen.isPlaying = isPlaying;
     }
 
-
-    private void pointsCounter() {
-        if ((what == gotPoint) && (what == true)) {
-            countPoints++;
-        }
-
-
-
-
-
+    public static   void setCountPoints(int a) {
+        countPoints = a;
     }
+
+    public static int getCountPoints() {
+        return countPoints;
+    }
+
 }
