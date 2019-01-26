@@ -21,7 +21,7 @@ public class Snow extends Sprite {
     private Vector2 v = new Vector2();
 
     public Snow(TextureAtlas atlas) {
-        super(atlas.findRegion("simpleStar"));
+        super(atlas.findRegion("snow"));
         setHeightProportion(Rnd.nextFloat(0.001f,0.005f));
 
         v.set(Rnd.nextFloat(-0.18f,-0.36f),Rnd.nextFloat(-0.5f,-0.001f));

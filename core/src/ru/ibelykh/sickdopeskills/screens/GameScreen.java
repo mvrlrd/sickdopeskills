@@ -39,7 +39,7 @@ public class GameScreen extends Base2DScreen {
     private static int countPoints;
 
     private static final String POINTS = "pts: ";
-    //	private static final String HP = "HP: ";
+    	private static final String SPEED = "spd: ";
 //	private static final String LVL = "level: ";
     private static final int SNOW_COUNT = 10000;
     private static final float FONT_SIZE = 0.08f;
@@ -102,7 +102,7 @@ public class GameScreen extends Base2DScreen {
     public void show() {
         super.show();
 
-        textureAtlas = new TextureAtlas("images/star.atlas");
+        textureAtlas = new TextureAtlas("images/snow.atlas");
 
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/strange.mp3"));
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
@@ -206,7 +206,7 @@ public class GameScreen extends Base2DScreen {
     public void draw() {
 
         batch.begin();
-        Gdx.gl.glClearColor(1, 1, 1, 0.5f);
+        Gdx.gl.glClearColor(.8f, .8f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         flagPool.drawActiveSprites(batch);
         treePool.drawActiveSprites(batch);
@@ -253,7 +253,7 @@ public class GameScreen extends Base2DScreen {
         sbLvl.setLength(0);
         sbFrags.setLength(0);
         font.draw(batch, sbFrags.append(POINTS).append(countPoints), worldBounds.getLeft(), worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
-
+//        font.draw(batch, sbFrags.append(SPEED).append(rider.getSpeed().y), worldBounds.getLeft(), worldBounds.getBottom()+0.2f);
     }
 
     public void deleteAllDestroyed() {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import ru.ibelykh.sickdopeskills.math.Rect;
+import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
 import ru.ibelykh.sickdopeskills.sprites.Flag;
@@ -47,7 +48,7 @@ public class FlagEmitter {
                     );
                     flag.setItRed(false);
 //                    flag.setAngle(90);
-                    flag.pos.y = 0.08f;
+                    flag.pos.y = Rnd.nextFloat(0.03f,0.2f);
                     flag.setLeft(worldBounds.getRight());
                     flagCount++;
                 }
@@ -57,7 +58,7 @@ public class FlagEmitter {
                             FLAG_HEIGHT
                     );
 //                    flag.setAngle(90);
-                    flag.pos.y = -0.08f;
+                    flag.pos.y = Rnd.nextFloat(-0.03f,-0.2f);
                     flag.setLeft(worldBounds.getRight());
                     flagCount++;
                     flag.setItRed(true);

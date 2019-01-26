@@ -20,6 +20,8 @@ public class Rider extends Sprite {
     private Rect worldBounds;
     private Vector2 lastVelocity= new Vector2(0,0.011f);
 
+    private Vector2 speed=new Vector2();
+
     private int state;
 
     private Rectangle board;
@@ -37,9 +39,9 @@ public class Rider extends Sprite {
     @Override
     public void update(float delta) {
         super.update(delta);
-        pos.mulAdd(v.add(velocity),delta);
 
-
+        speed=v.add(velocity);
+        pos.mulAdd(speed,delta);
 
         if (this.getTop()>worldBounds.getTop()&&((v.add(velocity)).y>0.3f)){
             velocity.set(0.0f, -0.011f);
@@ -130,5 +132,9 @@ public class Rider extends Sprite {
 
     public Vector2 getVelocity() {
         return velocity;
+    }
+
+    public Vector2 getSpeed() {
+        return speed;
     }
 }
