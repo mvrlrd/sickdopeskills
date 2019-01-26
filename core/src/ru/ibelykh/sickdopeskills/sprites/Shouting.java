@@ -17,6 +17,7 @@ public class Shouting extends Sprite {
     private static boolean isSick;
     private Rect worldBounds;
     private Sound Sick, dope, youCool;
+    private static int frm=0;
 
     Rider rider;
 
@@ -41,9 +42,9 @@ public class Shouting extends Sprite {
 
         super.update(delta);
         this.setAngle(90);
-//        if (GameScreen.getIsPlaying()){
-//            setFrame(1);
-//        }
+        if (!isSick){
+            setFrame(frm);
+        }
 
 
     }
@@ -58,5 +59,12 @@ public class Shouting extends Sprite {
 
     public  void setSick(boolean sick) {
         isSick = sick;
+    }
+    public static void framer(int a){
+        if (a==1){
+            frm=0;
+        }else {
+            frm = a;
+        }
     }
 }

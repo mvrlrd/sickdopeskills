@@ -28,7 +28,7 @@ public class Rider extends Sprite {
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion("rider"), 4, 1, 4);
-        setHeightProportion(0.08f);
+        setHeightProportion(0.16f);
         this.worldBounds = worldBounds;
         board = new Rectangle();
 

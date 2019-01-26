@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
+import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 
@@ -21,7 +22,7 @@ public class Flag extends Sprite {
 
         this.rider=rider;
         this.worldBounds = worldBounds;
-        this.v.set(-0.28f,0f);
+        this.v.set(-0.5f,0f);
 
 //        rectangle= new Rectangle();
     }
@@ -42,8 +43,15 @@ public class Flag extends Sprite {
 //            }
             // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана
             if (getRight()<worldBounds.getLeft()) {
-                setDestroyed(true);
+
+
+
                 GameScreen.setCountPoints(GameScreen.getCountPoints()+1);
+
+                setDestroyed(true);
+                GameScreen.setIsItNeedToShout(false);
+                Shouting.framer(Rnd.nextInt(0,3));
+
             }
 //            if (isItRed) {
 //               rectangle.set(getLeft()+getWidth()*0.4f,getBottom()+getHalfWidth()/1.5f,

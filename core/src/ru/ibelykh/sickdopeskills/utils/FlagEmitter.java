@@ -12,7 +12,7 @@ import ru.ibelykh.sickdopeskills.sprites.Flag;
 
 public class FlagEmitter {
 
-    private static final float FLAG_HEIGHT = 0.04f;
+    private static final float FLAG_HEIGHT = 0.08f;
     private Rect worldBounds;
     private float generateInterval = 0f;
     private float generateTimer;
@@ -35,7 +35,7 @@ public class FlagEmitter {
     public void generateFlags(float delta) {
 
         if (GameScreen.getIsPlaying()) {
-            generateInterval = 2f;
+            generateInterval = 2.1f;
             generateTimer += delta;
             if (generateTimer >= generateInterval) {
                 generateTimer = 0f;
@@ -47,7 +47,7 @@ public class FlagEmitter {
                     );
                     flag.setItRed(false);
 //                    flag.setAngle(90);
-                    flag.pos.y = 0.11f;
+                    flag.pos.y = 0.08f;
                     flag.setLeft(worldBounds.getRight());
                     flagCount++;
                 }
@@ -57,7 +57,7 @@ public class FlagEmitter {
                             FLAG_HEIGHT
                     );
 //                    flag.setAngle(90);
-                    flag.pos.y = -0.11f;
+                    flag.pos.y = -0.08f;
                     flag.setLeft(worldBounds.getRight());
                     flagCount++;
                     flag.setItRed(true);

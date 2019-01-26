@@ -36,7 +36,7 @@ public class TreeEmitter {
                 tree.setFrame(Rnd.nextInt(0,2));
                 tree.set(
                         treeRegion,
-                        Rnd.nextFloat(0.04f, 0.2f)
+                        Rnd.nextFloat(0.06f, 0.3f)
                 );
                 tree.pos.y = Rnd.nextFloat(0.4f, worldBounds.getTop());
                 tree.pos.x = (worldBounds.getRight()+tree.getHalfHeight());
@@ -55,7 +55,7 @@ public class TreeEmitter {
                 tree.setFrame(Rnd.nextInt(0,2));
                 tree.set(
                         treeRegion,
-                        Rnd.nextFloat(0.04f, 0.2f)
+                        Rnd.nextFloat(0.06f, 0.3f)
                 );
                 tree.pos.y = Rnd.nextFloat(-0.4f, worldBounds.getBottom());
                 tree.pos.x = (worldBounds.getRight()+tree.getHalfHeight());

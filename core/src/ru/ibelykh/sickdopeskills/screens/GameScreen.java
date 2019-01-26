@@ -69,7 +69,7 @@ public class GameScreen extends Base2DScreen {
 
     private TextureAtlas shoutingAtlas;
     private Shouting shouting;
-    private boolean isItNeedToShout;
+    private static boolean isItNeedToShout;
     private float interval = 0f;
 
     float inter = 0f;
@@ -322,6 +322,7 @@ public class GameScreen extends Base2DScreen {
 
     private void checkCollisions(float delta) {
         List<Flag> flagList = flagPool.getActiveObjects();
+
 //        float minDist = rider.getHalfHeight();
         for (Flag flag : flagList) {
 
@@ -337,16 +338,19 @@ public class GameScreen extends Base2DScreen {
                     rider.gameOver();
                     flag.setDestroyed(true);
                 }
+
             if (isOnRightWay(flag)) {
 
-//
+
 //                    a = Rnd.nextInt(0, 3);
 //                    if (a == 1) {
 //                        a = 2;
 //                    }
 //                }
-                shouting.setFrame(a);
-                isItNeedToShout = true;
+if (!flag.isDestroyed()) {
+    isItNeedToShout = true;
+}
+
 //            inter += delta;
 //            if ((inter > 0.8f)) {
 //                inter = 0f;
@@ -499,4 +503,11 @@ public boolean isOnRightWay(Flag flag){
         return countPoints;
     }
 
+    public static boolean isItNeedToShout() {
+        return isItNeedToShout;
+    }
+
+    public static void setIsItNeedToShout(boolean isItNeedToShout) {
+        GameScreen.isItNeedToShout = isItNeedToShout;
+    }
 }
