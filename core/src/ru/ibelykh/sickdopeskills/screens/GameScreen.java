@@ -106,7 +106,7 @@ public class GameScreen extends Base2DScreen {
 
         textureAtlas = new TextureAtlas("images/snow.atlas");
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/strange.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
 
         worldBounds = getWorldBounds();
