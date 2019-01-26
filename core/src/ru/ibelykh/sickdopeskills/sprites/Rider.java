@@ -18,11 +18,12 @@ public class Rider extends Sprite {
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
     private Rect worldBounds;
-    private Vector2 lastVelocity= new Vector2(0,0.011f);
+    private static float velocityY=0.011f;
+    private Vector2 lastVelocity= new Vector2(0,velocityY);
 
     private Vector2 speed=new Vector2();
 
-    private int state;
+
 
     private Rectangle board;
 
@@ -44,28 +45,24 @@ public class Rider extends Sprite {
         pos.mulAdd(speed,delta);
 
         if (this.getTop()>worldBounds.getTop()&&((v.add(velocity)).y>0.3f)){
-            velocity.set(0.0f, -0.011f);
-            lastVelocity.set(velocity);
-            v.set(0,0.0f);
+            velocity.set(velocity.x,-velocityY);
+            v.set(0f,0f);
+//            lastVelocity.set(velocity);
             pos.mulAdd(v.add(velocity), delta);
         }
         if (this.getBottom()<worldBounds.getBottom()&&(v.add(velocity)).y<-0.3f){
-            velocity.set(0.0f, 0.011f);
-            lastVelocity.set(velocity);
-            v.set(0,0.0f);
+            velocity.set(velocity.x,velocityY);
+            v.set(0f,0f);
+//            lastVelocity.set(velocity);
+
             pos.mulAdd(v.add(velocity), delta);
         }
         if (velocity.y < 0f) {
             frame=3;
-            state=1;
-
 
             this.angle=v.y*70;
             board.set(getLeft()+getWidth()*0.4f,getBottom()+getHalfWidth()/1.5f,
                     getWidth()/1.7f,getHeight()/3f);
-
-
-
 
         }
         if (velocity.y>0f){
@@ -74,7 +71,6 @@ public class Rider extends Sprite {
             this.angle=v.y*70;
             board.set(getLeft()+getWidth()*0.385f,getBottom()+getHalfWidth()/3.9f,
                     getWidth()/1.7f,getHeight()/3f);
-            state=0;
 
         }
     }
@@ -126,9 +122,7 @@ public class Rider extends Sprite {
         return board.y;
     }
 
-    public int getState() {
-        return state;
-    }
+
 
     public Vector2 getVelocity() {
         return velocity;

@@ -1,6 +1,7 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.ibelykh.sickdopeskills.base.Sprite;
@@ -14,6 +15,8 @@ public class Flag extends Sprite {
     private boolean isItRed;
     private Vector2 v = new Vector2();
     private Rider rider;
+    private Rectangle bigRect;
+
 
 
     private Rect worldBounds;
@@ -22,20 +25,21 @@ public class Flag extends Sprite {
 
         this.rider=rider;
         this.worldBounds = worldBounds;
-        this.v.set(-0.5f,0f);
+        this.v.set(-0.3f,0f);
+        bigRect=new Rectangle();
 
-//        rectangle= new Rectangle();
+
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        pos.mulAdd(v, delta);
+//        if (GameScreen.getIsPlaying()) {
 
-        if (GameScreen.getIsPlaying()) {
 
 
 
-            pos.mulAdd(v, delta);
 
 //            if (isOutside(worldBounds)) {
 //                setDestroyed(true);
@@ -53,13 +57,41 @@ public class Flag extends Sprite {
                 Shouting.framer(Rnd.nextInt(0,3));
 
             }
-//            if (isItRed) {
-//               rectangle.set(getLeft()+getWidth()*0.4f,getBottom()+getHalfWidth()/1.5f,
-//                       getWidth()/1.7f,getHeight()/3f);
-//            }
+            if (!isDestroyed()) {
+                if ((isItRed)) {
+                    bigRect.set(getRight() - getWidth() / 4.27f, getBottom(),
+                            getWidth() / 4.6f, getHeight());
+                }
+                if ((!isItRed)) {
+                    bigRect.set(getRight() - getWidth() / 4.27f, getBottom(),
+                            getWidth() / 4.6f, getHeight());
+                }
+            }else {
+                bigRect.set(worldBounds.getRight(),0f,0f,0f);}
+
+
+
         }
+
+
+//        }
+
+    public Rectangle getBigRect() {
+        return bigRect;
     }
 
+    public float getBigRectLeft(){
+        return bigRect.x;
+    }
+    public float getBigRectRight(){
+        return bigRect.x+bigRect.getWidth();
+    }
+    public float getBigRectTop(){
+        return bigRect.y+bigRect.getHeight();
+    }
+    public float getBigRectBot(){
+        return bigRect.y;
+    }
 
     public void resize(Rect worldBounds, float x, float y) {
         super.resize(worldBounds);
@@ -86,6 +118,12 @@ public class Flag extends Sprite {
 
     public boolean isItRed() {
         return isItRed;
+    }
+
+    @Override
+    public void setDestroyed(boolean destroyed) {
+        super.setDestroyed(destroyed);
+        this.bigRect.set(worldBounds.getRight(),0f,0f,0f);
     }
 
 

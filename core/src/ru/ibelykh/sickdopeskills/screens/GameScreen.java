@@ -91,6 +91,8 @@ public class GameScreen extends Base2DScreen {
     private StringBuilder sbHp = new StringBuilder();
     private StringBuilder sbLvl = new StringBuilder();
 
+    List<Flag> flagList;
+
 //	private Splash[] splash;
 
     public GameScreen(Game game) {
@@ -140,7 +142,7 @@ public class GameScreen extends Base2DScreen {
         shapeRenderer = new ShapeRenderer();
 
 
-        shapeRenderer.setColor(Color.LIME);
+        shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rotate(0, 0, 0, 0);
 
 
@@ -156,6 +158,8 @@ public class GameScreen extends Base2DScreen {
         font = new Font("font/font.fnt", "font/font.png");
         font.setFontSize(FONT_SIZE);
         font.setColor(Color.BLUE);
+     flagList = flagPool.getActiveObjects();
+
     }
 
     @Override
@@ -209,6 +213,7 @@ public class GameScreen extends Base2DScreen {
         Gdx.gl.glClearColor(.8f, .8f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         flagPool.drawActiveSprites(batch);
+
         treePool.drawActiveSprites(batch);
 //		for (int i = 0; i <splash.length ; i++) {
 ////			splash[i].draw(batch);
@@ -240,8 +245,10 @@ public class GameScreen extends Base2DScreen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.rect(rider.getBoard().x, rider.getBoard().y, rider.getBoard().width,
                 rider.getBoard().height);
-
-
+        for (Flag flag : flagList) {
+            shapeRenderer.rect(flag.getBigRectLeft(), flag.getBigRectBot(),
+                    flag.getBigRect().width, flag.getBigRect().height);
+        }
         shapeRenderer.end();
         spriteBatch.begin();
         spriteBatch.end();
@@ -321,12 +328,12 @@ public class GameScreen extends Base2DScreen {
     }
 
     private void checkCollisions(float delta) {
-        List<Flag> flagList = flagPool.getActiveObjects();
+//        List<Flag> flagList = flagPool.getActiveObjects();
 
 //        float minDist = rider.getHalfHeight();
         for (Flag flag : flagList) {
 
-              if ((isAccident(flag))||(isWrongWay(flag))) {
+              if ((isAccident(flag))) {
                     shouting.setFrame(1);
                     shouting.setSick(true);
                     countPoints = 0;
@@ -337,6 +344,18 @@ public class GameScreen extends Base2DScreen {
                     countClicks = 0;
                     rider.gameOver();
                     flag.setDestroyed(true);
+                }
+                if ((isWrongWay(flag))){
+                    shouting.setFrame(1);
+                    shouting.setSick(true);
+//                    countPoints = 0;
+                    isItNeedToShout = true;
+//                    rider.isDestroyed();
+//                    music.setVolume(0.3f);
+//                    setIsPlaying(false);
+
+//                    rider.gameOver();
+//                    flag.setDestroyed(true);
                 }
 
             if (isOnRightWay(flag)) {
@@ -457,21 +476,35 @@ public boolean isOnRightWay(Flag flag){
 }
 
     public boolean isAccident(Flag flag) {
-        return (!(rider.getBoardBack()>flag.getRight()
-                || rider.getBoardNose()<flag.getLeft()
-                || rider.getBoardTop()<flag.getBottom()
-                || rider.getBoardBottom()>flag.getTop()));
-    }
 
+        return (!(
+                rider.getBoardBack()>flag.getBigRectRight()
+                || rider.getBoardNose()<flag.getBigRectLeft()
+
+                || rider.getBoardTop()<flag.getBigRectBot()
+                || rider.getBoardBottom()>flag.getBigRectTop()));
+
+//                rider.getBoardBack()>flag.getRight()
+//                || rider.getBoardNose()<flag.getLeft()
+
+//                || rider.getBoardTop()<flag.getBottom()
+//                || rider.getBoardBottom()>flag.getTop()));
+
+//        (!(rider.getBoardBack()>flag.getBigRectRight()
+//                || rider.getBoardNose()<flag.getBigRectLeft()
+//                || rider.getBoardTop()<flag.getBigRectBot()
+//                || rider.getBoardBottom()>flag.getBigRectTop()));
+
+    }
     // WRONGWAY
     public boolean isWrongWay(Flag flag){
         return ((rider.getBoardNose() > flag.getRight())&&(rider.getBoardNose()-flag.getLeft()<
                 rider.getBoard().width)
                 &&
                 (((flag.isItRed())
-                        && (rider.getBoardBottom() > flag.getTop())) //Выше красного
+                        && (rider.getBoardBottom() > flag.getBottom())) //Выше красного
                 || ((!flag.isItRed())
-                        && (rider.getBoardTop() < flag.getBottom()))));//ниже синего
+                        && (rider.getBoardTop() < flag.getTop()))));//ниже синего
     }
     /////
 
