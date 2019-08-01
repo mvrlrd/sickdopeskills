@@ -18,8 +18,10 @@ public class Rider extends Sprite {
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
     private Rect worldBounds;
-    private static float velocityY=0.011f;
+    private static float velocityY=0.007f;
     private Vector2 lastVelocity= new Vector2(0,velocityY);
+    private int rightHandedFrame = 3;
+    private int leftHandedFrame = 1;
 
     private Vector2 speed=new Vector2();
 
@@ -36,40 +38,34 @@ public class Rider extends Sprite {
     @Override
     public void update(float delta) {
         super.update(delta);
-
         speed=v.add(velocity);
         pos.mulAdd(speed,delta);
 
         if (this.getTop()>worldBounds.getTop()&&((v.add(velocity)).y>0.3f)){
             velocity.set(velocity.x,-velocityY);
             v.set(0f,0f);
-//            lastVelocity.set(velocity);
             pos.mulAdd(v.add(velocity), delta);
         }
         if (this.getBottom()<worldBounds.getBottom()&&(v.add(velocity)).y<-0.3f){
             velocity.set(velocity.x,velocityY);
             v.set(0f,0f);
-//            lastVelocity.set(velocity);
-
             pos.mulAdd(v.add(velocity), delta);
+
         }
         if (velocity.y < 0f) {
-            frame=3;
-
+            frame=rightHandedFrame;
             this.angle=v.y*70;
             board.set(getLeft()+getWidth()*0.4f,getBottom()+getHalfWidth()/1.5f,
                     getWidth()/1.7f,getHeight()/3f);
 
         }
         if (velocity.y>0f){
-            frame=1;
-
+            frame=leftHandedFrame;
             this.angle=v.y*70;
             board.set(getLeft()+getWidth()*0.385f,getBottom()+getHalfWidth()/3.9f,
                     getWidth()/1.7f,getHeight()/3f);
-
-
         }
+//        Flag.speed = -((Math.abs(speed.y))*2);
     }
 
     public void resize(Rect worldBounds, float x, float y) {
@@ -80,6 +76,8 @@ public class Rider extends Sprite {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         velocity.rotate(180);
+
+
         lastVelocity.set(velocity);
         return false;
     }

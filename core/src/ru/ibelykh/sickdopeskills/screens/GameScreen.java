@@ -329,12 +329,11 @@ public class GameScreen extends Base2DScreen {
 //        List<Flag> flagList = flagPool.getActiveObjects();
 
 //        float minDist = rider.getHalfHeight();
-        int [] frames = {0,2};
+
 
         for (Flag flag : flagList) {
               if ((isAccident(flag))) {
-                    shouting.setFrame(frames[flag.getShoutFrame()]);
-                    shouting.setSick(true);
+                    setShoutFrame(false,flag);
                     countPoints = 0;
                     isItNeedToShout = true;
                     rider.isDestroyed();
@@ -353,8 +352,7 @@ public class GameScreen extends Base2DScreen {
                 }
 
             if (isOnRightWay(flag)) {
-                shouting.setFrame(frames[flag.getShoutFrame()]);
-                shouting.setSick(true);
+                setShoutFrame(true,flag);
 
 if (!flag.isDestroyed()) {
     isItNeedToShout = true;
@@ -364,6 +362,21 @@ if (!flag.isDestroyed()) {
 
             }
     }
+
+    private void setShoutFrame(boolean isEverithingOk,Flag flag){
+        if (isEverithingOk) {
+            int[] frames = {0, 2};
+            shouting.setFrame(frames[flag.getShoutFrame()]);
+
+        }
+        else {
+            shouting.setFrame(1);
+
+
+        }
+        shouting.setSick(true);
+    }
+
 
 
 

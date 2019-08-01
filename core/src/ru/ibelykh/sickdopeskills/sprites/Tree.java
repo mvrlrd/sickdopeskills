@@ -17,7 +17,7 @@ public class Tree extends Sprite {
     public Tree( Rider rider, Rect worldBounds) {
         this.rider=rider;
         this.worldBounds = worldBounds;
-        this.v.set(-0.3f,0f);
+        this.v.set(-0.45f,0f);
         isPlaying = GameScreen.getIsPlaying();
     }
 

@@ -17,17 +17,20 @@ public class Flag extends Sprite {
     private Rectangle bigRect;
     private Rect worldBounds;
     private int shoutFrame;
+    public static float speed = -0.45f;
 
     public Flag( Rect worldBounds) {
 
         this.worldBounds = worldBounds;
-        this.v.set(-0.33f,0f);
+        this.v.set(speed,0f);
         bigRect=new Rectangle();
     }
 
     public int getShoutFrame() {
         return shoutFrame;
     }
+
+
 
     public void setShoutFrame(int shoutFrame) {
         this.shoutFrame = shoutFrame;
