@@ -13,7 +13,7 @@ import ru.ibelykh.sickdopeskills.sprites.Flag;
 
 public class FlagEmitter {
 
-    private static final float FLAG_HEIGHT = 0.08f;
+    private static final float FLAG_HEIGHT = 0.05f;
     private Rect worldBounds;
     private float generateInterval = 0f;
     private float generateTimer;
@@ -41,6 +41,7 @@ public class FlagEmitter {
             if (generateTimer >= generateInterval) {
                 generateTimer = 0f;
                 Flag flag = flagPool.obtain();
+                flag.setShoutFrame((int)(Math.random()*2));
                 if (flagCount%2==0){
                     flag.set(
                             flagBlueRegion,

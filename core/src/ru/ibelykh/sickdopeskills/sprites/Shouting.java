@@ -19,35 +19,28 @@ public class Shouting extends Sprite {
     private Sound Sick, dope, youCool;
     private static int frm=0;
 
-    Rider rider;
 
 
     public Shouting(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion("shout"), 3, 1, 3);
         setHeightProportion(0.15f);
         this.worldBounds = worldBounds;
-
-//        this.dogHouse = dogHouse;
-
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-
     }
 
     @Override
     public void update(float delta) {
-
         super.update(delta);
         this.setAngle(90);
         if (!isSick){
             setFrame(frm);
         }
-
-
     }
+
     @Override
     public void draw(SpriteBatch batch) {
         super.draw(batch);

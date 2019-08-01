@@ -9,19 +9,19 @@ import ru.ibelykh.sickdopeskills.sprites.Rider;
 public class FlagPool extends SpritesPool<Flag> {
 
 
-    private Rider rider;
+
     private Rect worldBounds;
 
 
-    public FlagPool(Rider rider, Rect worldBounds) {
+    public FlagPool( Rect worldBounds) {
 
-        this.rider = rider;
+
         this.worldBounds=worldBounds;
 
     }
 
     @Override
     protected Flag newObject() {
-        return new Flag(rider,worldBounds);
+        return new Flag(worldBounds);
     }
 }

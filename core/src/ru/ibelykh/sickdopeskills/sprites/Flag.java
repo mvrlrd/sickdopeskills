@@ -14,21 +14,23 @@ public class Flag extends Sprite {
 
     private boolean isItRed;
     private Vector2 v = new Vector2();
-    private Rider rider;
     private Rectangle bigRect;
-
-
-
     private Rect worldBounds;
+    private int shoutFrame;
 
-    public Flag( Rider rider, Rect worldBounds) {
+    public Flag( Rect worldBounds) {
 
-        this.rider=rider;
         this.worldBounds = worldBounds;
-        this.v.set(-0.3f,0f);
+        this.v.set(-0.33f,0f);
         bigRect=new Rectangle();
+    }
 
+    public int getShoutFrame() {
+        return shoutFrame;
+    }
 
+    public void setShoutFrame(int shoutFrame) {
+        this.shoutFrame = shoutFrame;
     }
 
     @Override
@@ -37,26 +39,19 @@ public class Flag extends Sprite {
         pos.mulAdd(v, delta);
 //        if (GameScreen.getIsPlaying()) {
 
-
-
-
-
 //            if (isOutside(worldBounds)) {
 //                setDestroyed(true);
 //
 //            }
             // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана
+
             if (getRight()<worldBounds.getLeft()) {
-
-
-
                 GameScreen.setCountPoints(GameScreen.getCountPoints()+1);
-
                 setDestroyed(true);
                 GameScreen.setIsItNeedToShout(false);
                 Shouting.framer(Rnd.nextInt(0,3));
-
             }
+
             if (!isDestroyed()) {
                 if ((isItRed)) {
                     bigRect.set(getRight() - getWidth() / 4.27f, getBottom(),
@@ -112,8 +107,8 @@ public class Flag extends Sprite {
 //        return flagCounter;
 //    }
 
-    public void setItRed(boolean itRed) {
-        isItRed = itRed;
+    public void setItRed(boolean itIsRed) {
+        isItRed = itIsRed;
     }
 
     public boolean isItRed() {

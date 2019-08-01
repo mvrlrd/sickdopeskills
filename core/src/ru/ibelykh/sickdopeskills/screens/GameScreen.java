@@ -10,9 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Align;
 
 
 import java.util.List;
@@ -131,7 +129,7 @@ public class GameScreen extends Base2DScreen {
 
         alenaAtlas = new TextureAtlas("images/alena.atlas");
 
-        flagPool = new FlagPool(rider, worldBounds);
+        flagPool = new FlagPool( worldBounds);
         flagEmitter = new FlagEmitter(worldBounds, flagPool, alenaAtlas);
 
         spriteBatch = new SpriteBatch();
@@ -143,7 +141,7 @@ public class GameScreen extends Base2DScreen {
 
 
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rotate(0, 0, 0, 0);
+//        shapeRenderer.rotate(0, 0, 0, 30);
 
 
         shoutingAtlas = new TextureAtlas("images/shoutingAtlas.atlas");
@@ -331,10 +329,11 @@ public class GameScreen extends Base2DScreen {
 //        List<Flag> flagList = flagPool.getActiveObjects();
 
 //        float minDist = rider.getHalfHeight();
-        for (Flag flag : flagList) {
+        int [] frames = {0,2};
 
+        for (Flag flag : flagList) {
               if ((isAccident(flag))) {
-                    shouting.setFrame(1);
+                    shouting.setFrame(frames[flag.getShoutFrame()]);
                     shouting.setSick(true);
                     countPoints = 0;
                     isItNeedToShout = true;
@@ -348,119 +347,22 @@ public class GameScreen extends Base2DScreen {
                 if ((isWrongWay(flag))){
                     shouting.setFrame(1);
                     shouting.setSick(true);
-//                    countPoints = 0;
-                    isItNeedToShout = true;
-//                    rider.isDestroyed();
-//                    music.setVolume(0.3f);
-//                    setIsPlaying(false);
 
-//                    rider.gameOver();
-//                    flag.setDestroyed(true);
+                    isItNeedToShout = true;
+
                 }
 
             if (isOnRightWay(flag)) {
+                shouting.setFrame(frames[flag.getShoutFrame()]);
+                shouting.setSick(true);
 
-
-//                    a = Rnd.nextInt(0, 3);
-//                    if (a == 1) {
-//                        a = 2;
-//                    }
-//                }
 if (!flag.isDestroyed()) {
     isItNeedToShout = true;
 }
 
-//            inter += delta;
-//            if ((inter > 0.8f)) {
-//                inter = 0f;
-//                isItNeedToShout=false;
-
             }
 
-
-//            if ((flag.pos.dst2(rider.pos) < minDist)) {
-
-//
-//
-//				inter+=delta;
-////
-//				if ((inter>0.8f)){
-//
-//					inter=0f;
-//
-//					a = Rnd.nextInt(0, 3);
-//					if (a == 1){
-//						a=2;
-//
-//					}
-//
-//					gotPoint=true;
-//
-//
-//					inter=0f;
-//					shouting.setFrame(a);
-//					isItNeedToShout=true;
-//					shouting.setSick(false);
-//				}
-
-
-
-//			if (isRightWay(flag)) {
-
-//				ifCloseToFlag(flag, minDist, delta);
-
-//				what = gotPoint;
-//				pointsCounter(flag);
-//				gotPoint = false;
-//			}
-
-                //если неправильно объехал флажок
-//			else {
-////				isItWrongWay = true;
-//				countPoints = 0;
-//				gotPoint = false;
-////				isItNeedToShout = false;
-////				shouting.setSick(false);
-//				shouting.setFrame(1);
-//				isItNeedToShout = true;
-//				shouting.setSick(true);
-//			}
-
-//		ifWasAnAccident(flag);
-
-
             }
-//            what = gotPoint;
-//			pointsCounter();
-//            gotPoint = false;
-
-            //если неправильно объехал флажок
-
-
-
-
-//
-//
-//            if (
-//                    !(flag.getRight() < (rider.getBoardLeft())
-//                            || flag.getLeft() > (rider.getBoardRight())
-//                            || flag.getBottom() > (rider.getBoardTop())
-//                            || flag.getTop() < (rider.getBoardBottom()))
-//
-//            ) {
-//                isItNeedToShout = false;
-//                shouting.setFrame(1);
-//                shouting.setSick(true);
-//                countPoints = 0;
-//                isItNeedToShout = true;
-//                rider.isDestroyed();
-//                music.setVolume(0.3f);
-//                setIsPlaying(false);
-//                countClicks = 0;
-//                rider.gameOver();
-//                flag.setDestroyed(true);
-//            }
-//        }
     }
 
 
@@ -483,17 +385,6 @@ public boolean isOnRightWay(Flag flag){
 
                 || rider.getBoardTop()<flag.getBigRectBot()
                 || rider.getBoardBottom()>flag.getBigRectTop()));
-
-//                rider.getBoardBack()>flag.getRight()
-//                || rider.getBoardNose()<flag.getLeft()
-
-//                || rider.getBoardTop()<flag.getBottom()
-//                || rider.getBoardBottom()>flag.getTop()));
-
-//        (!(rider.getBoardBack()>flag.getBigRectRight()
-//                || rider.getBoardNose()<flag.getBigRectLeft()
-//                || rider.getBoardTop()<flag.getBigRectBot()
-//                || rider.getBoardBottom()>flag.getBigRectTop()));
 
     }
     // WRONGWAY

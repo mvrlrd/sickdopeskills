@@ -23,15 +23,11 @@ public class Rider extends Sprite {
 
     private Vector2 speed=new Vector2();
 
-
-
     private Rectangle board;
-
-
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion("rider"), 4, 1, 4);
-        setHeightProportion(0.16f);
+        setHeightProportion(0.1f);
         this.worldBounds = worldBounds;
         board = new Rectangle();
 
@@ -71,6 +67,7 @@ public class Rider extends Sprite {
             this.angle=v.y*70;
             board.set(getLeft()+getWidth()*0.385f,getBottom()+getHalfWidth()/3.9f,
                     getWidth()/1.7f,getHeight()/3f);
+
 
         }
     }
