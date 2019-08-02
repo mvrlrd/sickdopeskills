@@ -32,10 +32,10 @@ public class GameScreen extends Base2DScreen {
     private static int countPoints;
 
     private static final String POINTS = "pts: ";
-    	private static final String SPEED = "spd: ";
+    	private static final String DISTANCE = "dst: ";
 //	private static final String LVL = "level: ";
     private static final int SNOW_COUNT = 10000;
-    private static final float FONT_SIZE = 0.08f;
+    private static final float FONT_SIZE = 0.05f;
 
     private TextureAtlas textureAtlas;
     private Snow[] snow;
@@ -66,7 +66,7 @@ public class GameScreen extends Base2DScreen {
     private static boolean isItNeedToShout;
     private float interval = 0f;
 
-    float inter = 0f;
+   private float dist = 0f;
     int a;
 
     private TreePool treePool;
@@ -84,7 +84,7 @@ public class GameScreen extends Base2DScreen {
 
     private Font font;
     private StringBuilder sbFrags = new StringBuilder();
-    private StringBuilder sbHp = new StringBuilder();
+    private StringBuilder sbDist = new StringBuilder();
     private StringBuilder sbLvl = new StringBuilder();
 
     List<Flag> flagList;
@@ -94,6 +94,10 @@ public class GameScreen extends Base2DScreen {
     public GameScreen(Game game) {
         super(game);
 
+    }
+
+    public float getDist() {
+        return dist;
     }
 
     public static Rider getRider() {
@@ -118,12 +122,16 @@ public class GameScreen extends Base2DScreen {
         //STAR
 
         snow = new Snow[SNOW_COUNT];
-        splash = new Splash[500];
+        splash = new Splash[20];
 
         for (int i = 0; i < splash.length; i++) {
-            Vector2 v = new Vector2();
-            v.set(Rnd.nextFloat(-0.18f,-0.36f),Rnd.nextFloat(-0.5f,-0.001f));
             splash[i] = new Splash(textureAtlas);
+//if (dist<10f){
+//    splash[i].setHeightProportion(Rnd.nextFloat(0.001f,0.005f));
+//
+//}
+
+
         }
 
         for (int i = 0; i < snow.length; i++) {
@@ -159,7 +167,8 @@ public class GameScreen extends Base2DScreen {
 
         font = new Font("font/font.fnt", "font/font.png");
         font.setFontSize(FONT_SIZE);
-        font.setColor(Color.BLUE);
+        font.setColor(Color.DARK_GRAY);
+
      flagList = flagPool.getActiveObjects();
 
     }
@@ -178,9 +187,17 @@ public class GameScreen extends Base2DScreen {
     public void update(float delta) {
         //STAR
 
+        if (isPlaying){
+            dist+=0.1f;
+        }
+        if (!isPlaying){
+            dist=0;
+        }
+
         rider.update(delta);
         for (int i = 0; i < snow.length; i++) {
             snow[i].update(delta);
+
         }
 
         for (int i = 0; i < splash.length; i++) {
@@ -231,10 +248,13 @@ public class GameScreen extends Base2DScreen {
         startGates.draw(batch);
 
 
-        rider.draw(batch);
-        for (int i = 0; i < splash.length; i++) {
-            splash[i].draw(batch);
+
+        if (isPlaying) {
+            for (int i = 0; i < splash.length; i++) {
+                splash[i].draw(batch);
+            }
         }
+        rider.draw(batch);
 
         for (int i = 0; i < snow.length; i++) {
             snow[i].draw(batch);
@@ -261,11 +281,12 @@ public class GameScreen extends Base2DScreen {
     }
 
     private void printInfo() {
-        sbHp.setLength(0);
+        sbDist.setLength(0);
         sbLvl.setLength(0);
         sbFrags.setLength(0);
         font.draw(batch, sbFrags.append(POINTS).append(countPoints), worldBounds.getLeft(), worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
-//        font.draw(batch, sbFrags.append(SPEED).append(rider.getSpeed().y), worldBounds.getLeft(), worldBounds.getBottom()+0.2f);
+
+        font.draw(batch, sbDist.append(DISTANCE).append(Math.round(dist)), worldBounds.getLeft(), worldBounds.getBottom()+FONT_SIZE);
     }
 
     private void deleteAllDestroyed() {

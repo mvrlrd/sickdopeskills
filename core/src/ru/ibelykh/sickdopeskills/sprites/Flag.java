@@ -11,18 +11,19 @@ import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 
 public class Flag extends Sprite {
+    public static float FLAGSPEED = -0.45f;
 
     private boolean isItRed;
     private Vector2 v = new Vector2();
     private Rectangle bigRect;
     private Rect worldBounds;
     private int shoutFrame;
-    public static float speed = -0.45f;
+
 
     public Flag( Rect worldBounds) {
 
         this.worldBounds = worldBounds;
-        this.v.set(speed,0f);
+        this.v.set(FLAGSPEED,0f);
         bigRect=new Rectangle();
     }
 
