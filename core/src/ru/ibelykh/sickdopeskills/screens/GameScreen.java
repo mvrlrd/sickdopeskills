@@ -23,11 +23,7 @@ import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
 import ru.ibelykh.sickdopeskills.pools.TreePool;
-import ru.ibelykh.sickdopeskills.sprites.Flag;
-import ru.ibelykh.sickdopeskills.sprites.Rider;
-import ru.ibelykh.sickdopeskills.sprites.Shouting;
-import ru.ibelykh.sickdopeskills.sprites.Snow;
-import ru.ibelykh.sickdopeskills.sprites.YouCool;
+import ru.ibelykh.sickdopeskills.sprites.*;
 import ru.ibelykh.sickdopeskills.utils.FlagEmitter;
 import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 
@@ -82,6 +78,8 @@ public class GameScreen extends Base2DScreen {
 
     private TextureAtlas alenaAtlas;
 
+    private StartGates startGates;
+
     private int frags;
 
     private Font font;
@@ -112,6 +110,7 @@ public class GameScreen extends Base2DScreen {
         dogHouseAtl = new TextureAtlas("images/alenaSprites.atlas");
         rider = new Rider(dogHouseAtl, worldBounds);
 
+        startGates = new StartGates(dogHouseAtl,worldBounds);
         //STAR
 
         snow = new Snow[SNOW_COUNT];
@@ -169,6 +168,8 @@ public class GameScreen extends Base2DScreen {
             snow[i].update(delta);
         }
 
+        startGates.update(delta);
+
         rider.update(delta);
 
 //		for (int i = 0; i <splash.length ; i++) {
@@ -208,6 +209,9 @@ public class GameScreen extends Base2DScreen {
         if ((countPoints%10==0)&&(countPoints!=0)) {
             youCool.draw(batch);
         }
+        startGates.draw(batch);
+
+
         rider.draw(batch);
         for (int i = 0; i < snow.length; i++) {
             snow[i].draw(batch);
@@ -249,6 +253,10 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
+
+        startGates.resize(worldBounds,worldBounds.getLeft()+0.1f,0f);
+
+
         rider.resize(worldBounds, worldBounds.getLeft() + 1.2f * rider.getWidth(), 0f);
         //STAR
         for (int i = 0; i < snow.length; i++) {
@@ -398,6 +406,7 @@ public boolean isOnRightWay(Flag flag){
         music.setVolume(1f);
         isPlaying = true;
         rider.setTheNewGame();
+        startGates.setTheNewGame();
     }
 
     public static boolean getIsPlaying() {
