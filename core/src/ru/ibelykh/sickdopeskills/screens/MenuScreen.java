@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.math.Rect;
+import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.sprites.Background;
 import ru.ibelykh.sickdopeskills.sprites.ButtonExit;
 import ru.ibelykh.sickdopeskills.sprites.ButtonNewGame;
@@ -49,10 +50,13 @@ public class MenuScreen extends Base2DScreen {
         //STAR_SHOW
         textureAtlas = new TextureAtlas("images/snow.atlas");
         snow = new Snow[STAR_COUNT];
+
         for (int i = 0; i <snow.length ; i++) {
-            snow[i]= new Snow(textureAtlas);
+            Vector2 v = new Vector2();
+            v.set(Rnd.nextFloat(-0.18f,-0.36f),Rnd.nextFloat(-0.5f,-0.001f));
+            snow[i]= new Snow(textureAtlas,v);
         }
-        btAtlas = new TextureAtlas("buttons/menubuttons.atlas");
+        btAtlas = new TextureAtlas("buttons/buttons.atlas");
         buttonExit = new ButtonExit(btAtlas);
         buttonNewGame = new ButtonNewGame(btAtlas,game);
 //
@@ -85,7 +89,7 @@ public class MenuScreen extends Base2DScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //BACKGROUND DRAW
 
-        background.draw(batch);
+//        background.draw(batch);
         //STAR DRAW
         for (int i = 0; i <snow.length ; i++) {  //Star 5
             snow[i].draw(batch);
@@ -115,7 +119,7 @@ public class MenuScreen extends Base2DScreen {
 
     @Override
     public void dispose() {
-        bg.dispose();
+//        bg.dispose();
         textureAtlas.dispose(); //star
         btAtlas.dispose();
         menuMusic.dispose();

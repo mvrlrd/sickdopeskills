@@ -102,30 +102,25 @@ public class GameScreen extends Base2DScreen {
     public void show() {
         super.show();
 
-        textureAtlas = new TextureAtlas("images/snow.atlas");
 
+        shapeRenderer = new ShapeRenderer();
+
+        textureAtlas = new TextureAtlas("images/snow.atlas");
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
-
         worldBounds = getWorldBounds();
-
-
-//		splash = new Splash[500];
-//		for (int i = 0; i <splash.length ; i++) {
-//			splash[i]= new Splash(textureAtlas);
-//		}
         dogHouseAtl = new TextureAtlas("images/alenaSprites.atlas");
-
         rider = new Rider(dogHouseAtl, worldBounds);
 
         //STAR
 
         snow = new Snow[SNOW_COUNT];
-        for (int i = 0; i < snow.length; i++) {
-            snow[i] = new Snow(textureAtlas);
-        }
 
-//		rectangle = dogHouse1.getPath();
+        for (int i = 0; i < snow.length; i++) {
+            Vector2 v = new Vector2();
+            v.set(Rnd.nextFloat(-0.18f,-0.36f),Rnd.nextFloat(-0.5f,-0.001f));
+            snow[i] = new Snow(textureAtlas, v);
+        }
 
         alenaAtlas = new TextureAtlas("images/alena.atlas");
 
@@ -137,11 +132,10 @@ public class GameScreen extends Base2DScreen {
         music.play();
         music.setLooping(true);
 
-        shapeRenderer = new ShapeRenderer();
 
 
-        shapeRenderer.setColor(Color.BLACK);
-//        shapeRenderer.rotate(0, 0, 0, 30);
+
+//        shapeRenderer.setColor(Color.ROYAL);
 
 
         shoutingAtlas = new TextureAtlas("images/shoutingAtlas.atlas");
@@ -206,54 +200,40 @@ public class GameScreen extends Base2DScreen {
     }
 
     public void draw() {
-
         batch.begin();
         Gdx.gl.glClearColor(.8f, .8f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         flagPool.drawActiveSprites(batch);
-
         treePool.drawActiveSprites(batch);
-//		for (int i = 0; i <splash.length ; i++) {
-////			splash[i].draw(batch);
-//		}
-
         if ((countPoints%10==0)&&(countPoints!=0)) {
-
             youCool.draw(batch);
-
         }
-
-
         rider.draw(batch);
-
-
         for (int i = 0; i < snow.length; i++) {
             snow[i].draw(batch);
         }
         if (isItNeedToShout) {
-
             shouting.draw(batch);
-
         }
         printInfo();
         batch.end();
 
+//Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
+//        shapeRenderer.setProjectionMatrix(worldToGl);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.rect(rider.getBoard().x, rider.getBoard().y, rider.getBoard().width,
+//                rider.getBoard().height);
 
-        shapeRenderer.setProjectionMatrix(worldToGl);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(rider.getBoard().x, rider.getBoard().y, rider.getBoard().width,
-                rider.getBoard().height);
-        for (Flag flag : flagList) {
-            shapeRenderer.rect(flag.getBigRectLeft(), flag.getBigRectBot(),
-                    flag.getBigRect().width, flag.getBigRect().height);
-        }
-        shapeRenderer.end();
+//        for (Flag flag : flagList) {
+//            shapeRenderer.rect(flag.getBigRectLeft(), flag.getBigRectBot(),
+//                    flag.getBigRect().width, flag.getBigRect().height);
+//        }
+//        shapeRenderer.end();
         spriteBatch.begin();
         spriteBatch.end();
-
     }
 
-    public void printInfo() {
+    private void printInfo() {
         sbHp.setLength(0);
         sbLvl.setLength(0);
         sbFrags.setLength(0);
@@ -261,7 +241,7 @@ public class GameScreen extends Base2DScreen {
 //        font.draw(batch, sbFrags.append(SPEED).append(rider.getSpeed().y), worldBounds.getLeft(), worldBounds.getBottom()+0.2f);
     }
 
-    public void deleteAllDestroyed() {
+    private void deleteAllDestroyed() {
         flagPool.freeAllDestroyedActiveSprites();
         treePool.freeAllDestroyedActiveSprites();
     }
@@ -274,10 +254,6 @@ public class GameScreen extends Base2DScreen {
         for (int i = 0; i < snow.length; i++) {
             snow[i].resize(worldBounds);
         }
-
-//		for (int i = 0; i <splash.length ; i++) {
-//			splash[i].resize(worldBounds,dogHouse1.getLeft(),dogHouse1.getTop());
-//		}
     }
 
 
