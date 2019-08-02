@@ -15,7 +15,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
 
-import javax.swing.plaf.FontUIResource;
 
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
@@ -44,7 +43,7 @@ public class GameScreen extends Base2DScreen {
     private boolean state;
     private boolean isAllRight;
 
-    private Rider rider;
+    private static Rider rider;
     private TextureAtlas dogHouseAtl;
 
     private static boolean isPlaying;
@@ -60,6 +59,7 @@ public class GameScreen extends Base2DScreen {
 
     private ShapeRenderer shapeRenderer;
 
+    private Splash[] splash;
 
     private TextureAtlas shoutingAtlas;
     private Shouting shouting;
@@ -96,6 +96,10 @@ public class GameScreen extends Base2DScreen {
 
     }
 
+    public static Rider getRider() {
+        return rider;
+    }
+
     @Override
     public void show() {
         super.show();
@@ -114,6 +118,13 @@ public class GameScreen extends Base2DScreen {
         //STAR
 
         snow = new Snow[SNOW_COUNT];
+        splash = new Splash[500];
+
+        for (int i = 0; i < splash.length; i++) {
+            Vector2 v = new Vector2();
+            v.set(Rnd.nextFloat(-0.18f,-0.36f),Rnd.nextFloat(-0.5f,-0.001f));
+            splash[i] = new Splash(textureAtlas);
+        }
 
         for (int i = 0; i < snow.length; i++) {
             Vector2 v = new Vector2();
@@ -162,15 +173,23 @@ public class GameScreen extends Base2DScreen {
 
     }
 
+
+
     public void update(float delta) {
         //STAR
+
+        rider.update(delta);
         for (int i = 0; i < snow.length; i++) {
             snow[i].update(delta);
         }
 
+        for (int i = 0; i < splash.length; i++) {
+            splash[i].update(delta);
+        }
+
         startGates.update(delta);
 
-        rider.update(delta);
+
 
 //		for (int i = 0; i <splash.length ; i++) {
 //
@@ -213,6 +232,10 @@ public class GameScreen extends Base2DScreen {
 
 
         rider.draw(batch);
+        for (int i = 0; i < splash.length; i++) {
+            splash[i].draw(batch);
+        }
+
         for (int i = 0; i < snow.length; i++) {
             snow[i].draw(batch);
         }
@@ -262,6 +285,9 @@ public class GameScreen extends Base2DScreen {
         for (int i = 0; i < snow.length; i++) {
             snow[i].resize(worldBounds);
         }
+        for (int i = 0; i < splash.length; i++) {
+            splash[i].resize(worldBounds);
+        }
     }
 
 
@@ -295,6 +321,7 @@ public class GameScreen extends Base2DScreen {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         countClicks++;
+        System.out.println("back "+rider.getBoardBack()+ " bottom "+rider.getBoardBottom()+ " top "+rider.getBoardTop()+ " nose "+ rider.getBoardNose());
         if (countClicks == 1) {
             startNewGame();
         }
