@@ -3,7 +3,6 @@ package ru.ibelykh.sickdopeskills.sprites;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
@@ -11,28 +10,26 @@ import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 
 public class Flag extends Sprite {
-    public static float FLAGSPEED = -0.45f;
+    private static float XFLAGSPEED = -0.45f;
+    private static float YFLAGSPEED = 0f;
+    private static Vector2 flagSpeed = new Vector2();
 
-    private boolean isItRed;
-    private Vector2 v = new Vector2();
-    private Rectangle bigRect;
+    private boolean redFlag;
+
+    private Rectangle collisionInvisibleSquare;  //An area on a flag which makes crushing with alike rider's area
     private Rect worldBounds;
     private int shoutFrame;
 
 
     public Flag( Rect worldBounds) {
-
         this.worldBounds = worldBounds;
-        this.v.set(FLAGSPEED,0f);
-        bigRect=new Rectangle();
+        flagSpeed.set(XFLAGSPEED,YFLAGSPEED);
+        collisionInvisibleSquare = new Rectangle();
     }
 
     public int getShoutFrame() {
         return shoutFrame;
     }
-
-
-
     public void setShoutFrame(int shoutFrame) {
         this.shoutFrame = shoutFrame;
     }
@@ -40,91 +37,69 @@ public class Flag extends Sprite {
     @Override
     public void update(float delta) {
         super.update(delta);
-        pos.mulAdd(v, delta);
-//        if (GameScreen.getIsPlaying()) {
-
-//            if (isOutside(worldBounds)) {
-//                setDestroyed(true);
-//
-//            }
-            // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана
-
-            if (getRight()<worldBounds.getLeft()) {
-                GameScreen.setCountPoints(GameScreen.getCountPoints()+1);
+        if (GameScreen.getIsPlaying()) {
+            pos.mulAdd(flagSpeed, delta);
+            // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана;
+            if (getRight() < worldBounds.getLeft()) {
+                GameScreen.setCountPoints(GameScreen.getCountPoints() + 1);  //increase points on 1;
                 setDestroyed(true);
                 GameScreen.setIsItNeedToShout(false);
-                Shouting.framer(Rnd.nextInt(0,3));
+                Shouting.framer(Rnd.nextInt(0, 3));  //there are just 3 types of shouting frames ("sick","dope","whoa");
             }
 
             if (!isDestroyed()) {
-                if ((isItRed)) {
-                    bigRect.set(getRight() - getWidth() / 4.27f, getBottom(),
+                if ((redFlag)) {
+                    collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
                             getWidth() / 4.6f, getHeight());
                 }
-                if ((!isItRed)) {
-                    bigRect.set(getRight() - getWidth() / 4.27f, getBottom(),
+                if ((!redFlag)) {
+                    collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
                             getWidth() / 4.6f, getHeight());
                 }
-            }else {
-                bigRect.set(worldBounds.getRight(),0f,0f,0f);}
-
-
-
+            } else {
+                collisionInvisibleSquare.set(worldBounds.getRight(), 0f, 0f, 0f);
+            }
+        }else { //if the rider crushes the flags stop
+            pos.mulAdd(new Vector2(0f,0f), delta);
+        }
         }
 
-
-//        }
-
-    public Rectangle getBigRect() {
-        return bigRect;
-    }
-
     public float getBigRectLeft(){
-        return bigRect.x;
+        return collisionInvisibleSquare.x;
     }
     public float getBigRectRight(){
-        return bigRect.x+bigRect.getWidth();
+        return collisionInvisibleSquare.x+collisionInvisibleSquare.getWidth();
     }
     public float getBigRectTop(){
-        return bigRect.y+bigRect.getHeight();
+        return collisionInvisibleSquare.y+collisionInvisibleSquare.getHeight();
     }
     public float getBigRectBot(){
-        return bigRect.y;
+        return collisionInvisibleSquare.y;
     }
 
-    public void resize(Rect worldBounds, float x, float y) {
-        super.resize(worldBounds);
+    public void resize(Rect _worldBounds, float x, float y) {
+        super.resize(_worldBounds);
         pos.set(x,y);
 
     }
 
-    public void set(
-            TextureRegion[]regions,
-            float height
-
-    ){
-        this.regions = regions;
-        setHeightProportion(height);
+    public void set(TextureRegion[]_regions, float _height){
+        this.regions = _regions;
+        setHeightProportion(_height);
     }
 
-//    public int getFlagCounter() {
-//        return flagCounter;
-//    }
-
-    public void setItRed(boolean itIsRed) {
-        isItRed = itIsRed;
+    public void setItRed(boolean _redFlag) {
+        redFlag = _redFlag;
     }
 
     public boolean isItRed() {
-        return isItRed;
+        return redFlag;
     }
 
     @Override
-    public void setDestroyed(boolean destroyed) {
-        super.setDestroyed(destroyed);
-        this.bigRect.set(worldBounds.getRight(),0f,0f,0f);
+    public void setDestroyed(boolean _destroyed) {
+        super.setDestroyed(_destroyed);
+        this.collisionInvisibleSquare.set(worldBounds.getRight(),0f,0f,0f);
     }
-
-
 }
 

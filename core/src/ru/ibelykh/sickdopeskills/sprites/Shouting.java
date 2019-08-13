@@ -55,7 +55,7 @@ public class Shouting extends Sprite {
     }
     public static void framer(int a){
         if (a==1){
-            frm=0;
+            frm = 0;
         }else {
             frm = a;
         }

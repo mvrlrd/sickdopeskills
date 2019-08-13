@@ -18,7 +18,7 @@ public class Rider extends Sprite {
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
     private Rect worldBounds;
-    private static float velocityY=0.007f;
+    private static float velocityY=0.02f;
     private Vector2 lastVelocity= new Vector2(0,velocityY);
     private static final int rightHandedFrame = 3;
     private static final int leftHandedFrame = 1;
