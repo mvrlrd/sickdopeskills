@@ -429,13 +429,13 @@ public boolean isOnRightWay(Flag flag){
                 || rider.getBoardTop()<flag.getBigRectBot()
                 || rider.getBoardBottom()>flag.getBigRectTop()));
     }
-    private boolean isAccident(Tree tree) {
-        return (!(
-//                rider.getBoardBack()>tree.getBigRectRight()
-//                        || rider.getBoardNose()<flag.getBigRectLeft()
-//                        || rider.getBoardTop()<flag.getBigRectBot()
-//                        || rider.getBoardBottom()>flag.getBigRectTop()));
-    }
+//    private boolean isAccident(Tree tree) {
+//        return (!(
+////                rider.getBoardBack()>tree.getBigRectRight()
+////                        || rider.getBoardNose()<flag.getBigRectLeft()
+////                        || rider.getBoardTop()<flag.getBigRectBot()
+////                        || rider.getBoardBottom()>flag.getBigRectTop()));
+//    }
     // WRONGWAY
     public boolean isWrongWay(Flag flag){
         return ((rider.getBoardNose() > flag.getRight())&&(rider.getBoardNose()-flag.getLeft()<
