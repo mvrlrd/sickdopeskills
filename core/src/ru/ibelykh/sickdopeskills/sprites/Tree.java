@@ -1,6 +1,7 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
@@ -15,9 +16,12 @@ public class Tree extends Sprite{
     private Rider rider;
     private Rect worldBounds;
 
+    private Rectangle collisionInvisibleSquare;
+
     public Tree(Rider rider, Rect worldBounds) {
         this.rider = rider;
         this.worldBounds = worldBounds;
+        collisionInvisibleSquare = new Rectangle();
     }
 
     @Override
@@ -30,6 +34,10 @@ public class Tree extends Sprite{
             // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана
             if (getRight()+getHalfHeight() < worldBounds.getLeft()) {
                 setDestroyed(true);
+            }
+            if (!isDestroyed()){
+//                collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
+//                        getWidth() / 4.6f, getHeight());
             }
         }
         else { //if the rider crushes the trees stop

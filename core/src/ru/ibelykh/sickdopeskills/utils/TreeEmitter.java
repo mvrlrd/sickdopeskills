@@ -11,12 +11,17 @@ import ru.ibelykh.sickdopeskills.sprites.Tree;
 
 
 public class TreeEmitter {
+private static final float MINTREESIZE = 0.06f;
+    private static final float MAXTREESIZE = 0.3f;
 
+    private static final float MINTREEINTERVAL = 0.2f;
+    private static final float MAXTREEINTERVAL = 1f;
     private Rect worldBounds;
-    private float generateInterval = 0f;
+    private float generateInterval;
     private float generateTimer;
     private TextureRegion[] treeRegion;
     private TreePool treePool;
+
 
     public TreeEmitter(Rect worldBounds, TreePool treePool, TextureAtlas atlas) {
         this.worldBounds = worldBounds;
@@ -28,7 +33,7 @@ public class TreeEmitter {
     public void generateTreesTop(float delta) {
 
         if (GameScreen.getIsPlaying()) {
-            generateInterval = Rnd.nextFloat(0.2f,1f);
+            generateInterval = Rnd.nextFloat(MINTREEINTERVAL,MAXTREEINTERVAL);
             generateTimer += delta;
             if (generateTimer >= generateInterval) {
                 generateTimer = 0f;
@@ -36,7 +41,7 @@ public class TreeEmitter {
                 tree.setFrame(Rnd.nextInt(0,2));
                 tree.set(
                         treeRegion,
-                        Rnd.nextFloat(0.06f, 0.3f)
+                        Rnd.nextFloat(MINTREESIZE, MAXTREESIZE)
                 );
                 tree.pos.y = Rnd.nextFloat(0.4f, worldBounds.getTop());
                 tree.pos.x = (worldBounds.getRight()+tree.getHalfHeight());
@@ -47,7 +52,7 @@ public class TreeEmitter {
     public void generateTreesBottom(float delta) {
 
         if (GameScreen.getIsPlaying()) {
-            generateInterval = Rnd.nextFloat(0.2f,1f);
+            generateInterval = Rnd.nextFloat(MINTREEINTERVAL,MAXTREEINTERVAL);
             generateTimer += delta;
             if (generateTimer >= generateInterval) {
                 generateTimer = 0f;
@@ -55,7 +60,7 @@ public class TreeEmitter {
                 tree.setFrame(Rnd.nextInt(0,2));
                 tree.set(
                         treeRegion,
-                        Rnd.nextFloat(0.06f, 0.3f)
+                        Rnd.nextFloat(MINTREESIZE, MAXTREESIZE)
                 );
                 tree.pos.y = Rnd.nextFloat(-0.4f, worldBounds.getBottom());
                 tree.pos.x = (worldBounds.getRight()+tree.getHalfHeight());

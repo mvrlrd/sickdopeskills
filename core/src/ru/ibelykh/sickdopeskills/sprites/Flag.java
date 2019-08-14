@@ -46,7 +46,6 @@ public class Flag extends Sprite {
                 GameScreen.setIsItNeedToShout(false);
                 Shouting.framer(Rnd.nextInt(0, 3));  //there are just 3 types of shouting frames ("sick","dope","whoa");
             }
-
             if (!isDestroyed()) {
                 if ((redFlag)) {
                     collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
