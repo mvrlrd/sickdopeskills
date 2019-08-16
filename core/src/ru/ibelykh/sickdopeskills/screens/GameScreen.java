@@ -240,28 +240,30 @@ public class GameScreen extends Base2DScreen {
         batch.begin();
         Gdx.gl.glClearColor(.8f, .8f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         flagPool.drawActiveSprites(batch);
+        if (isPlaying) {
+            for (int i = 0; i < splash.length; i++) {
+                splash[i].draw(batch);
+            }
+        }
+
         treePool.drawActiveSprites(batch);
         if ((countPoints%10==0)&&(countPoints!=0)) {
             youCool.draw(batch);
         }
         startGates.draw(batch);
 
-
-
-        if (isPlaying) {
-            for (int i = 0; i < splash.length; i++) {
-                splash[i].draw(batch);
-            }
-        }
         rider.draw(batch);
+
+        if (isItNeedToShout) {
+            shouting.draw(batch);
+        }
 
         for (int i = 0; i < snow.length; i++) {
             snow[i].draw(batch);
         }
-        if (isItNeedToShout) {
-            shouting.draw(batch);
-        }
+
         printInfo();
         batch.end();
 

@@ -10,11 +10,14 @@ public class StartGates extends Sprite {
 
     private Rect worldBounds;
     private Vector2 speed=new Vector2(-0.0f,0f);
+    private static final float proportion = 0.2f;
+    private static final String REGION = "start";
+    private static final Vector2 SPEED = new Vector2(-0.45f, 0.0f);
 
 
     public StartGates(TextureAtlas atlas, Rect worldBounds) {
-        super(atlas.findRegion("start"), 1, 1, 1);
-        setHeightProportion(0.2f);
+        super(atlas.findRegion(REGION), 1, 1, 1);
+        setHeightProportion(proportion);
         this.setAngle(90f);
         this.worldBounds = worldBounds;
 //        this.pos.set(worldBounds.getLeft()+0.1f,0f);
@@ -43,7 +46,7 @@ public class StartGates extends Sprite {
     }
 
     public void setTheNewGame(){
-        speed.set(-0.13f, 0.0f);
+        speed.set(SPEED);
         pos.set(worldBounds.getLeft()+0.1f,0f);
     }
 

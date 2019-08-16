@@ -18,16 +18,17 @@ public class Rider extends Sprite {
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
     private Rect worldBounds;
-    private static float velocityY=0.02f;
+    private static float velocityY=0.04f;
     private Vector2 lastVelocity= new Vector2(0,velocityY);
     private static final int rightHandedFrame = 3;
     private static final int leftHandedFrame = 1;
     private Vector2 speed=new Vector2();
     private Rectangle board;
+    private static float proportion = 0.1f;
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion("rider"), 4, 1, 4);
-        setHeightProportion(0.1f);
+        setHeightProportion(proportion);
         this.worldBounds = worldBounds;
         board = new Rectangle();
     }
@@ -51,7 +52,7 @@ public class Rider extends Sprite {
         }
         if (velocity.y < 0f) {
             frame=rightHandedFrame;
-            this.angle=v.y*70;
+            this.angle=v.y*40;
             board.set(getLeft()+getWidth()*0.4f,getBottom()+getHalfWidth()/1.5f,
                     getWidth()/1.7f,getHeight()/3f);
 
@@ -59,7 +60,7 @@ public class Rider extends Sprite {
         }
         if (velocity.y>0f){
             frame=leftHandedFrame;
-            this.angle=v.y*70;
+            this.angle=v.y*40;
             board.set(getLeft()+getWidth()*0.385f,getBottom()+getHalfWidth()/3.9f,
                     getWidth()/1.7f,getHeight()/3f);
         }

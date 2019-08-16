@@ -13,8 +13,8 @@ import ru.ibelykh.sickdopeskills.sprites.Flag;
 public class FlagEmitter {
 
     private static final float FLAG_HEIGHT = 0.05f;
-    private static final float MININTERVAL = 1.5f;
-    private static final float MAXINTERVAL = 2.0f;
+    private static final float MININTERVAL = 1.1f;
+    private static final float MAXINTERVAL = 1.4f;
     private static final String REDFLAGREGION = "redFlag";
     private static final String BLUEFLAGREGION = "blueFlag";
     private static final float MINPOSY = 0.03f;
