@@ -36,8 +36,9 @@ public class Tree extends Sprite{
                 setDestroyed(true);
             }
             if (!isDestroyed()){
-//                collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
-//                        getWidth() / 4.6f, getHeight());
+
+                collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
+                        getWidth() / 4.6f, getHeight());
             }
         }
         else { //if the rider crushes the trees stop
@@ -59,4 +60,10 @@ public class Tree extends Sprite{
         this.regions = regions;
         setHeightProportion(height);
     }
+
+    public Rectangle getCollisionInvisibleSquare() {
+        return collisionInvisibleSquare;
+    }
+
+
 }

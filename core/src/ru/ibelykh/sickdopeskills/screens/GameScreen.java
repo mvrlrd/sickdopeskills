@@ -87,7 +87,8 @@ public class GameScreen extends Base2DScreen {
     private StringBuilder sbDist = new StringBuilder();
     private StringBuilder sbLvl = new StringBuilder();
 
-    List<Flag> flagList;
+    private List<Flag> flagList;
+    private List<Tree> treeList;
 
 //	private Splash[] splash;
 
@@ -153,7 +154,7 @@ public class GameScreen extends Base2DScreen {
 
 
 
-//        shapeRenderer.setColor(Color.ROYAL);
+        shapeRenderer.setColor(Color.BLACK);
 
 
         shoutingAtlas = new TextureAtlas("images/shoutingAtlas.atlas");
@@ -170,6 +171,7 @@ public class GameScreen extends Base2DScreen {
         font.setColor(Color.DARK_GRAY);
 
      flagList = flagPool.getActiveObjects();
+     treeList = treePool.getActiveObjects();
 
     }
 
@@ -268,16 +270,24 @@ public class GameScreen extends Base2DScreen {
         batch.end();
 
 //Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
-//        shapeRenderer.setProjectionMatrix(worldToGl);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//        shapeRenderer.rect(rider.getBoard().x, rider.getBoard().y, rider.getBoard().width,
-//                rider.getBoard().height);
+        shapeRenderer.setProjectionMatrix(worldToGl);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(rider.getBoard().x, rider.getBoard().y, rider.getBoard().width,
+                rider.getBoard().height);
 
 //        for (Flag flag : flagList) {
 //            shapeRenderer.rect(flag.getBigRectLeft(), flag.getBigRectBot(),
 //                    flag.getBigRect().width, flag.getBigRect().height);
 //        }
-//        shapeRenderer.end();
+                for (Tree flag : treeList) {
+
+            shapeRenderer.rect(flag.getCollisionInvisibleSquare().x, flag.getCollisionInvisibleSquare().y,
+                    flag.getCollisionInvisibleSquare().width, flag.getCollisionInvisibleSquare().height);
+        }
+
+        shapeRenderer.end();
+
+
         spriteBatch.begin();
         spriteBatch.end();
     }
