@@ -37,8 +37,8 @@ public class Tree extends Sprite{
             }
             if (!isDestroyed()){
 
-                collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
-                        getWidth() / 4.6f, getHeight());
+                collisionInvisibleSquare.set(getRight() - getWidth() / 1f, getBottom(),
+                        getWidth()/2.5f , getHeight()/20f);
             }
         }
         else { //if the rider crushes the trees stop
