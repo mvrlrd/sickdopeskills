@@ -90,6 +90,8 @@ public class GameScreen extends Base2DScreen {
     private List<Flag> flagList;
     private List<Tree> treeList;
 
+    private float windDirection;
+
 //	private Splash[] splash;
 
     public GameScreen(Game game) {
@@ -134,10 +136,10 @@ public class GameScreen extends Base2DScreen {
 
 
         }
-
+windDirection=Rnd.nextFloat(-0.5f,0.5f);
         for (int i = 0; i < snow.length; i++) {
             Vector2 v = new Vector2();
-            v.set(Rnd.nextFloat(-0.18f,-0.36f),Rnd.nextFloat(-0.5f,-0.001f));
+            v.set(Rnd.nextFloat(windDirection-0.09f,windDirection+0.09f),Rnd.nextFloat(-0.5f,-0.001f));
             snow[i] = new Snow(textureAtlas, v);
         }
 
