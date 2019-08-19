@@ -10,7 +10,7 @@ import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 
 public class Flag extends Sprite {
-    private static float XFLAGSPEED = -0.45f;
+    private static float XFLAGSPEED = -0.55f;
     private static float YFLAGSPEED = 0f;
     private static Vector2 flagSpeed = new Vector2();
 

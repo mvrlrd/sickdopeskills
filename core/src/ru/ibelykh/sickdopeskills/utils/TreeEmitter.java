@@ -14,8 +14,8 @@ public class TreeEmitter {
 private static final float MINTREESIZE = 0.06f;
     private static final float MAXTREESIZE = 0.3f;
 
-    private static final float MINTREEINTERVAL = 0.2f;
-    private static final float MAXTREEINTERVAL = 1f;
+    private static final float MINTREEINTERVAL = 0.5f;
+    private static final float MAXTREEINTERVAL = 1.2f;
     private Rect worldBounds;
     private float generateInterval;
     private float generateTimer;

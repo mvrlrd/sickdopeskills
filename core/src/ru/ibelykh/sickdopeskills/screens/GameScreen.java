@@ -249,14 +249,14 @@ public class GameScreen extends Base2DScreen {
                 splash[i].draw(batch);
             }
         }
-
+        rider.draw(batch);
         treePool.drawActiveSprites(batch);
         if ((countPoints%10==0)&&(countPoints!=0)) {
             youCool.draw(batch);
         }
         startGates.draw(batch);
 
-        rider.draw(batch);
+
 
         if (isItNeedToShout) {
             shouting.draw(batch);
@@ -405,6 +405,21 @@ if (!flag.isDestroyed()) {
             }
 
             }
+
+        for (Tree tree : treeList) {
+            if ((isAccident(tree))) {
+
+                countPoints = 0;
+                isItNeedToShout = true;
+                rider.isDestroyed();
+                music.setVolume(0.3f);
+                setIsPlaying(false);
+                countClicks = 0;
+                rider.gameOver();
+
+            }
+
+        }
     }
 
     private void setShoutFrame(boolean isEverithingOk,Flag flag){
@@ -436,11 +451,20 @@ public boolean isOnRightWay(Flag flag){
 
     private boolean isAccident(Flag flag) {
         return (!(
-                   rider.getBoardBack()>flag.getBigRectRight()
-                || rider.getBoardNose()<flag.getBigRectLeft()
-                || rider.getBoardTop()<flag.getBigRectBot()
-                || rider.getBoardBottom()>flag.getBigRectTop()));
+                rider.getBoardBack() > flag.getBigRectRight()
+                        || rider.getBoardNose() < flag.getBigRectLeft()
+                        || rider.getBoardTop() < flag.getBigRectBot()
+                        || rider.getBoardBottom() > flag.getBigRectTop()));
     }
+    private boolean isAccident(Tree tree) {
+        return (!(
+
+                 rider.getBoardBack()>(tree.getCollisionInvisibleSquare().x+tree.getCollisionInvisibleSquare().width)
+                || rider.getBoardNose()<tree.getCollisionInvisibleSquare().x
+                || rider.getBoardTop()<tree.getCollisionInvisibleSquare().y
+                || rider.getBoardBottom()>(tree.getCollisionInvisibleSquare().y+tree.getCollisionInvisibleSquare().height)));
+    }
+
 //    private boolean isAccident(Tree tree) {
 //        return (!(
 ////                rider.getBoardBack()>tree.getBigRectRight()
