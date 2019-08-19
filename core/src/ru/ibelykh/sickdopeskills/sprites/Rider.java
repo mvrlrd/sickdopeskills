@@ -18,7 +18,7 @@ public class Rider extends Sprite {
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
     private Rect worldBounds;
-    private static float velocityY=0.05f;
+    private static float velocityY=0.045f;
     private Vector2 lastVelocity= new Vector2(0,velocityY);
     private static final int rightHandedFrame = 3;
     private static final int leftHandedFrame = 1;
@@ -52,7 +52,7 @@ public class Rider extends Sprite {
         }
         if (velocity.y < 0f) {
             frame=rightHandedFrame;
-            this.angle=v.y*40;
+            this.angle=v.y*30;
             board.set(getLeft()+getWidth()*0.4f,getBottom()+getHalfWidth()/1.5f,
                     getWidth()/1.7f,getHeight()/3f);
 
@@ -60,7 +60,7 @@ public class Rider extends Sprite {
         }
         if (velocity.y>0f){
             frame=leftHandedFrame;
-            this.angle=v.y*40;
+            this.angle=v.y*30;
             board.set(getLeft()+getWidth()*0.385f,getBottom()+getHalfWidth()/3.9f,
                     getWidth()/1.7f,getHeight()/3f);
         }
@@ -94,7 +94,7 @@ public class Rider extends Sprite {
     }
 
     public void gameOver(){
-        v.set(-0.15f,0f);
+        v.set(-0.0f,0f);
         velocity.set(0.000f,-0.0f);
     }
 

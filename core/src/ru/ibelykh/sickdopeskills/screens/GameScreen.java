@@ -392,6 +392,7 @@ public class GameScreen extends Base2DScreen {
                     countClicks = 0;
                     rider.gameOver();
                     flag.setDestroyed(true);
+
                 }
                 if ((isWrongWay(flag))){
                     shouting.setFrame(1);
@@ -494,6 +495,7 @@ public boolean isOnRightWay(Flag flag){
 
 
     public void startNewGame() {
+
         countPoints = 0;
         isItNeedToShout = false;
         shouting.setSick(false);
