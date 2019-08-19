@@ -45,6 +45,7 @@ public class Snow extends Sprite {
         if (getRight() < worldBounds.getLeft()) setLeft(worldBounds.getRight());
         if (getLeft() > worldBounds.getRight()) setRight(worldBounds.getLeft());
         if (getTop() < worldBounds.getBottom()) setBottom(worldBounds.getTop());
+        if (getBottom() > worldBounds.getTop()) setBottom(worldBounds.getBottom());
 
     }
 

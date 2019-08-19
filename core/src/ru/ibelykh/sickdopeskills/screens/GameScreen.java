@@ -34,7 +34,7 @@ public class GameScreen extends Base2DScreen {
     private static final String POINTS = "pts: ";
     	private static final String DISTANCE = "dst: ";
 //	private static final String LVL = "level: ";
-    private static final int SNOW_COUNT = 10000;
+    private  int SNOW_COUNT;
     private static final float FONT_SIZE = 0.05f;
 
     private TextureAtlas textureAtlas;
@@ -90,7 +90,8 @@ public class GameScreen extends Base2DScreen {
     private List<Flag> flagList;
     private List<Tree> treeList;
 
-    private float windDirection;
+    private float windDirectionX;
+    private float windDirectionY;
 
 //	private Splash[] splash;
 
@@ -123,7 +124,7 @@ public class GameScreen extends Base2DScreen {
 
         startGates = new StartGates(dogHouseAtl,worldBounds);
         //STAR
-
+        SNOW_COUNT = Rnd.nextInt(500,10000);
         snow = new Snow[SNOW_COUNT];
         splash = new Splash[20];
 
@@ -136,10 +137,13 @@ public class GameScreen extends Base2DScreen {
 
 
         }
-windDirection=Rnd.nextFloat(-0.5f,0.5f);
+
+        windDirectionX=Rnd.nextFloat(-0.7f,0.7f);
+        windDirectionY=Rnd.nextFloat(-0.7f,0.7f);
+        System.out.println(windDirectionX);
         for (int i = 0; i < snow.length; i++) {
             Vector2 v = new Vector2();
-            v.set(Rnd.nextFloat(windDirection-0.09f,windDirection+0.09f),Rnd.nextFloat(-0.5f,-0.001f));
+            v.set(Rnd.nextFloat(windDirectionX-0.1f,windDirectionX+0.1f),Rnd.nextFloat(windDirectionY-0.1f,windDirectionY+0.1f));
             snow[i] = new Snow(textureAtlas, v);
         }
 
