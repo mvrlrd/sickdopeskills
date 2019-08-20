@@ -29,6 +29,7 @@ public class MenuScreen extends Base2DScreen {
     private ButtonExit buttonExit;
     private  TextureAtlas btAtlas;
 
+
     private Music menuMusic;
 
     private ButtonNewGame buttonNewGame;
@@ -60,8 +61,9 @@ public class MenuScreen extends Base2DScreen {
         buttonExit = new ButtonExit(btAtlas);
         buttonNewGame = new ButtonNewGame(btAtlas,game);
 //
+        float musicVolume = 0.5f;
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/strange.mp3"));
-        menuMusic.setVolume(0.5f);
+        menuMusic.setVolume(musicVolume);
         menuMusic.setLooping(true);
         menuMusic.play();
 
