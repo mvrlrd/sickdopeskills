@@ -392,17 +392,7 @@ public class GameScreen extends Base2DScreen {
                 || rider.getBoardBottom() > (tree.getCollisionInvisibleSquare().y + tree.getCollisionInvisibleSquare().height)));
     }
 
-    private void gameOver() {
-        countPoints = 0;
-//        isItNeedToShout = true;
-        rider.isDestroyed();
-        music.setVolume(0.3f);
-        setIsPlaying(false);
-        countClicks = 0;
-        rider.gameOver();
 
-
-    }
 
     // WRONGWAY
     private boolean isWrongWay(Flag flag) {
@@ -412,6 +402,17 @@ public class GameScreen extends Base2DScreen {
                 && (rider.getBoardBottom() > flag.getBottom())) //Выше красного
                 || ((!flag.isItRed())
                 && (rider.getBoardTop() < flag.getTop()))));//ниже синего
+    }
+
+    private void gameOver() {
+        countPoints = 0;
+        shouting.setFrame(1);
+        isItNeedToShout = true;
+        rider.isDestroyed();
+        music.setVolume(0.3f);
+        setIsPlaying(false);
+        countClicks = 0;
+        rider.gameOver();
     }
 
     private void startNewGame() {
