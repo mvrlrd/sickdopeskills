@@ -394,7 +394,7 @@ public class GameScreen extends Base2DScreen {
 
     private void gameOver() {
         countPoints = 0;
-        isItNeedToShout = true;
+//        isItNeedToShout = true;
         rider.isDestroyed();
         music.setVolume(0.3f);
         setIsPlaying(false);

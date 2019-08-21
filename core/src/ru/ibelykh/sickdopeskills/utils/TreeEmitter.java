@@ -11,7 +11,7 @@ import ru.ibelykh.sickdopeskills.sprites.Tree;
 
 
 public class TreeEmitter {
-private static final float MINTREESIZE = 0.06f;
+private static final float MINTREESIZE = 0.1f;
     private static final float MAXTREESIZE = 0.3f;
 
     private static final float MINTREEINTERVAL = 0.5f;
