@@ -133,7 +133,7 @@ public class GameScreen extends Base2DScreen {
         }
         windDirectionX = Rnd.nextFloat(-0.7f, 0.7f);
         windDirectionY = Rnd.nextFloat(-0.7f, 0.7f);
-        System.out.println(windDirectionX);
+
         for (int i = 0; i < snow.length; i++) {
             Vector2 v = new Vector2();
             v.set(Rnd.nextFloat(windDirectionX - 0.1f, windDirectionX + 0.1f), Rnd.nextFloat(windDirectionY - 0.1f, windDirectionY + 0.1f));
@@ -175,6 +175,7 @@ public class GameScreen extends Base2DScreen {
         if (isPlaying) {
             dist += 0.1f;
         }
+
 //        if (!isPlaying) {
 //            dist = 0;
 //        }
@@ -334,6 +335,7 @@ public class GameScreen extends Base2DScreen {
     }
 
     private void checkCollisions(float delta) {
+
         for (Flag flag : flagList) {
             if ((isAccident(flag))) {
                 shouting.setFrame(0);
@@ -377,11 +379,13 @@ public class GameScreen extends Base2DScreen {
 
 
     private boolean isOnRightWay(Flag flag) {
-        return ((rider.getBoardNose() > flag.getLeft())
-                && (((flag.isItRed())
-                && (rider.getBoardTop() < flag.getBottom())) //ниже красного
-                || ((!flag.isItRed())
-                && (rider.getBoardBottom() > flag.getTop()))));//выше синего
+
+            return ((rider.getBoardNose() > flag.getLeft())
+                    && (((flag.isItRed())
+                    && (rider.getBoardTop() < flag.getBottom())) //ниже красного
+                    || ((!flag.isItRed())
+                    && (rider.getBoardBottom() > flag.getTop()))));//выше синего
+
     }
 
     private boolean isAccident(Flag flag) {
@@ -402,12 +406,14 @@ public class GameScreen extends Base2DScreen {
 
     // WRONGWAY
     private boolean isWrongWay(Flag flag) {
-        return ((rider.getBoardNose() > flag.getRight())
-                && (rider.getBoardNose() - flag.getLeft() < rider.getBoard().width)
-                && (((flag.isItRed())
-                && (rider.getBoardBottom() > flag.getBottom())) //Выше красного
-                || ((!flag.isItRed())
-                && (rider.getBoardTop() < flag.getTop()))));//ниже синего
+
+            return ((rider.getBoardNose() > flag.getRight())
+                    && (rider.getBoardNose() - flag.getLeft() < rider.getBoard().width)
+                    && (((flag.isItRed())
+                    && (rider.getBoardBottom() > flag.getBottom())) //Выше красного
+                    || ((!flag.isItRed())
+                    && (rider.getBoardTop() < flag.getTop()))));//ниже синего
+
     }
 
     private void gameOver() {
@@ -423,10 +429,11 @@ public class GameScreen extends Base2DScreen {
     }
 
     private void startNewGame() {
-        System.out.println(countClicks+"   888888888");
+
         for (Flag flag : flagList) {
             flag.setDestroyed(true);
         }
+        setIsPlaying(true);
         isItNeedToShout = false;
         dist=0;
         points = 0;
