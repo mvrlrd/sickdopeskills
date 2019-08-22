@@ -44,7 +44,7 @@ public class Flag extends Sprite {
                 GameScreen.setCountPoints(GameScreen.getCountPoints() + 1);  //increase points on 1;
                 setDestroyed(true);
                 GameScreen.setIsItNeedToShout(false);
-                Shouting.framer(Rnd.nextInt(0, 3));  //there are just 3 types of shouting frames ("sick","dope","whoa");
+                Shouting.framer(Rnd.nextInt(0, 4));  //there are just 3 types of shouting frames ("sick","dope","whoa");
             }
             if (!isDestroyed()) {
                 if ((redFlag)) {

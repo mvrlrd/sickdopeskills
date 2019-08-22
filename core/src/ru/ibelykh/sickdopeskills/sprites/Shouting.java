@@ -22,10 +22,11 @@ public class Shouting extends Sprite {
 
 
     public Shouting(TextureAtlas atlas, Rect worldBounds) {
-        super(atlas.findRegion("shout"), 3, 1, 3);
+        super(atlas.findRegion("labels"), 4, 1, 4);
         setHeightProportion(0.15f);
         this.worldBounds = worldBounds;
     }
+
 
     @Override
     public void resize(Rect worldBounds) {
@@ -36,9 +37,13 @@ public class Shouting extends Sprite {
     public void update(float delta) {
         super.update(delta);
         this.setAngle(90);
+
+
         if (!isSick){
             setFrame(frm);
+
         }
+
     }
 
     @Override
@@ -53,6 +58,8 @@ public class Shouting extends Sprite {
     public  void setSick(boolean sick) {
         isSick = sick;
     }
+
+
     public static void framer(int a){
         if (a==1){
             frm = 0;

@@ -29,7 +29,7 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 
 public class GameScreen extends Base2DScreen {
 
-    private static int countPoints;
+    private static int points;
 
     private static final String POINTS = "pts: ";
     	private static final String DISTANCE = "dst: ";
@@ -146,7 +146,9 @@ public class GameScreen extends Base2DScreen {
         music.play();
         music.setLooping(true);
         shapeRenderer.setColor(Color.BLACK);
-        shoutingAtlas = new TextureAtlas("images/shoutingAtlas.atlas");
+//        shoutingAtlas = new TextureAtlas("images/shouting.txt");
+        shoutingAtlas = new TextureAtlas("images/labels.atlas");
+
         shouting = new Shouting(shoutingAtlas, worldBounds);
         treeAtlas = new TextureAtlas("images/trees.atlas");
         treePool = new TreePool(rider, worldBounds);
@@ -173,9 +175,9 @@ public class GameScreen extends Base2DScreen {
         if (isPlaying) {
             dist += 0.1f;
         }
-        if (!isPlaying) {
-            dist = 0;
-        }
+//        if (!isPlaying) {
+//            dist = 0;
+//        }
         rider.update(delta);
         for (int i = 0; i < snow.length; i++) {
             snow[i].update(delta);
@@ -217,7 +219,7 @@ public class GameScreen extends Base2DScreen {
         }
         rider.draw(batch);
         treePool.drawActiveSprites(batch);
-        if ((countPoints % 10 == 0) && (countPoints != 0)) {
+        if ((points % 10 == 0) && (points != 0)) {
             youCool.draw(batch);
         }
         startGates.draw(batch);
@@ -256,7 +258,7 @@ public class GameScreen extends Base2DScreen {
         sbLvl.setLength(0);
         sbFrags.setLength(0);
         font.draw(batch,
-                sbFrags.append(POINTS).append(countPoints),
+                sbFrags.append(POINTS).append(points),
                 worldBounds.getLeft(),
                 worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
         font.draw(batch,
@@ -334,15 +336,18 @@ public class GameScreen extends Base2DScreen {
     private void checkCollisions(float delta) {
         for (Flag flag : flagList) {
             if ((isAccident(flag))) {
-                setShoutFrame(false, flag);
+                shouting.setFrame(0);
                 gameOver();
                 flag.setDestroyed(true);
 
             }
             if ((isWrongWay(flag))) {
-                shouting.setFrame(1);
+                shouting.setFrame(3);
                 shouting.setSick(true);
-                isItNeedToShout = true;
+                flag.setDestroyed(true);
+                gameOver();
+
+//                isItNeedToShout = true;
             }
             if (isOnRightWay(flag)) {
                 setShoutFrame(true, flag);
@@ -353,6 +358,7 @@ public class GameScreen extends Base2DScreen {
         }
         for (Tree tree : treeList) {
             if ((isAccident(tree))) {
+                shouting.setFrame(0);
                 gameOver();
             }
         }
@@ -360,11 +366,11 @@ public class GameScreen extends Base2DScreen {
 
     private void setShoutFrame(boolean isEverythingOk,Flag flag){
         if (isEverythingOk) {
-            int[] frames = {0, 2};
+            int[] frames = {1,2};
             shouting.setFrame(frames[flag.getShoutFrame()]);
         }
         else {
-            shouting.setFrame(1);
+            shouting.setFrame(0);
         }
         shouting.setSick(true);
     }
@@ -405,22 +411,26 @@ public class GameScreen extends Base2DScreen {
     }
 
     private void gameOver() {
-        countPoints = 0;
-        shouting.setFrame(1);
+
+        countClicks = 0;
+//        shouting.setFrame(3);
         isItNeedToShout = true;
         rider.isDestroyed();
         music.setVolume(0.3f);
         setIsPlaying(false);
-        countClicks = 0;
+
         rider.gameOver();
     }
 
     private void startNewGame() {
+        System.out.println(countClicks+"   888888888");
         for (Flag flag : flagList) {
             flag.setDestroyed(true);
         }
-        countPoints = 0;
         isItNeedToShout = false;
+        dist=0;
+        points = 0;
+
         shouting.setSick(false);
         music.setVolume(1f);
         isPlaying = true;
@@ -437,11 +447,11 @@ public class GameScreen extends Base2DScreen {
     }
 
     public static   void setCountPoints(int a) {
-        countPoints = a;
+        points = a;
     }
 
     public static int getCountPoints() {
-        return countPoints;
+        return points;
     }
 
     public static boolean isItNeedToShout() {
