@@ -6,13 +6,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
-import ru.ibelykh.sickdopeskills.sprites.Background;
-import ru.ibelykh.sickdopeskills.sprites.ButtonExit;
-import ru.ibelykh.sickdopeskills.sprites.ButtonNewGame;
-import ru.ibelykh.sickdopeskills.sprites.Snow;
+import ru.ibelykh.sickdopeskills.sprites.*;
 
 public class MenuScreen extends Base2DScreen {
 
@@ -30,7 +28,7 @@ public class MenuScreen extends Base2DScreen {
     private  TextureAtlas btAtlas;
 
     private TextureAtlas riderAtlas;
-
+    private ButtonGetRider btnGetBlond;
 
 
 
@@ -48,7 +46,9 @@ public class MenuScreen extends Base2DScreen {
     public void show() {
         super.show();
 
-        riderAtlas = new TextureAtlas("images/alenaSprites.atlas");
+        riderAtlas = new TextureAtlas("images/riderButton/blondRiderButton.atlas");
+        btnGetBlond = new ButtonGetRider(riderAtlas);
+
 
         //BACKGROUND SHOW
         backgroundAtlas = new TextureAtlas("backgrounds/backgrounds.atlas");
@@ -102,10 +102,12 @@ public class MenuScreen extends Base2DScreen {
         for (int i = 0; i <snow.length ; i++) {  //Star 5
             snow[i].draw(batch);
         }
+
         // Buttons
         buttonExit.draw(batch);
         buttonNewGame.draw(batch);
 
+        btnGetBlond.draw(batch);
 
 
         batch.end();
@@ -123,6 +125,7 @@ public class MenuScreen extends Base2DScreen {
         background.resize(worldBounds);
         buttonExit.resize(worldBounds);
         buttonNewGame.resize(worldBounds);
+        btnGetBlond.resize(worldBounds);
     }
 
     @Override
@@ -138,6 +141,7 @@ public class MenuScreen extends Base2DScreen {
     public boolean touchDown(Vector2 touch, int pointer) {
         buttonExit.touchDown(touch,pointer);
         buttonNewGame.touchDown(touch,pointer);
+        btnGetBlond.touchDown(touch, pointer);
         return super.touchDown(touch, pointer);
     }
 
@@ -145,6 +149,7 @@ public class MenuScreen extends Base2DScreen {
     public boolean touchUp(Vector2 touch, int pointer) {
         buttonExit.touchUp(touch,pointer);
         buttonNewGame.touchUp(touch,pointer);
+        btnGetBlond.touchUp(touch, pointer);
         return super.touchUp(touch, pointer);
     }
 }
