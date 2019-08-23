@@ -150,7 +150,7 @@ public class GameScreen extends Base2DScreen {
         shoutingAtlas = new TextureAtlas("images/labels.atlas");
 
         shouting = new Shouting(shoutingAtlas, worldBounds);
-        treeAtlas = new TextureAtlas("images/trees.atlas");
+        treeAtlas = new TextureAtlas("images/forest.atlas");
         treePool = new TreePool(rider, worldBounds);
         treeEmitter = new TreeEmitter(worldBounds, treePool, treeAtlas);
         youCool = new YouCool(alenaAtlas, worldBounds);
@@ -445,6 +445,7 @@ public class GameScreen extends Base2DScreen {
         startGates.setTheNewGame();
     }
 
+
     public static boolean getIsPlaying() {
         return isPlaying;
     }
@@ -453,7 +454,7 @@ public class GameScreen extends Base2DScreen {
         GameScreen.isPlaying = isPlaying;
     }
 
-    public static   void setCountPoints(int a) {
+    public static void setCountPoints(int a) {
         points = a;
     }
 

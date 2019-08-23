@@ -26,8 +26,8 @@ private static final float MINTREESIZE = 0.1f;
     public TreeEmitter(Rect worldBounds, TreePool treePool, TextureAtlas atlas) {
         this.worldBounds = worldBounds;
         this.treePool = treePool;
-        TextureRegion textureRegion = atlas.findRegion("trees");
-        this.treeRegion = Regions.split(textureRegion, 1, 2, 2);
+        TextureRegion textureRegion = atlas.findRegion("forest");
+        this.treeRegion = Regions.split(textureRegion, 1, 9, 9);
     }
 
     public void generateTreesTop(float delta) {
@@ -38,7 +38,7 @@ private static final float MINTREESIZE = 0.1f;
             if (generateTimer >= generateInterval) {
                 generateTimer = 0f;
                 Tree tree = treePool.obtain();
-                tree.setFrame(Rnd.nextInt(0,2));
+                tree.setFrame(Rnd.nextInt(0,9));
                 tree.set(
                         treeRegion,
                         Rnd.nextFloat(MINTREESIZE, MAXTREESIZE)
@@ -57,8 +57,19 @@ private static final float MINTREESIZE = 0.1f;
             if (generateTimer >= generateInterval) {
                 generateTimer = 0f;
                 Tree tree = treePool.obtain();
-                tree.setFrame(Rnd.nextInt(0,2));
+//                tree.setFrame(Rnd.nextInt(0,2));
+                if (GameScreen.getCountPoints()<5){
+                    tree.setFrame(2);
+                } if ((GameScreen.getCountPoints()>=5)&&(GameScreen.getCountPoints()<10)) {
+                    tree.setFrame(6);
+                }
+                if ((GameScreen.getCountPoints()>=10)&&(GameScreen.getCountPoints()<15)) {
+                    tree.setFrame(1);
+                }
+
+
                 tree.set(
+
                         treeRegion,
                         Rnd.nextFloat(MINTREESIZE, MAXTREESIZE)
                 );
