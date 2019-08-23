@@ -38,7 +38,22 @@ private static final float MINTREESIZE = 0.1f;
             if (generateTimer >= generateInterval) {
                 generateTimer = 0f;
                 Tree tree = treePool.obtain();
-                tree.setFrame(Rnd.nextInt(0,9));
+//                tree.setFrame(Rnd.nextInt(0,9));
+                if (GameScreen.getCountPoints()<4){
+                    tree.setFrame(2);
+
+                } if ((GameScreen.getCountPoints()>=4)&&(GameScreen.getCountPoints()<7)) {
+                    tree.setFrame(Rnd.nextIntInterval(5,6));
+                }
+                if ((GameScreen.getCountPoints()>=7)&&(GameScreen.getCountPoints()<10)) {
+                    tree.setFrame(Rnd.nextIntInterval(0,1));
+                }
+                if ((GameScreen.getCountPoints()>=10)&&(GameScreen.getCountPoints()<13)) {
+                    tree.setFrame(Rnd.nextIntInterval(3,4));
+                }
+                if ((GameScreen.getCountPoints()>=13)) {
+                    tree.setFrame(Rnd.nextIntInterval(7,8));
+                }
                 tree.set(
                         treeRegion,
                         Rnd.nextFloat(MINTREESIZE, MAXTREESIZE)
@@ -58,13 +73,20 @@ private static final float MINTREESIZE = 0.1f;
                 generateTimer = 0f;
                 Tree tree = treePool.obtain();
 //                tree.setFrame(Rnd.nextInt(0,2));
-                if (GameScreen.getCountPoints()<5){
+                if (GameScreen.getCountPoints()<4){
                     tree.setFrame(2);
-                } if ((GameScreen.getCountPoints()>=5)&&(GameScreen.getCountPoints()<10)) {
-                    tree.setFrame(6);
+
+                } if ((GameScreen.getCountPoints()>=4)&&(GameScreen.getCountPoints()<7)) {
+                    tree.setFrame(Rnd.nextIntInterval(5,6));
                 }
-                if ((GameScreen.getCountPoints()>=10)&&(GameScreen.getCountPoints()<15)) {
-                    tree.setFrame(1);
+                if ((GameScreen.getCountPoints()>=7)&&(GameScreen.getCountPoints()<10)) {
+                    tree.setFrame(Rnd.nextIntInterval(0,1));
+                }
+                if ((GameScreen.getCountPoints()>=10)&&(GameScreen.getCountPoints()<13)) {
+                    tree.setFrame(Rnd.nextIntInterval(3,4));
+                }
+                if ((GameScreen.getCountPoints()>=13)) {
+                    tree.setFrame(Rnd.nextIntInterval(7,8));
                 }
 
 

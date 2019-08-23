@@ -48,7 +48,6 @@ public class Rider extends Sprite {
             velocity.set(velocity.x,velocityY);
             v.set(0f,0f);
             pos.mulAdd(v.add(velocity), delta);
-
         }
         if (velocity.y < 0f) {
             frame=rightHandedFrame;
@@ -74,8 +73,6 @@ public class Rider extends Sprite {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         velocity.rotate(180);
-
-
         lastVelocity.set(velocity);
         return false;
     }

@@ -14,9 +14,15 @@ public class Rnd {
     }
 
     public static int nextInt(int min, int max) {
-//        return (int) random.nextInt() * (max - min) +  min;
-
-
         return (int) (Math.random() * max) + min;
     }
+
+    public static int nextIntInterval(int min, int max) {
+        return (int) (Math.random() * ((max-min)+1)) + min;
+    }
+
+
+
+
+
 }

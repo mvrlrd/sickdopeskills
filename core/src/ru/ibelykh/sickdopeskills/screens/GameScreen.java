@@ -45,7 +45,7 @@ public class GameScreen extends Base2DScreen {
     private boolean isAllRight;
 
     private static Rider rider;
-    private TextureAtlas dogHouseAtl;
+    private TextureAtlas mainAtlas;
 
     private static boolean isPlaying;
     private int countClicks;
@@ -117,9 +117,9 @@ public class GameScreen extends Base2DScreen {
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
         worldBounds = getWorldBounds();
-        dogHouseAtl = new TextureAtlas("images/alenaSprites.atlas");
-        rider = new Rider(dogHouseAtl, worldBounds);
-        startGates = new StartGates(dogHouseAtl, worldBounds);
+        mainAtlas = new TextureAtlas("images/alenaSprites.atlas");
+        rider = new Rider(mainAtlas, worldBounds);
+        startGates = new StartGates(mainAtlas, worldBounds);
         //STAR
         SNOW_COUNT = Rnd.nextInt(500, 10000);
         snow = new Snow[SNOW_COUNT];
@@ -308,12 +308,13 @@ public class GameScreen extends Base2DScreen {
     public void dispose() {
         super.dispose();
         treeAtlas.dispose();
-        dogHouseAtl.dispose();
+        mainAtlas.dispose();
         flagPool.dispose();
         soundCheck.dispose();
         music.dispose();
         textureAtlas.dispose();
         alenaAtlas.dispose();
+
     }
 
     @Override
@@ -433,6 +434,10 @@ public class GameScreen extends Base2DScreen {
         for (Flag flag : flagList) {
             flag.setDestroyed(true);
         }
+        for (Tree tree : treeList) {
+            tree.setDestroyed(true);
+        }
+
         setIsPlaying(true);
         isItNeedToShout = false;
         dist=0;

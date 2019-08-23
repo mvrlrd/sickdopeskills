@@ -20,14 +20,20 @@ public class MenuScreen extends Base2DScreen {
 
     //STAR
     private static final int STAR_COUNT = 3000;
-    private TextureAtlas textureAtlas;
+    private TextureAtlas snowAtlas;
     private Snow[] snow;
     //BACKGROUND
     private Background background;
-    private TextureAtlas bg;
+    private TextureAtlas backgroundAtlas;
     //Buttons
     private ButtonExit buttonExit;
     private  TextureAtlas btAtlas;
+
+    private TextureAtlas riderAtlas;
+
+
+
+
 
 
     private Music menuMusic;
@@ -42,20 +48,20 @@ public class MenuScreen extends Base2DScreen {
     public void show() {
         super.show();
 
-
+        riderAtlas = new TextureAtlas("images/alenaSprites.atlas");
 
         //BACKGROUND SHOW
-        bg = new TextureAtlas("backgrounds/backgrounds.atlas");
-        background = new Background(bg,"menubg");
+        backgroundAtlas = new TextureAtlas("backgrounds/backgrounds.atlas");
+        background = new Background(backgroundAtlas,"menubg");
 
         //STAR_SHOW
-        textureAtlas = new TextureAtlas("images/snow.atlas");
+        snowAtlas = new TextureAtlas("images/snow.atlas");
         snow = new Snow[STAR_COUNT];
 
         for (int i = 0; i <snow.length ; i++) {
             Vector2 v = new Vector2();
             v.set(Rnd.nextFloat(-0.18f,-0.36f),Rnd.nextFloat(-0.5f,-0.001f));
-            snow[i]= new Snow(textureAtlas,v);
+            snow[i]= new Snow(snowAtlas,v);
         }
         btAtlas = new TextureAtlas("buttons/buttons.atlas");
         buttonExit = new ButtonExit(btAtlas);
@@ -121,8 +127,8 @@ public class MenuScreen extends Base2DScreen {
 
     @Override
     public void dispose() {
-//        bg.dispose();
-        textureAtlas.dispose(); //star
+        backgroundAtlas.dispose();
+        snowAtlas.dispose(); //star
         btAtlas.dispose();
         menuMusic.dispose();
         super.dispose();
