@@ -14,7 +14,12 @@ import ru.ibelykh.sickdopeskills.screens.MenuScreen;
 
 
 public class Rider extends Sprite {
-
+    private final static int RIGHTMOVINGDARKFRAME = 2;
+    private final static int LEFTMOVINGDARKFRAME = 0;
+    private final static int RIGHTMOVINGBLONDFRAME = 3;
+    private final static int LEFTMOVINGDBLONDFRAME = 1;
+    private static float proportion = 0.1f;
+    private static final String REGIONNAME = "rider";
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
     private Rect worldBounds;
@@ -22,29 +27,31 @@ public class Rider extends Sprite {
     private Vector2 lastVelocity= new Vector2(0,velocityY);
     private  int rightHandedFrame;
     private int leftHandedFrame;
-    private Vector2 speed=new Vector2();
+
+    private Vector2 speed;
     private Rectangle board;
-    private static float proportion = 0.1f;
+
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
-        super(atlas.findRegion("rider"), 4, 1, 4);
-
-        if (MenuScreen.getBtnGetRider().getFrame()==0){
-            System.out.println("00000");
-            this.rightHandedFrame=3;
-
-            this.leftHandedFrame=1;
-        }else if (MenuScreen.getBtnGetRider().getFrame()==1) {
-            System.out.println("111111");
-            this.rightHandedFrame=2;
-
-            this.leftHandedFrame=0;
-        }
+        super(atlas.findRegion(REGIONNAME), 4, 1, 4);
+        speed=new Vector2();
+        framer(MenuScreen.getBtnGetRider().getFrame());
         frame = rightHandedFrame;
+
         setHeightProportion(proportion);
         this.worldBounds = worldBounds;
         board = new Rectangle();
 
+    }
+
+    private void framer(int frame){
+        if (frame==0){
+            this.rightHandedFrame=RIGHTMOVINGBLONDFRAME;
+            this.leftHandedFrame=LEFTMOVINGDBLONDFRAME;
+        }else if (frame==1) {
+            this.rightHandedFrame=RIGHTMOVINGDARKFRAME;
+            this.leftHandedFrame=LEFTMOVINGDARKFRAME;
+        }
     }
 
     @Override
