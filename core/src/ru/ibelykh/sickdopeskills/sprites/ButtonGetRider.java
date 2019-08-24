@@ -22,7 +22,6 @@ public class ButtonGetRider extends ScaledButton {
     public void actionPerformed() {
         if (frame==0){
             setFrame(1);
-
         } else {
             setFrame(0);
         }
@@ -34,7 +33,6 @@ public class ButtonGetRider extends ScaledButton {
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-
         setBottom(worldBounds.getBottom()+worldBounds.getHalfHeight()-getHalfHeight());
         setRight(worldBounds.getRight()-worldBounds.getHalfWidth());
 
