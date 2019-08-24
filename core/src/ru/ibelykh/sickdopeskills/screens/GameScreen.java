@@ -18,6 +18,7 @@ import java.util.List;
 
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
+import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -53,7 +54,7 @@ public class GameScreen extends Base2DScreen {
     private FlagPool flagPool;
     private FlagEmitter flagEmitter;
 
-    private Music music;
+    private static Music music;
     private Sound soundCheck;
 
     private SpriteBatch spriteBatch;
@@ -93,6 +94,8 @@ public class GameScreen extends Base2DScreen {
 
     private float windDirectionX;
     private float windDirectionY;
+
+    private ButtonGameSoundOffOn buttonGameSoundOffOn;
 
 //	private Splash[] splash;
 
@@ -160,6 +163,10 @@ public class GameScreen extends Base2DScreen {
         font.setColor(Color.DARK_GRAY);
         flagList = flagPool.getActiveObjects();
         treeList = treePool.getActiveObjects();
+
+        TextureAtlas buttonsAtlas = new TextureAtlas("images/buttons/soundBtn.atlas");
+        buttonGameSoundOffOn = new ButtonGameSoundOffOn(buttonsAtlas);
+
     }
 
     @Override
@@ -207,6 +214,7 @@ public class GameScreen extends Base2DScreen {
         youCool.update(delta);
         shouting.update(delta);
         checkCollisions(delta);
+
     }
 
     private void draw() {
@@ -231,6 +239,7 @@ public class GameScreen extends Base2DScreen {
         for (int i = 0; i < snow.length; i++) {
             snow[i].draw(batch);
         }
+        buttonGameSoundOffOn.draw(batch);
         printInfo();
         batch.end();
 
@@ -287,6 +296,7 @@ public class GameScreen extends Base2DScreen {
         for (int i = 0; i < splash.length; i++) {
             splash[i].resize(worldBounds);
         }
+        buttonGameSoundOffOn.resize(worldBounds);
     }
 
 
@@ -320,19 +330,27 @@ public class GameScreen extends Base2DScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        countClicks++;
+
 //        System.out.println("back "+rider.getBoardBack()+ " bottom "+rider.getBoardBottom()+ " top "+rider.getBoardTop()+ " nose "+ rider.getBoardNose());
-        if (countClicks == 1) {
-            startNewGame();
+
+        if(!buttonGameSoundOffOn.isMe(touch)) {
+            countClicks++;
+            if (countClicks == 1) {
+                startNewGame();
+            }
+            rider.touchDown(touch, pointer);
         }
-        rider.touchDown(touch, pointer);
+        buttonGameSoundOffOn.touchDown(touch, pointer);
         return super.touchDown(touch, pointer);
     }
 
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        rider.touchUp(touch, pointer);
+        if(!buttonGameSoundOffOn.isMe(touch)) {
+            rider.touchUp(touch, pointer);
+        }
+        buttonGameSoundOffOn.touchUp(touch, pointer);
         return super.touchUp(touch, pointer);
     }
 
@@ -451,6 +469,9 @@ public class GameScreen extends Base2DScreen {
         startGates.setTheNewGame();
     }
 
+    public static Music getMusic() {
+        return music;
+    }
 
     public static boolean getIsPlaying() {
         return isPlaying;
