@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
-
+import ru.ibelykh.sickdopeskills.screens.MenuScreen;
 
 
 public class Rider extends Sprite {
@@ -20,22 +20,37 @@ public class Rider extends Sprite {
     private Rect worldBounds;
     private static float velocityY=0.045f;
     private Vector2 lastVelocity= new Vector2(0,velocityY);
-    private static final int rightHandedFrame = 3;
-    private static final int leftHandedFrame = 1;
+    private  int rightHandedFrame;
+    private int leftHandedFrame;
     private Vector2 speed=new Vector2();
     private Rectangle board;
     private static float proportion = 0.1f;
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion("rider"), 4, 1, 4);
+
+        if (MenuScreen.getBtnGetRider().getFrame()==0){
+            System.out.println("00000");
+            this.rightHandedFrame=3;
+
+            this.leftHandedFrame=1;
+        }else if (MenuScreen.getBtnGetRider().getFrame()==1) {
+            System.out.println("111111");
+            this.rightHandedFrame=2;
+
+            this.leftHandedFrame=0;
+        }
+        frame = rightHandedFrame;
         setHeightProportion(proportion);
         this.worldBounds = worldBounds;
         board = new Rectangle();
+
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+
         speed=v.add(velocity);
         pos.mulAdd(speed,delta);
 
@@ -58,8 +73,8 @@ public class Rider extends Sprite {
 
         }
         if (velocity.y>0f){
-            frame=leftHandedFrame;
-            this.angle=v.y*30;
+            frame = leftHandedFrame;
+            this.angle = v.y*30;
             board.set(getLeft()+getWidth()*0.385f,getBottom()+getHalfWidth()/3.9f,
                     getWidth()/1.7f,getHeight()/3f);
         }
@@ -114,11 +129,4 @@ public class Rider extends Sprite {
 
 
 
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public Vector2 getSpeed() {
-        return speed;
-    }
 }

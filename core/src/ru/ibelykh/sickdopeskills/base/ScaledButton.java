@@ -2,6 +2,7 @@ package ru.ibelykh.sickdopeskills.base;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import ru.ibelykh.sickdopeskills.utils.Regions;
 
 public abstract class ScaledButton extends Sprite {
 
@@ -12,6 +13,11 @@ public abstract class ScaledButton extends Sprite {
     public ScaledButton(TextureRegion region) {
         super(region);
     }
+
+    public ScaledButton(TextureRegion region, int rows, int cols, int frames) {
+        regions = Regions.split(region, rows, cols, frames);
+    }
+
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {

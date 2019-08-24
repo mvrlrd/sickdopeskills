@@ -28,7 +28,8 @@ public class MenuScreen extends Base2DScreen {
     private  TextureAtlas btAtlas;
 
     private TextureAtlas riderAtlas;
-    private ButtonGetRider btnGetBlond;
+    private static ButtonGetRider btnGetRider;
+
 
 
 
@@ -46,8 +47,8 @@ public class MenuScreen extends Base2DScreen {
     public void show() {
         super.show();
 
-        riderAtlas = new TextureAtlas("images/riderButton/blondRiderButton.atlas");
-        btnGetBlond = new ButtonGetRider(riderAtlas);
+        riderAtlas = new TextureAtlas("images/riderButton/btnRider.atlas");
+        btnGetRider = new ButtonGetRider(riderAtlas.findRegion("btnRider"),2,1,2);
 
 
         //BACKGROUND SHOW
@@ -107,7 +108,7 @@ public class MenuScreen extends Base2DScreen {
         buttonExit.draw(batch);
         buttonNewGame.draw(batch);
 
-        btnGetBlond.draw(batch);
+        btnGetRider.draw(batch);
 
 
         batch.end();
@@ -125,7 +126,7 @@ public class MenuScreen extends Base2DScreen {
         background.resize(worldBounds);
         buttonExit.resize(worldBounds);
         buttonNewGame.resize(worldBounds);
-        btnGetBlond.resize(worldBounds);
+        btnGetRider.resize(worldBounds);
     }
 
     @Override
@@ -141,7 +142,7 @@ public class MenuScreen extends Base2DScreen {
     public boolean touchDown(Vector2 touch, int pointer) {
         buttonExit.touchDown(touch,pointer);
         buttonNewGame.touchDown(touch,pointer);
-        btnGetBlond.touchDown(touch, pointer);
+        btnGetRider.touchDown(touch, pointer);
         return super.touchDown(touch, pointer);
     }
 
@@ -149,7 +150,11 @@ public class MenuScreen extends Base2DScreen {
     public boolean touchUp(Vector2 touch, int pointer) {
         buttonExit.touchUp(touch,pointer);
         buttonNewGame.touchUp(touch,pointer);
-        btnGetBlond.touchUp(touch, pointer);
+        btnGetRider.touchUp(touch, pointer);
         return super.touchUp(touch, pointer);
+    }
+
+    public static ButtonGetRider getBtnGetRider() {
+        return btnGetRider;
     }
 }

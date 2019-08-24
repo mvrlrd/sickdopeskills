@@ -112,6 +112,7 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void show() {
         super.show();
+//        System.out.println(MenuScreen.getBtnGetRider().getFrame()+ " frame");
         shapeRenderer = new ShapeRenderer();
         textureAtlas = new TextureAtlas("images/snow.atlas");
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
@@ -320,7 +321,7 @@ public class GameScreen extends Base2DScreen {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         countClicks++;
-        System.out.println("back "+rider.getBoardBack()+ " bottom "+rider.getBoardBottom()+ " top "+rider.getBoardTop()+ " nose "+ rider.getBoardNose());
+//        System.out.println("back "+rider.getBoardBack()+ " bottom "+rider.getBoardBottom()+ " top "+rider.getBoardTop()+ " nose "+ rider.getBoardNose());
         if (countClicks == 1) {
             startNewGame();
         }
