@@ -3,6 +3,7 @@ package ru.ibelykh.sickdopeskills.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -31,10 +32,12 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 public class GameScreen extends Base2DScreen {
 
     private static int points;
+    private int highScore;
+
 
     private static final String POINTS = "pts: ";
     	private static final String DISTANCE = "dst: ";
-//	private static final String LVL = "level: ";
+	private static final String HEIGHPTS = "top: ";
     private  int SNOW_COUNT;
     private static final float FONT_SIZE = 0.05f;
 
@@ -87,7 +90,7 @@ public class GameScreen extends Base2DScreen {
     private Font font;
     private StringBuilder sbFrags = new StringBuilder();
     private StringBuilder sbDist = new StringBuilder();
-    private StringBuilder sbLvl = new StringBuilder();
+    private StringBuilder sbHeighPts = new StringBuilder();
 
     private List<Flag> flagList;
     private List<Tree> treeList;
@@ -95,7 +98,11 @@ public class GameScreen extends Base2DScreen {
     private float windDirectionX;
     private float windDirectionY;
 
+    private TextureAtlas buttonsAtlas;
     private ButtonGameSoundOffOn buttonGameSoundOffOn;
+
+    private Preferences prefs;
+
 
 //	private Splash[] splash;
 
@@ -147,7 +154,7 @@ public class GameScreen extends Base2DScreen {
         flagPool = new FlagPool(worldBounds);
         flagEmitter = new FlagEmitter(worldBounds, flagPool, alenaAtlas);
         spriteBatch = new SpriteBatch();
-        music.play();
+//        music.play();
         music.setLooping(true);
         shapeRenderer.setColor(Color.BLACK);
 //        shoutingAtlas = new TextureAtlas("images/shouting.txt");
@@ -164,14 +171,22 @@ public class GameScreen extends Base2DScreen {
         flagList = flagPool.getActiveObjects();
         treeList = treePool.getActiveObjects();
 
-        TextureAtlas buttonsAtlas = new TextureAtlas("images/buttons/soundBtn.atlas");
+         buttonsAtlas = new TextureAtlas("images/buttons/soundBtn.atlas");
         buttonGameSoundOffOn = new ButtonGameSoundOffOn(buttonsAtlas);
-
+prefs=Gdx.app.getPreferences("high score and sound");
+if (prefs.getBoolean("soundOff")){
+    music.pause();
+} else {
+    music.play();
+}
+        System.out.println(prefs.getBoolean("soundOff")+ "     777777777");
+highScore = prefs.getInteger("pts");
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+
         update(delta);
         deleteAllDestroyed();
         draw();
@@ -206,6 +221,20 @@ public class GameScreen extends Base2DScreen {
             isItNeedToShout = false;
             interval = 0;
         }
+
+        if (points>prefs.getInteger("pts")){
+            prefs.putInteger("pts",points);
+            prefs.flush();
+            highScore=points;
+        }
+        if (music.isPlaying()){
+            prefs.putBoolean("soundOff",false);
+            prefs.flush();
+        } else if(!music.isPlaying()){
+            prefs.putBoolean("soundOff",true);
+            prefs.flush();
+//            System.out.println(prefs.getBoolean("soundOff"));
+        }
         treePool.updateActiveSprites(delta);
         treeEmitter.generateTreesTop(delta);
         treeEmitter.generateTreesBottom(delta);
@@ -214,7 +243,7 @@ public class GameScreen extends Base2DScreen {
         youCool.update(delta);
         shouting.update(delta);
         checkCollisions(delta);
-
+        buttonGameSoundOffOn.update(delta);
     }
 
     private void draw() {
@@ -266,16 +295,23 @@ public class GameScreen extends Base2DScreen {
 
     private void printInfo() {
         sbDist.setLength(0);
-        sbLvl.setLength(0);
+        sbHeighPts.setLength(0);
         sbFrags.setLength(0);
         font.draw(batch,
                 sbFrags.append(POINTS).append(points),
                 worldBounds.getLeft(),
                 worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
-        font.draw(batch,
-                sbDist.append(DISTANCE).append(Math.round(dist)),
-                worldBounds.getLeft(),
-                worldBounds.getBottom() + FONT_SIZE);
+//        font.draw(batch,
+//                sbDist.append(DISTANCE).append(Math.round(dist)),
+//                worldBounds.getLeft(),
+//                worldBounds.getBottom() + FONT_SIZE);
+        if (prefs.getInteger("pts")!=0){
+            font.draw(batch,
+                    sbHeighPts.append(HEIGHPTS).append(highScore),
+                    worldBounds.getLeft(),
+                    worldBounds.getBottom() + FONT_SIZE);
+        }
+
     }
 
     private void deleteAllDestroyed() {
@@ -340,6 +376,7 @@ public class GameScreen extends Base2DScreen {
             }
             rider.touchDown(touch, pointer);
         }
+
         buttonGameSoundOffOn.touchDown(touch, pointer);
         return super.touchDown(touch, pointer);
     }
@@ -496,4 +533,8 @@ public class GameScreen extends Base2DScreen {
     public static void setIsItNeedToShout(boolean isItNeedToShout) {
         GameScreen.isItNeedToShout = isItNeedToShout;
     }
+
+
+
+
 }

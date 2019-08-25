@@ -72,7 +72,7 @@ public class MenuScreen extends Base2DScreen {
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/strange.mp3"));
         menuMusic.setVolume(musicVolume);
         menuMusic.setLooping(true);
-        menuMusic.play();
+//        menuMusic.play();
 
 
     }

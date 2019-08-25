@@ -20,6 +20,7 @@ public class ButtonGameSoundOffOn extends ScaledButton {
             setFrame(1);
             if (!GameScreen.getMusic().isPlaying()) {
                 GameScreen.getMusic().play();
+
             }
         } else {
             setFrame(0);
@@ -36,5 +37,15 @@ public class ButtonGameSoundOffOn extends ScaledButton {
         setBottom(worldBounds.getBottom());
         setRight(worldBounds.getRight()-0.04f);
 
+    }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        if(GameScreen.getMusic().isPlaying()){
+            setFrame(1);
+        }else {
+            setFrame(0);
+        }
     }
 }
