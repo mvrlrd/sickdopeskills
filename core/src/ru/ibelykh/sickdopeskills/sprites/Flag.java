@@ -10,9 +10,10 @@ import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 
 public class Flag extends Sprite {
-    private static float XFLAGSPEED = -0.55f;
+
+  private static float  XFLAGSPEED = -0.55f;
     private static float YFLAGSPEED = 0f;
-    private static Vector2 flagSpeed = new Vector2();
+    private  Vector2 flagSpeed = new Vector2();
 
     private boolean redFlag;
 
@@ -23,8 +24,9 @@ public class Flag extends Sprite {
 
     public Flag( Rect worldBounds) {
         this.worldBounds = worldBounds;
-        flagSpeed.set(XFLAGSPEED,YFLAGSPEED);
+        this.flagSpeed.set(XFLAGSPEED,YFLAGSPEED);
         collisionInvisibleSquare = new Rectangle();
+
     }
 
     public int getShoutFrame() {
@@ -99,6 +101,10 @@ public class Flag extends Sprite {
     public void setDestroyed(boolean _destroyed) {
         super.setDestroyed(_destroyed);
         this.collisionInvisibleSquare.set(worldBounds.getRight(),0f,0f,0f);
+    }
+
+    public void setFlagSpeed(Vector2 flagSpeed) {
+        this.flagSpeed = flagSpeed;
     }
 }
 

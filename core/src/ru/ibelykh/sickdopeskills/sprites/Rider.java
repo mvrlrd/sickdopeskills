@@ -23,10 +23,13 @@ public class Rider extends Sprite {
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
     private Rect worldBounds;
-    private static float velocityY=0.045f;
+    private float velocityY=0.045f;
     private Vector2 lastVelocity= new Vector2(0,velocityY);
     private  int rightHandedFrame;
     private int leftHandedFrame;
+
+    private Vector2 prePauseSpeed = new Vector2();
+    private Vector2 preVelocity = new Vector2();
 
     private Vector2 speed;
     private Rectangle board;
@@ -37,7 +40,6 @@ public class Rider extends Sprite {
         speed=new Vector2();
         framer(MenuScreen.getBtnGetRider().getFrame());
         frame = rightHandedFrame;
-
         setHeightProportion(proportion);
         this.worldBounds = worldBounds;
         board = new Rectangle();
@@ -134,6 +136,20 @@ public class Rider extends Sprite {
         return board.y;
     }
 
+
+    public void pause(){
+prePauseSpeed.set(speed);
+preVelocity.set(velocity);
+
+        speed.set(0f,0f);
+        velocity.set(0f,0f);
+    }
+
+    public void resume(){
+
+        speed.set(prePauseSpeed);
+        velocity.set(preVelocity);
+    }
 
 
 }

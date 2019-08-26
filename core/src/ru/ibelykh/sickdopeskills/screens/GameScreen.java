@@ -20,6 +20,7 @@ import java.util.List;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
+import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -36,7 +37,7 @@ public class GameScreen extends Base2DScreen {
 
 
     private static final String POINTS = "pts: ";
-    	private static final String DISTANCE = "dst: ";
+//    	private static final String DISTANCE = "dst: ";
 	private static final String HEIGHPTS = "top: ";
     private  int SNOW_COUNT;
     private static final float FONT_SIZE = 0.05f;
@@ -51,7 +52,8 @@ public class GameScreen extends Base2DScreen {
     private static Rider rider;
     private TextureAtlas mainAtlas;
 
-    private static boolean isPlaying;
+    public static boolean isPlaying;
+    private static boolean onPause;
     private int countClicks;
 
     private FlagPool flagPool;
@@ -101,6 +103,9 @@ public class GameScreen extends Base2DScreen {
     private TextureAtlas buttonsAtlas;
     private ButtonGameSoundOffOn buttonGameSoundOffOn;
 
+    private ButtonPause buttonPause;
+
+    private TextureAtlas buttonsAtlas2;
     private Preferences prefs;
 
 
@@ -172,7 +177,11 @@ public class GameScreen extends Base2DScreen {
         treeList = treePool.getActiveObjects();
 
          buttonsAtlas = new TextureAtlas("images/buttons/soundBtn.atlas");
+        buttonsAtlas2 = new TextureAtlas("images/buttons/playPause.atlas");
         buttonGameSoundOffOn = new ButtonGameSoundOffOn(buttonsAtlas);
+
+        buttonPause = new ButtonPause(buttonsAtlas2);
+
 prefs=Gdx.app.getPreferences("high score and sound");
 if (prefs.getBoolean("soundOff")){
     music.pause();
@@ -244,6 +253,9 @@ highScore = prefs.getInteger("pts");
         shouting.update(delta);
         checkCollisions(delta);
         buttonGameSoundOffOn.update(delta);
+        buttonPause.update(delta);
+
+
     }
 
     private void draw() {
@@ -269,6 +281,7 @@ highScore = prefs.getInteger("pts");
             snow[i].draw(batch);
         }
         buttonGameSoundOffOn.draw(batch);
+        buttonPause.draw(batch);
         printInfo();
         batch.end();
 
@@ -333,17 +346,26 @@ highScore = prefs.getInteger("pts");
             splash[i].resize(worldBounds);
         }
         buttonGameSoundOffOn.resize(worldBounds);
+        buttonPause.resize(worldBounds);
     }
 
 
     @Override
     public void pause() {
         super.pause();
+
+
+//        for (Flag flag : flagList) {
+//            flag.setFlagSpeed(new Vector2(0f,0f));
+//        }
+
     }
 
     @Override
     public void resume() {
         super.resume();
+
+
     }
 
     @Override
@@ -369,25 +391,34 @@ highScore = prefs.getInteger("pts");
 
 //        System.out.println("back "+rider.getBoardBack()+ " bottom "+rider.getBoardBottom()+ " top "+rider.getBoardTop()+ " nose "+ rider.getBoardNose());
 
-        if(!buttonGameSoundOffOn.isMe(touch)) {
+        if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))) {
             countClicks++;
             if (countClicks == 1) {
                 startNewGame();
             }
             rider.touchDown(touch, pointer);
         }
+        buttonPause.touchDown(touch, pointer);
+
+        if ((buttonPause.getFrame()==1)&&(!buttonPause.isMe(touch))&&(!buttonGameSoundOffOn.isMe(touch))){
+          buttonPause.onPlay();
+        }
+
 
         buttonGameSoundOffOn.touchDown(touch, pointer);
+
         return super.touchDown(touch, pointer);
     }
 
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        if(!buttonGameSoundOffOn.isMe(touch)) {
+        if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))) {
             rider.touchUp(touch, pointer);
         }
+
         buttonGameSoundOffOn.touchUp(touch, pointer);
+        buttonPause.touchUp(touch, pointer);
         return super.touchUp(touch, pointer);
     }
 
@@ -534,7 +565,23 @@ highScore = prefs.getInteger("pts");
         GameScreen.isItNeedToShout = isItNeedToShout;
     }
 
+    public static boolean isIsPlaying() {
+        return isPlaying;
+    }
 
+    public static boolean isOnPause() {
+        return onPause;
+    }
 
+    public static void setOnPause(boolean onPause) {
+        GameScreen.onPause = onPause;
+    }
 
+    public static void setMusic(Boolean status) {
+        if (status) {
+            music.play();
+        }else {
+            music.pause();
+        }
+    }
 }
