@@ -391,14 +391,16 @@ highScore = prefs.getInteger("pts");
 
 //        System.out.println("back "+rider.getBoardBack()+ " bottom "+rider.getBoardBottom()+ " top "+rider.getBoardTop()+ " nose "+ rider.getBoardNose());
 
-        if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))) {
+        if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))&&(!onPause)) {
             countClicks++;
             if (countClicks == 1) {
                 startNewGame();
             }
             rider.touchDown(touch, pointer);
         }
-        buttonPause.touchDown(touch, pointer);
+        if ((onPause)||(isPlaying)) {
+            buttonPause.touchDown(touch, pointer);
+        }
 
         if ((buttonPause.getFrame()==1)&&(!buttonPause.isMe(touch))&&(!buttonGameSoundOffOn.isMe(touch))){
           buttonPause.onPlay();
