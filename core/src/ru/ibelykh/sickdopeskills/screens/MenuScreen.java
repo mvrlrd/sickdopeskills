@@ -47,8 +47,8 @@ public class MenuScreen extends Base2DScreen {
     public void show() {
         super.show();
 
-        riderAtlas = new TextureAtlas("images/riderButton/btnRider.atlas");
-        btnGetRider = new ButtonGetRider(riderAtlas.findRegion("btnRider"),2,1,2);
+        riderAtlas = new TextureAtlas("images/skins/riders.atlas");
+        btnGetRider = new ButtonGetRider(riderAtlas.findRegion("riders"),3,2,6);
 
 
         //BACKGROUND SHOW

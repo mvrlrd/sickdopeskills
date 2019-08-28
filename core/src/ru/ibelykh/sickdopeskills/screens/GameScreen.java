@@ -108,6 +108,8 @@ public class GameScreen extends Base2DScreen {
     private TextureAtlas buttonsAtlas2;
     private Preferences prefs;
 
+    private TextureAtlas ridersAtlas;
+
 
 //	private Splash[] splash;
 
@@ -134,7 +136,10 @@ public class GameScreen extends Base2DScreen {
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
         worldBounds = getWorldBounds();
         mainAtlas = new TextureAtlas("images/alenaSprites.atlas");
-        rider = new Rider(mainAtlas, worldBounds);
+//        rider = new Rider(mainAtlas, worldBounds);
+
+        ridersAtlas = new TextureAtlas("images/skins/riders.atlas");
+        rider = new Rider(ridersAtlas, worldBounds);
         startGates = new StartGates(mainAtlas, worldBounds);
         //STAR
         SNOW_COUNT = Rnd.nextInt(500, 10000);
@@ -181,6 +186,8 @@ public class GameScreen extends Base2DScreen {
         buttonGameSoundOffOn = new ButtonGameSoundOffOn(buttonsAtlas);
 
         buttonPause = new ButtonPause(buttonsAtlas2);
+
+
 
 prefs=Gdx.app.getPreferences("high score and sound");
 if (prefs.getBoolean("soundOff")){
@@ -315,9 +322,9 @@ highScore = prefs.getInteger("pts");
                 worldBounds.getLeft(),
                 worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
 //        font.draw(batch,
-//                sbDist.append(DISTANCE).append(Math.round(dist)),
+//                sbDist.append(rider.getVelocityY()),
 //                worldBounds.getLeft(),
-//                worldBounds.getBottom() + FONT_SIZE);
+//                worldBounds.getBottom()+0.1f + FONT_SIZE);
         if (prefs.getInteger("pts")!=0){
             font.draw(batch,
                     sbHeighPts.append(HEIGHPTS).append(highScore),

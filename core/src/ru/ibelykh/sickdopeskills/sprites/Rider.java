@@ -14,16 +14,19 @@ import ru.ibelykh.sickdopeskills.screens.MenuScreen;
 
 
 public class Rider extends Sprite {
-    private final static int RIGHTMOVINGDARKFRAME = 2;
-    private final static int LEFTMOVINGDARKFRAME = 0;
-    private final static int RIGHTMOVINGBLONDFRAME = 3;
-    private final static int LEFTMOVINGDBLONDFRAME = 1;
+    private final static int RIGHT_FRAME_RUS = 2;
+    private final static int LEFT_FRAME_RUS = 3;
+    private final static int RIGHT_FRAME_DARK = 0;
+    private final static int LEFT_FRAME_DARK = 1;
+    private final static int RIGHT_FRAME_GRAY = 4;
+    private final static int LEFT_FRAME_GRAY = 5;
+
     private static float proportion = 0.1f;
-    private static final String REGIONNAME = "rider";
+    private static final String REGIONNAME = "riders";
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
     private Rect worldBounds;
-    private float velocityY=0.045f;
+    private float velocityY=0.06f;   //было 0.045f
     private Vector2 lastVelocity= new Vector2(0,velocityY);
     private  int rightHandedFrame;
     private int leftHandedFrame;
@@ -36,7 +39,7 @@ public class Rider extends Sprite {
 
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
-        super(atlas.findRegion(REGIONNAME), 4, 1, 4);
+        super(atlas.findRegion(REGIONNAME), 3, 2, 6);
         speed=new Vector2();
         framer(MenuScreen.getBtnGetRider().getFrame());
         frame = rightHandedFrame;
@@ -47,12 +50,16 @@ public class Rider extends Sprite {
     }
 
     private void framer(int frame){
-        if (frame==0){
-            this.rightHandedFrame=RIGHTMOVINGBLONDFRAME;
-            this.leftHandedFrame=LEFTMOVINGDBLONDFRAME;
-        }else if (frame==1) {
-            this.rightHandedFrame=RIGHTMOVINGDARKFRAME;
-            this.leftHandedFrame=LEFTMOVINGDARKFRAME;
+        if (frame==2){
+            this.rightHandedFrame=RIGHT_FRAME_RUS;
+            this.leftHandedFrame=LEFT_FRAME_RUS;
+        }else if (frame==0) {
+            this.rightHandedFrame=RIGHT_FRAME_DARK;
+            this.leftHandedFrame=LEFT_FRAME_DARK;
+        }
+        else if (frame==4) {
+            this.rightHandedFrame=RIGHT_FRAME_GRAY;
+            this.leftHandedFrame=LEFT_FRAME_GRAY;
         }
     }
 
@@ -151,5 +158,7 @@ preVelocity.set(velocity);
         velocity.set(preVelocity);
     }
 
-
+    public float getVelocityY() {
+        return velocityY;
+    }
 }

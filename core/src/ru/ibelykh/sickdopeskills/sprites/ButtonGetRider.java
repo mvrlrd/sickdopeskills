@@ -21,8 +21,10 @@ public class ButtonGetRider extends ScaledButton {
     @Override
     public void actionPerformed() {
         if (frame==0){
-            setFrame(1);
-        } else {
+            setFrame(2);
+        } else if (frame==2){
+            setFrame(4);
+        }else if(frame==4){
             setFrame(0);
         }
     }
