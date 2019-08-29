@@ -13,13 +13,11 @@ public class Tree extends Sprite{
     private static Vector2 treeSpeed = new Vector2(XSPEED,YSPEED);
     private static Vector2 stopSpeed = new Vector2(YSPEED,YSPEED);
 
-    private Rider rider;
     private Rect worldBounds;
 
     private Rectangle collisionInvisibleSquare;
 
-    public Tree(Rider rider, Rect worldBounds) {
-        this.rider = rider;
+    public Tree(Rect worldBounds) {
         this.worldBounds = worldBounds;
         collisionInvisibleSquare = new Rectangle();
     }

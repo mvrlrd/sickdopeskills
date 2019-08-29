@@ -1,7 +1,6 @@
 package ru.ibelykh.sickdopeskills.buttons;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.ibelykh.sickdopeskills.base.ScaledButton;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
@@ -10,8 +9,8 @@ public class ButtonPause extends ScaledButton {
 boolean musicStatus;
 
     public ButtonPause(TextureAtlas atlas) {
-        super(atlas.findRegion("playPause"),2,1,2);
-        setHeightProportion(0.15f);
+        super(atlas.findRegion("stopPlay"),2,1,2);
+        setHeightProportion(0.08f);
         setFrame(0);
     }
 

@@ -1,6 +1,7 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.base.Sprite;
@@ -11,17 +12,23 @@ public class StartGates extends Sprite {
     private Rect worldBounds;
     private Vector2 speed=new Vector2(-0.0f,0f);
     private static final float proportion = 0.2f;
-    private static final String REGION = "start";
+    private static final String REGION = "startGates";
     private static final Vector2 SPEED = new Vector2(-0.45f, 0.0f);
 
 
     public StartGates(TextureAtlas atlas, Rect worldBounds) {
-        super(atlas.findRegion(REGION), 1, 1, 1);
+        super(atlas.findRegion(REGION));
         setHeightProportion(proportion);
         this.setAngle(90f);
         this.worldBounds = worldBounds;
-//        this.pos.set(worldBounds.getLeft()+0.1f,0f);
     }
+
+//    public StartGates(TextureRegion region, Rect worldBounds) {
+//        super(region);
+//        this.worldBounds = worldBounds;
+//        setHeightProportion(proportion);
+//        setAngle(90f);
+//    }
 
     @Override
     public void update(float delta) {

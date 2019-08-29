@@ -9,8 +9,8 @@ import ru.ibelykh.sickdopeskills.screens.GameScreen;
 public class ButtonGameSoundOffOn extends ScaledButton {
 
     public ButtonGameSoundOffOn(TextureAtlas atlas) {
-        super(atlas.findRegion("buttonSound"),2,1,2);
-        setHeightProportion(0.15f);
+        super(atlas.findRegion("sound"),1,2,2);
+        setHeightProportion(0.08f);
         setFrame(1);
     }
 

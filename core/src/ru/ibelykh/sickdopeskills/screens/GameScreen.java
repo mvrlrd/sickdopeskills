@@ -36,6 +36,8 @@ public class GameScreen extends Base2DScreen {
     private int highScore;
 
 
+    private TextureAtlas allSprites;
+
     private static final String POINTS = "pts: ";
 //    	private static final String DISTANCE = "dst: ";
 	private static final String HEIGHPTS = "top: ";
@@ -129,28 +131,32 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void show() {
         super.show();
-//        System.out.println(MenuScreen.getBtnGetRider().getFrame()+ " frame");
+
+        allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
+        startGates = new StartGates(allSprites, worldBounds);
+        rider = new Rider(allSprites, worldBounds);
+
+        treePool = new TreePool( worldBounds);
+        treeEmitter = new TreeEmitter(worldBounds, treePool, allSprites);
+
         shapeRenderer = new ShapeRenderer();
-        textureAtlas = new TextureAtlas("images/snow.atlas");
+//        textureAtlas = new TextureAtlas("images/snow.atlas");
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
         worldBounds = getWorldBounds();
-        mainAtlas = new TextureAtlas("images/alenaSprites.atlas");
-//        rider = new Rider(mainAtlas, worldBounds);
 
-        ridersAtlas = new TextureAtlas("images/skins/riders.atlas");
-        rider = new Rider(ridersAtlas, worldBounds);
-        startGates = new StartGates(mainAtlas, worldBounds);
+
+
+
+
+
         //STAR
         SNOW_COUNT = Rnd.nextInt(500, 10000);
         snow = new Snow[SNOW_COUNT];
         splash = new Splash[20];
         for (int i = 0; i < splash.length; i++) {
-            splash[i] = new Splash(textureAtlas);
-//if (dist<10f){
-//    splash[i].setHeightProportion(Rnd.nextFloat(0.001f,0.005f));
-//
-//}
+            splash[i] = new Splash(allSprites);
+
         }
         windDirectionX = Rnd.nextFloat(-0.7f, 0.7f);
         windDirectionY = Rnd.nextFloat(-0.7f, 0.7f);
@@ -158,7 +164,7 @@ public class GameScreen extends Base2DScreen {
         for (int i = 0; i < snow.length; i++) {
             Vector2 v = new Vector2();
             v.set(Rnd.nextFloat(windDirectionX - 0.1f, windDirectionX + 0.1f), Rnd.nextFloat(windDirectionY - 0.1f, windDirectionY + 0.1f));
-            snow[i] = new Snow(textureAtlas, v);
+            snow[i] = new Snow(allSprites, v);
         }
         alenaAtlas = new TextureAtlas("images/alena.atlas");
         flagPool = new FlagPool(worldBounds);
@@ -167,13 +173,11 @@ public class GameScreen extends Base2DScreen {
 //        music.play();
         music.setLooping(true);
         shapeRenderer.setColor(Color.BLACK);
-//        shoutingAtlas = new TextureAtlas("images/shouting.txt");
-        shoutingAtlas = new TextureAtlas("images/labels.atlas");
 
-        shouting = new Shouting(shoutingAtlas, worldBounds);
-        treeAtlas = new TextureAtlas("images/forest.atlas");
-        treePool = new TreePool(rider, worldBounds);
-        treeEmitter = new TreeEmitter(worldBounds, treePool, treeAtlas);
+
+        shouting = new Shouting(allSprites, worldBounds);
+
+
         youCool = new YouCool(alenaAtlas, worldBounds);
         font = new Font("font/font.fnt", "font/font.png");
         font.setFontSize(FONT_SIZE);
@@ -181,11 +185,9 @@ public class GameScreen extends Base2DScreen {
         flagList = flagPool.getActiveObjects();
         treeList = treePool.getActiveObjects();
 
-         buttonsAtlas = new TextureAtlas("images/buttons/soundBtn.atlas");
-        buttonsAtlas2 = new TextureAtlas("images/buttons/playPause.atlas");
-        buttonGameSoundOffOn = new ButtonGameSoundOffOn(buttonsAtlas);
+        buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites);
 
-        buttonPause = new ButtonPause(buttonsAtlas2);
+        buttonPause = new ButtonPause(allSprites);
 
 
 
