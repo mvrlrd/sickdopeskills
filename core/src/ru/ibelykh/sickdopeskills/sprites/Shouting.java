@@ -23,7 +23,7 @@ public class Shouting extends Sprite {
 
     public Shouting(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion("labels"), 2, 2, 4);
-        setHeightProportion(0.15f);
+        setHeightProportion(0.2f);
         this.worldBounds = worldBounds;
     }
 

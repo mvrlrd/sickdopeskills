@@ -44,7 +44,6 @@ public class GameScreen extends Base2DScreen {
     private  int SNOW_COUNT;
     private static final float FONT_SIZE = 0.05f;
 
-    private TextureAtlas textureAtlas;
     private Snow[] snow;
 
     private int countFlagMisses=0;
@@ -52,7 +51,7 @@ public class GameScreen extends Base2DScreen {
     private boolean isAllRight;
 
     private static Rider rider;
-    private TextureAtlas mainAtlas;
+
 
     public static boolean isPlaying;
     private static boolean onPause;
@@ -70,7 +69,7 @@ public class GameScreen extends Base2DScreen {
 
     private Splash[] splash;
 
-    private TextureAtlas shoutingAtlas;
+
     private Shouting shouting;
     private static boolean isItNeedToShout;
     private float interval = 0f;
@@ -80,7 +79,7 @@ public class GameScreen extends Base2DScreen {
 
     private TreePool treePool;
     private TreeEmitter treeEmitter;
-    private TextureAtlas treeAtlas;
+
 
     private YouCool youCool;
     private int coolMoments;
@@ -102,18 +101,15 @@ public class GameScreen extends Base2DScreen {
     private float windDirectionX;
     private float windDirectionY;
 
-    private TextureAtlas buttonsAtlas;
+
     private ButtonGameSoundOffOn buttonGameSoundOffOn;
 
     private ButtonPause buttonPause;
 
-    private TextureAtlas buttonsAtlas2;
+
     private Preferences prefs;
 
-    private TextureAtlas ridersAtlas;
 
-
-//	private Splash[] splash;
 
     public GameScreen(Game game) {
         super(game);
@@ -385,12 +381,11 @@ highScore = prefs.getInteger("pts");
     @Override
     public void dispose() {
         super.dispose();
-        treeAtlas.dispose();
-        mainAtlas.dispose();
+
         flagPool.dispose();
         soundCheck.dispose();
         music.dispose();
-        textureAtlas.dispose();
+        allSprites.dispose();
         alenaAtlas.dispose();
 
     }
@@ -437,7 +432,7 @@ highScore = prefs.getInteger("pts");
 
         for (Flag flag : flagList) {
             if ((isAccident(flag))) {
-                shouting.setFrame(0);
+                shouting.setFrame(1);
                 gameOver();
                 flag.setDestroyed(true);
 
@@ -459,7 +454,7 @@ highScore = prefs.getInteger("pts");
         }
         for (Tree tree : treeList) {
             if ((isAccident(tree))) {
-                shouting.setFrame(0);
+                shouting.setFrame(1);
                 gameOver();
             }
         }
@@ -467,11 +462,11 @@ highScore = prefs.getInteger("pts");
 
     private void setShoutFrame(boolean isEverythingOk,Flag flag){
         if (isEverythingOk) {
-            int[] frames = {1,2};
+            int[] frames = {0,2};
             shouting.setFrame(frames[flag.getShoutFrame()]);
         }
         else {
-            shouting.setFrame(0);
+            shouting.setFrame(1);
         }
         shouting.setSick(true);
     }
