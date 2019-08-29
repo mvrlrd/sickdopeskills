@@ -46,6 +46,8 @@ public class GameScreen extends Base2DScreen {
 
 
     public static boolean isPlaying;
+    public static boolean isGameOver;
+
     private static boolean onPause;
     private int countClicks;
 
@@ -159,6 +161,7 @@ public class GameScreen extends Base2DScreen {
         font = new Font("font/font.fnt", "font/font.png");
         font.setFontSize(FONT_SIZE);
         font.setColor(Color.DARK_GRAY);
+
         flagList = flagPool.getActiveObjects();
         treeList = treePool.getActiveObjects();
 
@@ -289,19 +292,24 @@ highScore = prefs.getInteger("pts");
         sbDist.setLength(0);
         sbHeighPts.setLength(0);
         sbFrags.setLength(0);
+
         font.draw(batch,
-                sbFrags.append(POINTS).append(points),
-                worldBounds.getLeft(),
-                worldBounds.getTop());     // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
+                sbFrags.append(points),
+                0f,
+                0f,55);
+
+        // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
 //        font.draw(batch,
 //                sbDist.append(rider.getVelocityY()),
 //                worldBounds.getLeft(),
 //                worldBounds.getBottom()+0.1f + FONT_SIZE);
-        if (prefs.getInteger("pts")!=0){
-            font.draw(batch,
-                    sbHeighPts.append(HEIGHPTS).append(highScore),
-                    worldBounds.getLeft(),
-                    worldBounds.getBottom() + FONT_SIZE);
+        if (isGameOver) {
+            if (prefs.getInteger("pts") != 0) {
+                font.draw(batch,
+                        sbHeighPts.append(HEIGHPTS).append(highScore),
+                        worldBounds.getLeft(),
+                        worldBounds.getBottom() + FONT_SIZE);
+            }
         }
 
     }
@@ -480,7 +488,7 @@ highScore = prefs.getInteger("pts");
     }
 
     private void gameOver() {
-
+isGameOver=true;
         countClicks = 0;
 //        isItNeedToShout = true;
 
@@ -491,7 +499,7 @@ highScore = prefs.getInteger("pts");
     }
 
     private void startNewGame() {
-
+isGameOver=false;
         for (Flag flag : flagList) {
             flag.setDestroyed(true);
         }
