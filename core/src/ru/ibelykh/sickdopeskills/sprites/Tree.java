@@ -12,9 +12,7 @@ public class Tree extends Sprite{
     private static final float YSPEED = 0f;
     private static Vector2 treeSpeed = new Vector2(XSPEED,YSPEED);
     private static Vector2 stopSpeed = new Vector2(YSPEED,YSPEED);
-
     private Rect worldBounds;
-
     private Rectangle collisionInvisibleSquare;
 
     public Tree(Rect worldBounds) {

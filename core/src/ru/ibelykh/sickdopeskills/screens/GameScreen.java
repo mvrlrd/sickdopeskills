@@ -41,14 +41,10 @@ public class GameScreen extends Base2DScreen {
     private static final String POINTS = "pts: ";
 //    	private static final String DISTANCE = "dst: ";
 	private static final String HEIGHPTS = "top: ";
-    private  int SNOW_COUNT;
     private static final float FONT_SIZE = 0.05f;
 
     private Snow[] snow;
 
-    private int countFlagMisses=0;
-    private boolean state;
-    private boolean isAllRight;
 
     private static Rider rider;
 
@@ -75,20 +71,16 @@ public class GameScreen extends Base2DScreen {
     private float interval = 0f;
 
    private float dist = 0f;
-    int a;
 
     private TreePool treePool;
     private TreeEmitter treeEmitter;
 
 
     private YouCool youCool;
-    private int coolMoments;
 
-    private TextureAtlas alenaAtlas;
 
     private StartGates startGates;
 
-    private int frags;
 
     private Font font;
     private StringBuilder sbFrags = new StringBuilder();
@@ -116,9 +108,7 @@ public class GameScreen extends Base2DScreen {
 
     }
 
-    public float getDist() {
-        return dist;
-    }
+
 
     public static Rider getRider() {
         return rider;
@@ -136,7 +126,6 @@ public class GameScreen extends Base2DScreen {
         treeEmitter = new TreeEmitter(worldBounds, treePool, allSprites);
 
         shapeRenderer = new ShapeRenderer();
-//        textureAtlas = new TextureAtlas("images/snow.atlas");
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
         worldBounds = getWorldBounds();
@@ -147,12 +136,11 @@ public class GameScreen extends Base2DScreen {
 
 
         //STAR
-        SNOW_COUNT = Rnd.nextInt(500, 10000);
+        int SNOW_COUNT = Rnd.nextInt(500, 10000);
         snow = new Snow[SNOW_COUNT];
         splash = new Splash[20];
         for (int i = 0; i < splash.length; i++) {
             splash[i] = new Splash(allSprites);
-
         }
         windDirectionX = Rnd.nextFloat(-0.7f, 0.7f);
         windDirectionY = Rnd.nextFloat(-0.7f, 0.7f);
@@ -162,19 +150,16 @@ public class GameScreen extends Base2DScreen {
             v.set(Rnd.nextFloat(windDirectionX - 0.1f, windDirectionX + 0.1f), Rnd.nextFloat(windDirectionY - 0.1f, windDirectionY + 0.1f));
             snow[i] = new Snow(allSprites, v);
         }
-        alenaAtlas = new TextureAtlas("images/alena.atlas");
         flagPool = new FlagPool(worldBounds);
-        flagEmitter = new FlagEmitter(worldBounds, flagPool, alenaAtlas);
+        flagEmitter = new FlagEmitter(worldBounds, flagPool, allSprites);
         spriteBatch = new SpriteBatch();
-//        music.play();
         music.setLooping(true);
         shapeRenderer.setColor(Color.BLACK);
 
-
         shouting = new Shouting(allSprites, worldBounds);
 
+        youCool = new YouCool(allSprites, worldBounds);
 
-        youCool = new YouCool(alenaAtlas, worldBounds);
         font = new Font("font/font.fnt", "font/font.png");
         font.setFontSize(FONT_SIZE);
         font.setColor(Color.DARK_GRAY);
@@ -193,7 +178,6 @@ if (prefs.getBoolean("soundOff")){
 } else {
     music.play();
 }
-        System.out.println(prefs.getBoolean("soundOff")+ "     777777777");
 highScore = prefs.getInteger("pts");
     }
 
@@ -212,10 +196,6 @@ highScore = prefs.getInteger("pts");
         if (isPlaying) {
             dist += 0.1f;
         }
-
-//        if (!isPlaying) {
-//            dist = 0;
-//        }
         rider.update(delta);
         for (int i = 0; i < snow.length; i++) {
             snow[i].update(delta);
@@ -224,10 +204,7 @@ highScore = prefs.getInteger("pts");
             splash[i].update(delta);
         }
         startGates.update(delta);
-//		for (int i = 0; i <splash.length ; i++) {
-////			splash[i].update(delta, dogHouse1.getBoardLeft(), Rnd.nextFloat(dogHouse1.getBoardBottom(),
-////					dogHouse1.getBoardTop()),dogHouse1.getState());
-//		}
+
         if (((shouting.getFrame() == 0) || (shouting.getFrame() == 2)) && (isItNeedToShout)) {
             interval += delta;
         }
@@ -247,7 +224,6 @@ highScore = prefs.getInteger("pts");
         } else if(!music.isPlaying()){
             prefs.putBoolean("soundOff",true);
             prefs.flush();
-//            System.out.println(prefs.getBoolean("soundOff"));
         }
         treePool.updateActiveSprites(delta);
         treeEmitter.generateTreesTop(delta);
@@ -255,8 +231,9 @@ highScore = prefs.getInteger("pts");
         flagPool.updateActiveSprites(delta);
         flagEmitter.generateFlags(delta);
         youCool.update(delta);
+
         shouting.update(delta);
-        checkCollisions(delta);
+        checkCollisions();
         buttonGameSoundOffOn.update(delta);
         buttonPause.update(delta);
 
@@ -279,7 +256,8 @@ highScore = prefs.getInteger("pts");
             youCool.draw(batch);
         }
         startGates.draw(batch);
-        if (isItNeedToShout) {
+        if ((isItNeedToShout)){
+
             shouting.draw(batch);
         }
         for (int i = 0; i < snow.length; i++) {
@@ -360,10 +338,6 @@ highScore = prefs.getInteger("pts");
         super.pause();
 
 
-//        for (Flag flag : flagList) {
-//            flag.setFlagSpeed(new Vector2(0f,0f));
-//        }
-
     }
 
     @Override
@@ -386,14 +360,11 @@ highScore = prefs.getInteger("pts");
         soundCheck.dispose();
         music.dispose();
         allSprites.dispose();
-        alenaAtlas.dispose();
 
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-
-//        System.out.println("back "+rider.getBoardBack()+ " bottom "+rider.getBoardBottom()+ " top "+rider.getBoardTop()+ " nose "+ rider.getBoardNose());
 
         if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))&&(!onPause)) {
             countClicks++;
@@ -428,11 +399,12 @@ highScore = prefs.getInteger("pts");
         return super.touchUp(touch, pointer);
     }
 
-    private void checkCollisions(float delta) {
+    private void checkCollisions() {
 
         for (Flag flag : flagList) {
             if ((isAccident(flag))) {
                 shouting.setFrame(1);
+                isItNeedToShout=true;
                 gameOver();
                 flag.setDestroyed(true);
 
@@ -441,9 +413,9 @@ highScore = prefs.getInteger("pts");
                 shouting.setFrame(3);
                 shouting.setSick(true);
                 flag.setDestroyed(true);
+                isItNeedToShout=true;
                 gameOver();
 
-//                isItNeedToShout = true;
             }
             if (isOnRightWay(flag)) {
                 setShoutFrame(true, flag);
@@ -455,6 +427,7 @@ highScore = prefs.getInteger("pts");
         for (Tree tree : treeList) {
             if ((isAccident(tree))) {
                 shouting.setFrame(1);
+//                isItNeedToShout=true;
                 gameOver();
             }
         }
@@ -513,9 +486,8 @@ highScore = prefs.getInteger("pts");
     private void gameOver() {
 
         countClicks = 0;
-//        shouting.setFrame(3);
-        isItNeedToShout = true;
-        rider.isDestroyed();
+//        isItNeedToShout = true;
+
         music.setVolume(0.3f);
         setIsPlaying(false);
 
@@ -563,17 +535,11 @@ highScore = prefs.getInteger("pts");
         return points;
     }
 
-    public static boolean isItNeedToShout() {
-        return isItNeedToShout;
-    }
 
     public static void setIsItNeedToShout(boolean isItNeedToShout) {
         GameScreen.isItNeedToShout = isItNeedToShout;
     }
 
-    public static boolean isIsPlaying() {
-        return isPlaying;
-    }
 
     public static boolean isOnPause() {
         return onPause;

@@ -17,7 +17,7 @@ public class YouCool extends Sprite {
 
 
     public YouCool(TextureAtlas atlas, Rect worldBounds) {
-        super(atlas.findRegion("youCool"), 1, 1, 1);
+        super(atlas.findRegion("youCool"));
         setHeightProportion(0.5f);
         this.worldBounds = worldBounds;
 

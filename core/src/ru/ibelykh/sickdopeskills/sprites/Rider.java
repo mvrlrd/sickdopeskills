@@ -1,13 +1,9 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.screens.MenuScreen;
@@ -20,19 +16,18 @@ public class Rider extends Sprite {
     private final static int LEFT_FRAME_DARK = 1;
     private final static int RIGHT_FRAME_GRAY = 4;
     private final static int LEFT_FRAME_GRAY = 5;
-
-    private static float proportion = 0.1f;
     private static final String REGIONNAME = "riders";
+    private Rect worldBounds;
+
     private Vector2 v = new Vector2();
     private Vector2 velocity = new Vector2();
-    private Rect worldBounds;
     private float velocityY=0.045f;   //было    0.06f
     private Vector2 lastVelocity= new Vector2(0,velocityY);
     private  int rightHandedFrame;
     private int leftHandedFrame;
 
-    private Vector2 prePauseSpeed = new Vector2();
-    private Vector2 preVelocity = new Vector2();
+    private Vector2 prePauseSpeed;
+    private Vector2 preVelocity;
 
     private Vector2 speed;
     private Rectangle board;
@@ -43,9 +38,14 @@ public class Rider extends Sprite {
         speed=new Vector2();
         framer(MenuScreen.getBtnGetRider().getFrame());
         frame = rightHandedFrame;
+        float proportion = 0.1f;
         setHeightProportion(proportion);
         this.worldBounds = worldBounds;
         board = new Rectangle();
+
+        prePauseSpeed = new Vector2();
+        preVelocity = new Vector2();
+
 
     }
 
@@ -53,7 +53,8 @@ public class Rider extends Sprite {
         if (frame==2){
             this.rightHandedFrame=RIGHT_FRAME_RUS;
             this.leftHandedFrame=LEFT_FRAME_RUS;
-        }else if (frame==0) {
+        }
+        else if (frame==0) {
             this.rightHandedFrame=RIGHT_FRAME_DARK;
             this.leftHandedFrame=LEFT_FRAME_DARK;
         }
@@ -111,8 +112,7 @@ public class Rider extends Sprite {
 
     @Override
     public boolean isDestroyed() {
-        super.isDestroyed();
-        return true;
+       return super.isDestroyed();
     }
 
     public void setTheNewGame(){
@@ -147,18 +147,13 @@ public class Rider extends Sprite {
     public void pause(){
 prePauseSpeed.set(speed);
 preVelocity.set(velocity);
-
         speed.set(0f,0f);
         velocity.set(0f,0f);
     }
 
     public void resume(){
-
         speed.set(prePauseSpeed);
         velocity.set(preVelocity);
     }
 
-    public float getVelocityY() {
-        return velocityY;
-    }
 }

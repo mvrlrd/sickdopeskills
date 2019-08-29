@@ -1,5 +1,6 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
+
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -8,25 +9,19 @@ import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
-
 public class Flag extends Sprite {
-
-  private static float  XFLAGSPEED = -0.55f;
-    private static float YFLAGSPEED = 0f;
-    private  Vector2 flagSpeed = new Vector2();
-
-    private boolean redFlag;
-
+    private int shoutFrame;
+    private Vector2 flagSpeed;
     private Rectangle collisionInvisibleSquare;  //An area on a flag which makes crushing with alike rider's area
     private Rect worldBounds;
-    private int shoutFrame;
 
 
-    public Flag( Rect worldBounds) {
+
+    public Flag (Rect worldBounds) {
         this.worldBounds = worldBounds;
-        this.flagSpeed.set(XFLAGSPEED,YFLAGSPEED);
-        collisionInvisibleSquare = new Rectangle();
-
+        float X_FLAG_SPEED = -0.55f;
+        this.flagSpeed = new Vector2(X_FLAG_SPEED,0f);
+        this.collisionInvisibleSquare = new Rectangle();
     }
 
     public int getShoutFrame() {
@@ -49,11 +44,11 @@ public class Flag extends Sprite {
                 Shouting.framer(Rnd.nextInt(0, 4));  //there are just 3 types of shouting frames ("sick","dope","whoa");
             }
             if (!isDestroyed()) {
-                if ((redFlag)) {
+                if (isItRed()) {
                     collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
                             getWidth() / 4.6f, getHeight());
                 }
-                if ((!redFlag)) {
+                if ((!isItRed())) {
                     collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
                             getWidth() / 4.6f, getHeight());
                 }
@@ -84,27 +79,26 @@ public class Flag extends Sprite {
 
     }
 
-    public void set(TextureRegion[]_regions, float _height){
-        this.regions = _regions;
-        setHeightProportion(_height);
+    public void set(
+            TextureRegion[]regions,
+            float height
+    ){
+        this.regions = regions;
+        setHeightProportion(height);
     }
 
-    public void setItRed(boolean _redFlag) {
-        redFlag = _redFlag;
-    }
+
 
     public boolean isItRed() {
-        return redFlag;
+        return (this.getFrame()==1);
     }
+
 
     @Override
     public void setDestroyed(boolean _destroyed) {
         super.setDestroyed(_destroyed);
-        this.collisionInvisibleSquare.set(worldBounds.getRight(),0f,0f,0f);
+//        this.collisionInvisibleSquare.set(worldBounds.getRight(),0f,0f,0f);
     }
 
-    public void setFlagSpeed(Vector2 flagSpeed) {
-        this.flagSpeed = flagSpeed;
-    }
 }
 
