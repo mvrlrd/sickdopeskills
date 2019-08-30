@@ -28,173 +28,129 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 
 public class GameScreen extends Base2DScreen {
 
-    private static int points;
-    private int highScore;
-
-
-    private TextureAtlas allSprites;
-
-    private static final String POINTS = "pts: ";
-//    	private static final String DISTANCE = "dst: ";
-	private static final String HEIGHPTS = "top: ";
+    private static final String HEIGHPTS = "top: ";
     private static final float FONT_SIZE = 0.05f;
-
-    private Snow[] snow;
-
-
-    private static Rider rider;
-
 
     public static boolean isPlaying;
     public static boolean isGameOver;
-
     private static boolean onPause;
-    private int countClicks;
-
-    private FlagPool flagPool;
-    private FlagEmitter flagEmitter;
-
-    private static Music music;
-    private Sound soundCheck;
-
-    private SpriteBatch spriteBatch;
-
-    private ShapeRenderer shapeRenderer;
-
-    private Splash[] splash;
-
-
-    private Shouting shouting;
     private static boolean isItNeedToShout;
-    private float interval = 0f;
 
-   private float dist = 0f;
+    private static int points;
+    private static int highScore;
+    private static int countClicks;
 
-    private TreePool treePool;
-    private TreeEmitter treeEmitter;
+    private static float interval = 0f;
 
+    private static StringBuilder sbFrags = new StringBuilder();
+    private static StringBuilder sbDist = new StringBuilder();
+    private static StringBuilder sbHeighPts = new StringBuilder();
 
-    private YouCool youCool;
+    private static List<Flag> flagList;
+    private static List<Tree> treeList;
 
+    private TextureAtlas allSprites;
+    private static Font font;
+    private static Music music;
+    private static Sound soundCheck;
 
-    private StartGates startGates;
+    private static Preferences prefs;
+    private static ShapeRenderer shapeRenderer;
 
+    private static FlagPool flagPool;
+    private static FlagEmitter flagEmitter;
+    private static TreePool treePool;
+    private static TreeEmitter treeEmitter;
 
-    private Font font;
-    private StringBuilder sbFrags = new StringBuilder();
-    private StringBuilder sbDist = new StringBuilder();
-    private StringBuilder sbHeighPts = new StringBuilder();
+    private static SpriteBatch spriteBatch;
 
-    private List<Flag> flagList;
-    private List<Tree> treeList;
+    private static Rider rider;
+    private static Shouting shouting;
+    private static YouCool youCool;
+    private static StartGates startGates;
 
-    private float windDirectionX;
-    private float windDirectionY;
+    private static ButtonGameSoundOffOn buttonGameSoundOffOn;
+    private static ButtonPause buttonPause;
 
-
-    private ButtonGameSoundOffOn buttonGameSoundOffOn;
-
-    private ButtonPause buttonPause;
-
-
-    private Preferences prefs;
-
-
+    private static Snow[] snow;
+    private static Splash[] splash;
 
     public GameScreen(Game game) {
         super(game);
-
     }
 
 
-
-    public static Rider getRider() {
-        return rider;
-    }
 
     @Override
     public void show() {
         super.show();
+        spriteBatch = new SpriteBatch();
+        worldBounds = getWorldBounds();
 
         allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
         startGates = new StartGates(allSprites, worldBounds);
         rider = new Rider(allSprites, worldBounds);
+        shouting = new Shouting(allSprites, worldBounds);
+        youCool = new YouCool(allSprites, worldBounds);
 
         treePool = new TreePool( worldBounds);
+        flagPool = new FlagPool(worldBounds);
+        flagList = flagPool.getActiveObjects();
+        treeList = treePool.getActiveObjects();
+        flagEmitter = new FlagEmitter(worldBounds, flagPool, allSprites);
         treeEmitter = new TreeEmitter(worldBounds, treePool, allSprites);
 
+        buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites);
+        buttonPause = new ButtonPause(allSprites);
+
         shapeRenderer = new ShapeRenderer();
-        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
-        soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
-        worldBounds = getWorldBounds();
-
-
-
-
-
-
-        //STAR
-        int SNOW_COUNT = Rnd.nextInt(500, 10000);
-        snow = new Snow[SNOW_COUNT];
-        splash = new Splash[20];
-        for (int i = 0; i < splash.length; i++) {
-            splash[i] = new Splash(allSprites);
-        }
-        windDirectionX = Rnd.nextFloat(-0.7f, 0.7f);
-        windDirectionY = Rnd.nextFloat(-0.7f, 0.7f);
-
-        for (int i = 0; i < snow.length; i++) {
-            Vector2 v = new Vector2();
-            v.set(Rnd.nextFloat(windDirectionX - 0.1f, windDirectionX + 0.1f), Rnd.nextFloat(windDirectionY - 0.1f, windDirectionY + 0.1f));
-            snow[i] = new Snow(allSprites, v);
-        }
-        flagPool = new FlagPool(worldBounds);
-        flagEmitter = new FlagEmitter(worldBounds, flagPool, allSprites);
-        spriteBatch = new SpriteBatch();
-        music.setLooping(true);
         shapeRenderer.setColor(Color.BLACK);
 
-        shouting = new Shouting(allSprites, worldBounds);
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
+        music.setLooping(true);
+        soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
 
-        youCool = new YouCool(allSprites, worldBounds);
+        //preferences (music, high score)
+        prefs=Gdx.app.getPreferences("high score and sound");
+        if (prefs.getBoolean("soundOff")){
+            music.pause();
+        } else {
+            music.play();
+        }
+        highScore = prefs.getInteger("pts");
 
         font = new Font("font/font.fnt", "font/font.png");
         font.setFontSize(FONT_SIZE);
         font.setColor(Color.DARK_GRAY);
-
-        flagList = flagPool.getActiveObjects();
-        treeList = treePool.getActiveObjects();
-
-        buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites);
-
-        buttonPause = new ButtonPause(allSprites);
-
-
-
-prefs=Gdx.app.getPreferences("high score and sound");
-if (prefs.getBoolean("soundOff")){
-    music.pause();
-} else {
-    music.play();
-}
-highScore = prefs.getInteger("pts");
+        //SPLASH
+        int SPLASH_COUNT = 20;
+        splash = new Splash[SPLASH_COUNT];
+        for (int i = 0; i < splash.length; i++) {
+            splash[i] = new Splash(allSprites);
+        }
+        //SNOW
+        int SNOW_COUNT = Rnd.nextInt(500, 10000);
+        snow = new Snow[SNOW_COUNT];
+        float windDirectionX = Rnd.nextFloat(-0.7f, 0.7f); //wind speed on X
+        float windDirectionY = Rnd.nextFloat(-0.7f, 0.7f); //wind speed on Y
+        for (int i = 0; i < snow.length; i++) {
+            Vector2 snowSpeed = new Vector2();
+            snowSpeed.set(Rnd.nextFloat(windDirectionX - 0.1f, windDirectionX + 0.1f), Rnd.nextFloat(windDirectionY - 0.1f, windDirectionY + 0.1f));
+            snow[i] = new Snow(allSprites, snowSpeed);
+        }
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-
         update(delta);
         deleteAllDestroyed();
         draw();
-
     }
 
 
     public void update(float delta) {
-        if (isPlaying) {
-            dist += 0.1f;
-        }
+        startGates.update(delta);
         rider.update(delta);
         for (int i = 0; i < snow.length; i++) {
             snow[i].update(delta);
@@ -202,9 +158,10 @@ highScore = prefs.getInteger("pts");
         for (int i = 0; i < splash.length; i++) {
             splash[i].update(delta);
         }
-        startGates.update(delta);
 
-        if (((shouting.getFrame() == 0) || (shouting.getFrame() == 2)) && (isItNeedToShout)) {
+
+        if (((shouting.getFrame() == Shouting.DOPE) ||
+                (shouting.getFrame() == Shouting.WHOA)) && (isItNeedToShout)) {
             interval += delta;
         }
         if (interval > 1.2f) {
@@ -509,7 +466,6 @@ isGameOver=false;
 
         setIsPlaying(true);
         isItNeedToShout = false;
-        dist=0;
         points = 0;
 
         shouting.setSick(false);
@@ -559,5 +515,9 @@ isGameOver=false;
         }else {
             music.pause();
         }
+    }
+
+    public static Rider getRider() {
+        return rider;
     }
 }

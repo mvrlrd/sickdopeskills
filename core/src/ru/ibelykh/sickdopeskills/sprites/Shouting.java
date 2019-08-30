@@ -16,7 +16,10 @@ public class Shouting extends Sprite {
 
     private static boolean isSick;
     private Rect worldBounds;
-    private Sound Sick, dope, youCool;
+    public static final int SICK = 1;
+    public static final int DOPE = 0;
+    public static final int WHOA = 2;
+    public static final int UCOOL = 3;
     private static int frm=0;
 
 
