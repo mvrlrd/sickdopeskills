@@ -10,8 +10,8 @@ public class ButtonNewGame extends ScaledButton {
     private Game game;
 
     public ButtonNewGame(TextureAtlas atlas, Game game) {
-        super(atlas.findRegion("dope"));
-        setHeightProportion(0.3f);
+        super(atlas.findRegion("startGates"));
+        setHeightProportion(0.2f);
         this.game = game;
     }
 
@@ -20,7 +20,8 @@ public class ButtonNewGame extends ScaledButton {
         super.resize(worldBounds);
 //        this.setAngle(90f);
         setTop(worldBounds.getTop());
-        setRight(worldBounds.getRight()-0.04f);
+        setRight(worldBounds.getRight()+getHalfHeight()/2);
+        setAngle(90f);
     }
 
     @Override

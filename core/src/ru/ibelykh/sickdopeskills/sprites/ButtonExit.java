@@ -8,15 +8,17 @@ import ru.ibelykh.sickdopeskills.math.Rect;
 public  class ButtonExit extends ScaledButton {
 
     public ButtonExit(TextureAtlas atlas) {
-        super(atlas.findRegion("sick"));
-        setHeightProportion(0.3f);
+        super(atlas.findRegion("labels"),2,2,4);
+        setHeightProportion(0.2f);
+        setFrame(1);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         setBottom(worldBounds.getBottom());
-        setRight(worldBounds.getRight()-0.04f);
+        setRight(worldBounds.getRight()+getHalfHeight());
+        setAngle(90f);
     }
 
     @Override
