@@ -8,11 +8,15 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import java.util.List;
+
+import com.badlogic.gdx.math.Vector3;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
@@ -29,7 +33,7 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 public class GameScreen extends Base2DScreen {
 
     private static final String HEIGHPTS = "top: ";
-    private static final float FONT_SIZE = 0.05f;
+    private static final float FONT_SIZE = 0.15f;
 
     public static boolean isPlaying;
     public static boolean isGameOver;
@@ -75,6 +79,11 @@ public class GameScreen extends Base2DScreen {
     private static Snow[] snow;
     private static Splash[] splash;
 
+    Matrix4 mx4Font = new Matrix4();
+    BitmapFont fontt;
+    SpriteBatch spriteFont;
+    Vector3 position ;
+
     public GameScreen(Game game) {
         super(game);
     }
@@ -119,9 +128,9 @@ public class GameScreen extends Base2DScreen {
         }
         highScore = prefs.getInteger("pts");
 
-        font = new Font("font/font.fnt", "font/font.png");
+        font = new Font("font/snowCapFont.fnt", "font/snowCapFont.png");
         font.setFontSize(FONT_SIZE);
-        font.setColor(Color.DARK_GRAY);
+        font.setColor(Color.BLACK);
         //SPLASH
         int SPLASH_COUNT = 20;
         splash = new Splash[SPLASH_COUNT];
@@ -138,7 +147,15 @@ public class GameScreen extends Base2DScreen {
             snowSpeed.set(Rnd.nextFloat(windDirectionX - 0.1f, windDirectionX + 0.1f), Rnd.nextFloat(windDirectionY - 0.1f, windDirectionY + 0.1f));
             snow[i] = new Snow(allSprites, snowSpeed);
         }
+
+        fontt = new BitmapFont(Gdx.files.internal("font/snowCapFont.fnt"),
+                Gdx.files.internal("font/snowCapFont.png"), true);
+        fontt.setColor(Color.BLACK);
+        fontt.getData().setScale(4f);
+
+        position = new Vector3(400, 400, 0f);
     }
+
 
     @Override
     public void render(float delta) {
@@ -146,6 +163,15 @@ public class GameScreen extends Base2DScreen {
         update(delta);
         deleteAllDestroyed();
         draw();
+
+
+        spriteFont = new SpriteBatch();
+        mx4Font.setToRotation(new Vector3(1, 1, 0), 180).translate(position);
+        spriteFont.setTransformMatrix(mx4Font);
+        spriteFont.begin();
+        fontt.draw(spriteFont, sbFrags, 0, 1000);
+        spriteFont.end();
+
     }
 
 
@@ -250,16 +276,21 @@ public class GameScreen extends Base2DScreen {
         sbHeighPts.setLength(0);
         sbFrags.setLength(0);
 
-        font.draw(batch,
-                sbFrags.append(points),
-                0f,
-                0f,55);
+
+sbFrags.append(points);
+//        font.draw(batch,
+//                sbFrags.append(points),
+//                0f,
+//                0f,55);
 
         // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
 //        font.draw(batch,
 //                sbDist.append(rider.getVelocityY()),
 //                worldBounds.getLeft(),
 //                worldBounds.getBottom()+0.1f + FONT_SIZE);
+
+
+
         if (isGameOver) {
             if (prefs.getInteger("pts") != 0) {
                 font.draw(batch,
@@ -316,11 +347,12 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void dispose() {
         super.dispose();
-
+        font.dispose();
         flagPool.dispose();
         soundCheck.dispose();
         music.dispose();
         allSprites.dispose();
+        fontt.dispose();
 
     }
 
