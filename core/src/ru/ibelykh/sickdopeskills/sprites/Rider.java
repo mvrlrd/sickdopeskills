@@ -32,7 +32,8 @@ public class Rider extends Sprite {
     private Vector2 speed;
     private Rectangle board;
 
-    Rect board2;
+   private Rect board2;
+   private Vector2 boardPos;
 
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
@@ -46,6 +47,7 @@ public class Rider extends Sprite {
         board = new Rectangle();
 
         board2 = new Rect();
+        boardPos = new Vector2();
         board2.setWidth(getWidth()/2f);
         board2.setHeight(getHeight()/3f);
 
@@ -92,8 +94,8 @@ public class Rider extends Sprite {
             this.angle=v.y*30;
             board.set(getLeft()+getWidth()*0.4f,getBottom()+getHalfWidth()/1.5f,
                     getWidth()/1.7f,getHeight()/3f);
-
-            board2.setPos(new Vector2(getLeft()+getHalfWidth()*1.3f,getBottom()+getHalfHeight()/1.1f));
+            boardPos.set(getLeft()+getHalfWidth()*1.3f,getBottom()+getHalfHeight()/1.1f);
+            board2.setPos(boardPos);
 
 
 //            board2.setLeft(getLeft()+getWidth()*0.4f);
@@ -109,8 +111,8 @@ public class Rider extends Sprite {
             this.angle = v.y*30;
             board.set(getLeft()+getWidth()*0.385f,getBottom()+getHalfWidth()/3.9f,
                     getWidth()/1.7f,getHeight()/3f);
-
-            board2.setPos(new Vector2(getLeft()+getHalfWidth()*1.3f,getBottom()+getHalfHeight()/1.1f));
+            boardPos.set(getLeft()+getHalfWidth()*1.3f,getBottom()+getHalfHeight()/1.1f);
+            board2.setPos(boardPos);
 //            board2.setLeft(getLeft()+getWidth()*0.4f);
 //            board2.setBottom(getBottom()+getHalfWidth()/1.5f);
 //            board2.setRight(getLeft()+getWidth()*0.4f+getWidth()/1.7f);

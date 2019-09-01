@@ -15,6 +15,9 @@ public class Flag extends Sprite {
     private Rectangle collisionInvisibleSquare;  //An area on a flag which makes crushing with alike rider's area
     private Rect worldBounds;
 
+    private Rect crashArea;
+    private Vector2 crushAreaPos;
+
 
 
     public Flag (Rect worldBounds) {
@@ -22,6 +25,11 @@ public class Flag extends Sprite {
         float X_FLAG_SPEED = -0.55f;
         this.flagSpeed = new Vector2(X_FLAG_SPEED,0f);
         this.collisionInvisibleSquare = new Rectangle();
+
+        this.crashArea = new Rect();
+
+
+       this. crushAreaPos = new Vector2(-100,100);
     }
 
     public int getShoutFrame() {
@@ -35,6 +43,13 @@ public class Flag extends Sprite {
     public void update(float delta) {
         super.update(delta);
         if (GameScreen.getIsPlaying()) {
+
+            crushAreaPos.set(getLeft()+getHalfWidth()*1.6f,getBottom()+getHalfHeight());
+            crashArea.setHeight(getHalfHeight());
+            crashArea.setWidth(getWidth()/4f);
+            crashArea.setPos(crushAreaPos);
+
+
             pos.mulAdd(flagSpeed, delta);
             // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана;
             if (getRight() < worldBounds.getLeft()) {
@@ -100,5 +115,8 @@ public class Flag extends Sprite {
 //        this.collisionInvisibleSquare.set(worldBounds.getRight(),0f,0f,0f);
     }
 
+    public Rect getCrashArea() {
+        return crashArea;
+    }
 }
 
