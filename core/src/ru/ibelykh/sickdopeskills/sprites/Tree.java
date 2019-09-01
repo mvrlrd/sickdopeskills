@@ -13,18 +13,29 @@ public class Tree extends Sprite{
     private static Vector2 treeSpeed = new Vector2(XSPEED,YSPEED);
     private static Vector2 stopSpeed = new Vector2(YSPEED,YSPEED);
     private Rect worldBounds;
-    private Rectangle collisionInvisibleSquare;
+//    private Rectangle collisionInvisibleSquare;
+
+    Rect trunk;
 
     public Tree(Rect worldBounds) {
         this.worldBounds = worldBounds;
-        collisionInvisibleSquare = new Rectangle();
+//        collisionInvisibleSquare = new Rectangle();
+        trunk = new Rect();
+
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
 
+
+
         if (GameScreen.getIsPlaying()) {
+
+
+            trunk.setPos(new Vector2(getLeft()+this.getHalfWidth()*2.2f,getBottom()+this.getHalfHeight()*1.06f));
+            trunk.setHeight(this.getHeight()/9f);
+            trunk.setWidth(this.getWidth()/6f);
             this.setAngle(90); //turn trees in right direction
             pos.mulAdd(treeSpeed, delta);
             // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана
@@ -33,8 +44,8 @@ public class Tree extends Sprite{
             }
             if (!isDestroyed()){
 
-                collisionInvisibleSquare.set(getLeft()+getHalfWidth()*2 , getBottom()+getHalfHeight(),
-                        getWidth()/4f , getHeight()/23f);
+//                collisionInvisibleSquare.set(getLeft()+getHalfWidth()*2 , getBottom()+getHalfHeight(),
+//                        getWidth()/4f , getHeight()/23f);
             }
         }
         else { //if the rider crushes the trees stop
@@ -57,9 +68,11 @@ public class Tree extends Sprite{
         setHeightProportion(height);
     }
 
-    public Rectangle getCollisionInvisibleSquare() {
-        return collisionInvisibleSquare;
+//    public Rectangle getCollisionInvisibleSquare() {
+//        return collisionInvisibleSquare;
+//    }
+
+    public Rect getTrunk() {
+        return trunk;
     }
-
-
 }

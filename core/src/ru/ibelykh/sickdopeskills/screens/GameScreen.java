@@ -113,7 +113,7 @@ public class GameScreen extends Base2DScreen {
         buttonPause = new ButtonPause(allSprites);
 
         shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.setColor(Color.YELLOW);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
         music.setLooping(true);
@@ -247,22 +247,28 @@ public class GameScreen extends Base2DScreen {
         batch.end();
 
 //Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
-//        shapeRenderer.setProjectionMatrix(worldToGl);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setProjectionMatrix(worldToGl);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 //        shapeRenderer.rect(rider.getBoard().x, rider.getBoard().y, rider.getBoard().width,
 //                rider.getBoard().height);
+
+        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
 
 //        for (Flag flag : flagList) {
 //            shapeRenderer.rect(flag.getBigRectLeft(), flag.getBigRectBot(),
 //                    flag.getBigRect().width, flag.getBigRect().height);
 //        }
-//        for (Tree flag : treeList) {
-//            shapeRenderer.rect(flag.getCollisionInvisibleSquare().x,
-//                    flag.getCollisionInvisibleSquare().y,
-//                    flag.getCollisionInvisibleSquare().width,
-//                    flag.getCollisionInvisibleSquare().height);
-//        }
-//        shapeRenderer.end();
+        for (Tree tree : treeList) {
+            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
+//            shapeRenderer.rect(tree.getCollisionInvisibleSquare().x,
+//                    tree.getCollisionInvisibleSquare().y,
+//                    tree.getCollisionInvisibleSquare().width,
+//                    tree.getCollisionInvisibleSquare().height);
+        }
+        shapeRenderer.end();
+
+
+
         spriteBatch.begin();
         spriteBatch.end();
     }
@@ -463,14 +469,17 @@ sbFrags.append(points);
     }
 
     private boolean isAccident(Tree tree) {
-        System.out.println(!(rider.getBoardBack() > (tree.getCollisionInvisibleSquare().x + tree.getCollisionInvisibleSquare().width))+"  1"+"  "+rider.getBoardBack());
-        System.out.println((rider.getBoardNose() < tree.getCollisionInvisibleSquare().x)+"  2  "+rider.getBoardNose());
-        System.out.println((rider.getBoardTop() < tree.getCollisionInvisibleSquare().y)+"  3  "+rider.getBoardTop());
-        System.out.println((rider.getBoardBottom() > (tree.getCollisionInvisibleSquare().y + tree.getCollisionInvisibleSquare().height))+"  4  "+rider.getBoardBottom());
-        return (!(rider.getBoardBack() > (tree.getCollisionInvisibleSquare().x + tree.getCollisionInvisibleSquare().width)
-                || rider.getBoardNose() < tree.getCollisionInvisibleSquare().x
-                || rider.getBoardTop() < tree.getCollisionInvisibleSquare().y
-                || rider.getBoardBottom() > (tree.getCollisionInvisibleSquare().y + tree.getCollisionInvisibleSquare().height)));
+//        System.out.println(!(rider.getBoardBack() > (tree.getCollisionInvisibleSquare().x + tree.getCollisionInvisibleSquare().width))+"  1"+"  "+rider.getBoardBack());
+//        System.out.println((rider.getBoardNose() < tree.getCollisionInvisibleSquare().x)+"  2  "+rider.getBoardNose());
+//        System.out.println((rider.getBoardTop() < tree.getCollisionInvisibleSquare().y)+"  3  "+rider.getBoardTop());
+//        System.out.println((rider.getBoardBottom() > (tree.getCollisionInvisibleSquare().y + tree.getCollisionInvisibleSquare().height))+"  4  "+rider.getBoardBottom());
+//        return (!(rider.getBoardBack() > (tree.getCollisionInvisibleSquare().x + tree.getCollisionInvisibleSquare().width)
+//                || rider.getBoardNose() < tree.getCollisionInvisibleSquare().x
+//                || rider.getBoardTop() < tree.getCollisionInvisibleSquare().y
+//                || rider.getBoardBottom() > (tree.getCollisionInvisibleSquare().y + tree.getCollisionInvisibleSquare().height)));
+//        return rider.getBoard2().isOutside()
+//        System.out.println(!rider.getBoard2().isOutside(tree.getTrunk())+ " rrwrwwrwrw");
+        return !rider.getBoard2().isOutside(tree.getTrunk());
     }
 
 

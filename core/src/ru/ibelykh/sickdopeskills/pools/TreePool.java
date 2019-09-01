@@ -22,6 +22,7 @@ public class TreePool extends SpritesPool<Tree> {
 
     @Override
     protected Tree newObject() {
+
         return new Tree(worldBounds);
     }
 }

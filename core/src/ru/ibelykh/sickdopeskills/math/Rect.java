@@ -3,7 +3,7 @@ package ru.ibelykh.sickdopeskills.math;
 import com.badlogic.gdx.math.Vector2;
 
 public class Rect {
-    public final Vector2 pos; //позиция по центру
+    public  Vector2 pos; //позиция по центру
     protected float halfWidth; // половина ширины
     protected float halfHeight; // половина высоты
 
@@ -20,6 +20,10 @@ public class Rect {
         this.pos.set(x, y);
         this.halfWidth = halfWidth;
         this.halfHeight = halfHeight;
+    }
+
+    public void setPos(Vector2 pos) {
+        this.pos = pos;
     }
 
     public float getLeft() {
