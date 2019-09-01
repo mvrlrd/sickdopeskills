@@ -249,6 +249,17 @@ public class GameScreen extends Base2DScreen {
         buttonGameSoundOffOn.draw(batch);
         buttonPause.draw(batch);
 
+
+//        if (isGameOver) {
+//
+//            if (prefs.getInteger("pts") != 0) {
+//                font.draw(batch, "gdf", 0f, 0f);
+//
+//            }
+//        }
+
+
+
         batch.end();
         printInfo();
 
@@ -284,10 +295,10 @@ sbFrags.append(points);
 
 
         spriteFont.begin();
-        font.draw(spriteFont, sbFrags, 0, 122);
+        font.draw(spriteFont, sbFrags, 0, 0);
         spriteFont.end();
 
-
+//
 //        font.draw(batch,
 //                sbFrags.append(points),
 //                0f,
@@ -301,13 +312,7 @@ sbFrags.append(points);
 
 
 
-        if (isGameOver) {
 
-//            if (prefs.getInteger("pts") != 0) {
-//                font.draw(spriteFont, "hgfgh", 0, 300);
-
-//            }
-        }
 
     }
 
@@ -406,7 +411,7 @@ sbFrags.append(points);
         for (Flag flag : flagList) {
             if ((isAccident(flag))) {
                 shouting.setFrame(1);
-                isItNeedToShout=true;
+
                 gameOver();
                 System.out.println("flag Crush");
                 flag.setDestroyed(true);
@@ -416,7 +421,7 @@ sbFrags.append(points);
                 shouting.setFrame(3);
                 shouting.setSick(true);
                 flag.setDestroyed(true);
-                isItNeedToShout=true;
+
                 System.out.println("wrong way");
                 gameOver();
 
@@ -432,7 +437,7 @@ sbFrags.append(points);
         for (Tree tree : treeList) {
             if ((isAccident(tree))) {
                 shouting.setFrame(1);
-                isItNeedToShout=true;
+//tree.setDestroyed(true);
                 System.out.println("tree Crush");
                 gameOver();
             }
@@ -486,7 +491,7 @@ sbFrags.append(points);
     private void gameOver() {
 isGameOver=true;
         countClicks = 0;
-//        isItNeedToShout = true;
+        isItNeedToShout = true;
 
         music.setVolume(0.3f);
         setIsPlaying(false);

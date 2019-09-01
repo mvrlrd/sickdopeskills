@@ -63,6 +63,7 @@ public class FlagEmitter {
                     );
                     flag.setAngle(90f);
                     flag.setFrame(1);
+
                     flag.pos.y = Rnd.nextFloat(-MINPOSY,-MAXPOSY);
                     flag.setLeft(worldBounds.getRight());
                     flagCount++;

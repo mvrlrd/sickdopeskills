@@ -13,14 +13,12 @@ public class Tree extends Sprite{
     private static Vector2 treeSpeed = new Vector2(XSPEED,YSPEED);
     private static Vector2 stopSpeed = new Vector2(YSPEED,YSPEED);
     private Rect worldBounds;
-//    private Rectangle collisionInvisibleSquare;
 
    private Rect trunk;
    private Vector2 trunkPos;
 
     public Tree(Rect worldBounds) {
         this.worldBounds = worldBounds;
-//        collisionInvisibleSquare = new Rectangle();
         this.trunk = new Rect();
         this.trunkPos= new Vector2(-100f,100f);
 
@@ -33,22 +31,20 @@ public class Tree extends Sprite{
 
 
         if (GameScreen.getIsPlaying()) {
-            this.trunkPos.set(this.getLeft()+this.getHalfWidth()*2.2f,this.getBottom()+this.getHalfHeight()*1.06f);
+            if (!isDestroyed()) {
+                this.trunkPos.set(this.getLeft() + this.getHalfWidth() * 2.2f, this.getBottom() + this.getHalfHeight() * 1.06f);
 
-            this.trunk.setPos(trunkPos);
-            this.trunk.setHeight(this.getHeight()/9f);
-            this.trunk.setWidth(this.getWidth()/6f);
-            this.setAngle(90); //turn trees in right direction
-            pos.mulAdd(treeSpeed, delta);
-            // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана
-            if (getRight()+getHalfHeight() < worldBounds.getLeft()) {
-                setDestroyed(true);
+                this.trunk.setPos(trunkPos);
+                this.trunk.setHeight(this.getHeight() / 9f);
+                this.trunk.setWidth(this.getWidth() / 6f);
+                this.setAngle(90); //turn trees in right direction
+                pos.mulAdd(treeSpeed, delta);
+                // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана
+                if (getRight() + getHalfHeight() < worldBounds.getLeft()) {
+                    setDestroyed(true);
+                }
             }
-            if (!isDestroyed()){
 
-//                collisionInvisibleSquare.set(getLeft()+getHalfWidth()*2 , getBottom()+getHalfHeight(),
-//                        getWidth()/4f , getHeight()/23f);
-            }
         }
         else { //if the rider crushes the trees stop
             pos.mulAdd(stopSpeed, delta);
@@ -70,9 +66,6 @@ public class Tree extends Sprite{
         setHeightProportion(height);
     }
 
-//    public Rectangle getCollisionInvisibleSquare() {
-//        return collisionInvisibleSquare;
-//    }
 
     public Rect getTrunk() {
         return trunk;

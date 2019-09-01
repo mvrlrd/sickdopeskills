@@ -44,10 +44,7 @@ public class Flag extends Sprite {
         super.update(delta);
         if (GameScreen.getIsPlaying()) {
 
-            crushAreaPos.set(getLeft()+getHalfWidth()*1.6f,getBottom()+getHalfHeight());
-            crashArea.setHeight(getHalfHeight());
-            crashArea.setWidth(getWidth()/4f);
-            crashArea.setPos(crushAreaPos);
+
 
 
             pos.mulAdd(flagSpeed, delta);
@@ -59,6 +56,10 @@ public class Flag extends Sprite {
                 Shouting.framer(Rnd.nextInt(0, 4));  //there are just 3 types of shouting frames ("sick","dope","whoa");
             }
             if (!isDestroyed()) {
+                crushAreaPos.set(getLeft()+getHalfWidth()*1.6f,getBottom()+getHalfHeight());
+                crashArea.setHeight(getHalfHeight());
+                crashArea.setWidth(getWidth()/4f);
+                crashArea.setPos(crushAreaPos);
                 if (isItRed()) {
                     collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
                             getWidth() / 4.6f, getHeight());
@@ -68,7 +69,9 @@ public class Flag extends Sprite {
                             getWidth() / 4.6f, getHeight());
                 }
             } else {
-                collisionInvisibleSquare.set(worldBounds.getRight(), 0f, 0f, 0f);
+                crashArea.setWidth(0f);
+                crashArea.setHeight(0f);
+//                collisionInvisibleSquare.set(worldBounds.getRight(), 0f, 0f, 0f);
             }
         }else { //if the rider crushes the flags stop
             pos.mulAdd(new Vector2(0f,0f), delta);
