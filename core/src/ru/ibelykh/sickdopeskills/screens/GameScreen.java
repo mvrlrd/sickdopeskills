@@ -33,7 +33,7 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 public class GameScreen extends Base2DScreen {
 
     private static final String HEIGHPTS = "top: ";
-    private static final float FONT_SIZE = 0.15f;
+    private static final float FONT_SIZE = 3f;
 
     public static boolean isPlaying;
     public static boolean isGameOver;
@@ -129,8 +129,9 @@ public class GameScreen extends Base2DScreen {
         highScore = prefs.getInteger("pts");
 
         font = new Font("font/snowCapFont.fnt", "font/snowCapFont.png");
+        font.setColor(Color.GOLDENROD);
         font.setFontSize(FONT_SIZE);
-        font.setColor(Color.BLACK);
+
         //SPLASH
         int SPLASH_COUNT = 20;
         splash = new Splash[SPLASH_COUNT];
@@ -148,12 +149,12 @@ public class GameScreen extends Base2DScreen {
             snow[i] = new Snow(allSprites, snowSpeed);
         }
 
-        fontt = new BitmapFont(Gdx.files.internal("font/snowCapFont.fnt"),
-                Gdx.files.internal("font/snowCapFont.png"), true);
-        fontt.setColor(Color.BLACK);
-        fontt.getData().setScale(4f);
-
-        position = new Vector3(400, 400, 0f);
+//        fontt = new BitmapFont(Gdx.files.internal("font/snowCapFont.fnt"),
+//                Gdx.files.internal("font/snowCapFont.png"), true);
+//        fontt.setColor(Color.BLACK);
+//        fontt.getData().setScale(4f);
+//
+//        position = new Vector3(400, 400, 0f);
     }
 
 
@@ -165,12 +166,7 @@ public class GameScreen extends Base2DScreen {
         draw();
 
 
-        spriteFont = new SpriteBatch();
-        mx4Font.setToRotation(new Vector3(1, 1, 0), 180).translate(position);
-        spriteFont.setTransformMatrix(mx4Font);
-        spriteFont.begin();
-        fontt.draw(spriteFont, sbFrags, 0, 1000);
-        spriteFont.end();
+
 
     }
 
@@ -278,6 +274,14 @@ public class GameScreen extends Base2DScreen {
 
 
 sbFrags.append(points);
+
+
+        spriteFont = new SpriteBatch();
+        mx4Font.setToRotation(new Vector3(1, 1, 0), 180);
+        spriteFont.setTransformMatrix(mx4Font);
+        spriteFont.begin();
+        font.draw(spriteFont, sbFrags, 0, 122);
+        spriteFont.end();
 //        font.draw(batch,
 //                sbFrags.append(points),
 //                0f,
@@ -292,12 +296,11 @@ sbFrags.append(points);
 
 
         if (isGameOver) {
-            if (prefs.getInteger("pts") != 0) {
-                font.draw(batch,
-                        sbHeighPts.append(HEIGHPTS).append(highScore),
-                        worldBounds.getLeft(),
-                        worldBounds.getBottom() + FONT_SIZE);
-            }
+
+//            if (prefs.getInteger("pts") != 0) {
+//                font.draw(spriteFont, "hgfgh", 0, 300);
+
+//            }
         }
 
     }
@@ -399,6 +402,7 @@ sbFrags.append(points);
                 shouting.setFrame(1);
                 isItNeedToShout=true;
                 gameOver();
+                System.out.println("flag Crush");
                 flag.setDestroyed(true);
 
             }
@@ -407,6 +411,7 @@ sbFrags.append(points);
                 shouting.setSick(true);
                 flag.setDestroyed(true);
                 isItNeedToShout=true;
+                System.out.println("wrong way");
                 gameOver();
 
             }
@@ -414,6 +419,7 @@ sbFrags.append(points);
                 setShoutFrame(true, flag);
                 if (!flag.isDestroyed()) {
                     isItNeedToShout = true;
+                    System.out.println("right way");
                 }
             }
         }
@@ -421,6 +427,7 @@ sbFrags.append(points);
             if ((isAccident(tree))) {
                 shouting.setFrame(1);
 //                isItNeedToShout=true;
+                System.out.println("tree Crush");
                 gameOver();
             }
         }
@@ -456,6 +463,10 @@ sbFrags.append(points);
     }
 
     private boolean isAccident(Tree tree) {
+        System.out.println(!(rider.getBoardBack() > (tree.getCollisionInvisibleSquare().x + tree.getCollisionInvisibleSquare().width))+"  1"+"  "+rider.getBoardBack());
+        System.out.println((rider.getBoardNose() < tree.getCollisionInvisibleSquare().x)+"  2  "+rider.getBoardNose());
+        System.out.println((rider.getBoardTop() < tree.getCollisionInvisibleSquare().y)+"  3  "+rider.getBoardTop());
+        System.out.println((rider.getBoardBottom() > (tree.getCollisionInvisibleSquare().y + tree.getCollisionInvisibleSquare().height))+"  4  "+rider.getBoardBottom());
         return (!(rider.getBoardBack() > (tree.getCollisionInvisibleSquare().x + tree.getCollisionInvisibleSquare().width)
                 || rider.getBoardNose() < tree.getCollisionInvisibleSquare().x
                 || rider.getBoardTop() < tree.getCollisionInvisibleSquare().y
