@@ -21,6 +21,7 @@ import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
+import ru.ibelykh.sickdopeskills.math.MatrixUtils;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -33,7 +34,7 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 public class GameScreen extends Base2DScreen {
 
     private static final String HEIGHPTS = "top: ";
-    private static final float FONT_SIZE = 3f;
+    private static final float FONT_SIZE = 4f;
 
     public static boolean isPlaying;
     public static boolean isGameOver;
@@ -128,11 +129,16 @@ public class GameScreen extends Base2DScreen {
         highScore = prefs.getInteger("pts");
 
         font = new Font("font/snowCapFont.fnt", "font/snowCapFont.png");
-        font.setColor(Color.FIREBRICK);
+        font.setColor(Color.BLACK);
         font.setFontSize(FONT_SIZE);
         mx4Font = new Matrix4();
         spriteFont = new SpriteBatch();
         Vector3 fontRotationVector = new Vector3(1, 1, 0);
+
+        Rect lBounds = new Rect(0, 0, 1f, 1f);
+        MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, lBounds);
+
+
         mx4Font.setToRotation(fontRotationVector, 180);
         spriteFont.setTransformMatrix(mx4Font);
 
@@ -264,23 +270,23 @@ public class GameScreen extends Base2DScreen {
         printInfo();
 
 //Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
-        shapeRenderer.setProjectionMatrix(worldToGl);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-
-        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
-
-        for (Flag flag : flagList) {
-            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
-        }
-        for (Tree tree : treeList) {
-            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
-
-        }
-        shapeRenderer.end();
-
-        spriteBatch.begin();
-        spriteBatch.end();
+//        shapeRenderer.setProjectionMatrix(worldToGl);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//
+//
+//        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
+//
+//        for (Flag flag : flagList) {
+//            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
+//        }
+//        for (Tree tree : treeList) {
+//            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
+//
+//        }
+//        shapeRenderer.end();
+//
+//        spriteBatch.begin();
+//        spriteBatch.end();
     }
 
     private void printInfo() {
@@ -295,7 +301,8 @@ sbFrags.append(points);
 
 
         spriteFont.begin();
-        font.draw(spriteFont, sbFrags, 0, 0);
+
+        font.draw(spriteFont, sbFrags, 500, 1200);
         spriteFont.end();
 
 //
