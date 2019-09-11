@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
+import com.badlogic.gdx.math.Vector3;
 import ru.ibelykh.sickdopeskills.math.MatrixUtils;
 import ru.ibelykh.sickdopeskills.math.Rect;
 
@@ -17,6 +18,9 @@ public class Base2DScreen implements Screen, InputProcessor {
 
 
     protected SpriteBatch batch;
+
+    protected SpriteBatch batchFont;
+    Matrix4 matrix4;
 
     private Rect screenBounds;  //для расчета соотношений сторон экрана
     protected Rect worldBounds;    // наша координатная сетка где высота 1f а ширина плавающая (1f*aspect)
@@ -38,6 +42,8 @@ public class Base2DScreen implements Screen, InputProcessor {
         this.worldToGl = new Matrix4();
         this.screenToWorld = new Matrix3();
 
+        this.matrix4 = new Matrix4();
+
     }
 
     public Rect getWorldBounds() {
@@ -50,6 +56,14 @@ public class Base2DScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         batch.getProjectionMatrix().idt();
         Gdx.input.setInputProcessor(this);
+
+        batchFont = new SpriteBatch();
+//        batchFont.getProjectionMatrix().idt();
+
+        Vector3 fontRotationVector = new Vector3(1, 1, 0);
+        matrix4.setToRotation(fontRotationVector, 180);
+        batchFont.setTransformMatrix(matrix4);
+
     }
 
     @Override
@@ -70,6 +84,9 @@ public class Base2DScreen implements Screen, InputProcessor {
 
         MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
         batch.setProjectionMatrix(worldToGl);
+
+        MatrixUtils.calcTransitionMatrix(matrix4, worldBounds, glBounds);
+        batchFont.setProjectionMatrix(matrix4);
 
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
         resize(worldBounds);

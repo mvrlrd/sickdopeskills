@@ -11,12 +11,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import java.util.List;
+
+import com.badlogic.gdx.math.Vector3;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
+import ru.ibelykh.sickdopeskills.math.MatrixUtils;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -62,7 +66,7 @@ public class GameScreen extends Base2DScreen {
     private static TreePool treePool;
     private static TreeEmitter treeEmitter;
 
-    private static SpriteBatch spriteBatch;
+
 
     private static Rider rider;
     private static Shouting shouting;
@@ -74,7 +78,7 @@ public class GameScreen extends Base2DScreen {
 
     private static Snow[] snow;
     private static Splash[] splash;
-
+//
 //   private Matrix4 mx4Font;
 //    private SpriteBatch spriteFont;
 
@@ -88,7 +92,7 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void show() {
         super.show();
-        spriteBatch = new SpriteBatch();
+
         worldBounds = getWorldBounds();
 
         allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
@@ -126,14 +130,15 @@ public class GameScreen extends Base2DScreen {
         font = new Font("font/mario_font.fnt", "font/mario_font.png");
         font.setColor(Color.BLACK);
         font.setFontSize(FONT_SIZE);
+
+
 //        mx4Font = new Matrix4();
 //        spriteFont = new SpriteBatch();
 //        Vector3 fontRotationVector = new Vector3(1, 1, 0);
 //
-//        Rect lBounds = new Rect(0, 0, 1f, 1f);
-//        MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, lBounds);
-
-
+//
+//
+//
 //        mx4Font.setToRotation(fontRotationVector, 180);
 //        spriteFont.setTransformMatrix(mx4Font);
 
@@ -260,16 +265,16 @@ public class GameScreen extends Base2DScreen {
 //        }
 
 
-        printInfo();
-        batch.end();
 //        printInfo();
+        batch.end();
+        printInfo2();
 
 //Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
-        shapeRenderer.setProjectionMatrix(worldToGl);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-
-        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
+//        shapeRenderer.setProjectionMatrix(worldToGl);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//
+//
+//        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
 
 //        for (Flag flag : flagList) {
 //            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
@@ -278,46 +283,48 @@ public class GameScreen extends Base2DScreen {
 //            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
 //
 //        }
-        shapeRenderer.end();
+//        shapeRenderer.end();
 
-        spriteBatch.begin();
-        spriteBatch.end();
+
     }
+    private void printInfo2() {
 
-    private void printInfo() {
-        sbDist.setLength(0);
-        sbHeighPts.setLength(0);
+
         sbFrags.setLength(0);
+        sbFrags.append(points);
 
 
-sbFrags.append(points);
 
-//
+        batchFont.begin();
 
-
-//        spriteFont.begin();
-        font.draw(batch,
+        font.draw(batchFont,
                 sbFrags,
-                worldBounds.getLeft()+FONT_SIZE, worldBounds.getBottom()+FONT_SIZE);
-//        spriteFont.end();
+                worldBounds.getLeft()+worldBounds.getHalfWidth(), worldBounds.getTop());
 
+
+
+        if (isGameOver){
+            sbHeighPts.setLength(0);
+            sbHeighPts.append(highScore);
+            font.draw(batchFont,
+                    sbHeighPts,
+                    worldBounds.getLeft()+worldBounds.getHalfWidth()-FONT_SIZE/2, worldBounds.getTop()-1f);
+        }
+        batchFont.end();
+    }
+//    private void printInfo() {
+//        sbDist.setLength(0);
+//        sbHeighPts.setLength(0);
+//        sbFrags.setLength(0);
+//
+//
+//sbFrags.append(points);
 //
 //        font.draw(batch,
-//                sbFrags.append(points),
-//                0f,
-//                0f);
-
-        // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
-        font.draw(batch,
-                sbHeighPts.append(highScore),
-                worldBounds.getLeft()+FONT_SIZE, worldBounds.getTop()
-                );
-
-
-
-
-
-    }
+//                sbHeighPts.append(highScore),
+//                worldBounds.getLeft()+FONT_SIZE, worldBounds.getTop()
+//                );
+//    }
 
     private void deleteAllDestroyed() {
         flagPool.freeAllDestroyedActiveSprites();
