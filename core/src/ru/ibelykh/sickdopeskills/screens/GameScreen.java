@@ -113,7 +113,7 @@ public class GameScreen extends Base2DScreen {
         buttonPause = new ButtonPause(allSprites);
 
         shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.setColor(Color.RED);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/bad_guy.mp3"));
         music.setLooping(true);
@@ -270,23 +270,23 @@ public class GameScreen extends Base2DScreen {
 //        printInfo();
 
 //Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
-//        shapeRenderer.setProjectionMatrix(worldToGl);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//
-//
-//        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
-//
-//        for (Flag flag : flagList) {
-//            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
-//        }
-//        for (Tree tree : treeList) {
-//            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
-//
-//        }
-//        shapeRenderer.end();
-//
-//        spriteBatch.begin();
-//        spriteBatch.end();
+        shapeRenderer.setProjectionMatrix(worldToGl);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+
+        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
+
+        for (Flag flag : flagList) {
+            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
+        }
+        for (Tree tree : treeList) {
+            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
+
+        }
+        shapeRenderer.end();
+
+        spriteBatch.begin();
+        spriteBatch.end();
     }
 
     private void printInfo() {
@@ -422,7 +422,7 @@ sbFrags.append(points);
 
                 gameOver();
                 System.out.println("flag Crush");
-                flag.setDestroyed(true);
+//                flag.setDestroyed(true);
 
             }
             if ((isWrongWay(flag))) {
@@ -475,7 +475,9 @@ sbFrags.append(points);
     }
 
     private boolean isAccident(Flag flag) {
-        return !rider.getBoard2().isOutside(flag.getCrashArea());
+//        return !rider.getBoard2().isOutside(flag.getCrashArea());
+//        return !rider.getBoard2().isOutside(flag);
+        return !flag.isOutside(rider.getBoard2());
     }
 
     private boolean isAccident(Tree tree) {

@@ -12,11 +12,8 @@ import ru.ibelykh.sickdopeskills.screens.GameScreen;
 public class Flag extends Sprite {
     private int shoutFrame;
     private Vector2 flagSpeed;
-    private Rectangle collisionInvisibleSquare;  //An area on a flag which makes crushing with alike rider's area
     private Rect worldBounds;
 
-    private Rect crashArea;
-    private Vector2 crushAreaPos;
 
 
 
@@ -24,12 +21,6 @@ public class Flag extends Sprite {
         this.worldBounds = worldBounds;
         float X_FLAG_SPEED = -0.55f;
         this.flagSpeed = new Vector2(X_FLAG_SPEED,0f);
-        this.collisionInvisibleSquare = new Rectangle();
-
-        this.crashArea = new Rect();
-
-
-       this. crushAreaPos = new Vector2(-100,100);
     }
 
     public int getShoutFrame() {
@@ -55,41 +46,15 @@ public class Flag extends Sprite {
                 GameScreen.setIsItNeedToShout(false);
                 Shouting.framer(Rnd.nextInt(0, 4));  //there are just 3 types of shouting frames ("sick","dope","whoa");
             }
-            if (!isDestroyed()) {
-                crushAreaPos.set(getLeft()+getHalfWidth()*1.6f,getBottom()+getHalfHeight());
-                crashArea.setHeight(getHalfHeight());
-                crashArea.setWidth(getWidth()/4f);
-                crashArea.setPos(crushAreaPos);
-                if (isItRed()) {
-                    collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
-                            getWidth() / 4.6f, getHeight());
-                }
-                if ((!isItRed())) {
-                    collisionInvisibleSquare.set(getRight() - getWidth() / 4.27f, getBottom(),
-                            getWidth() / 4.6f, getHeight());
-                }
-            } else {
-                crashArea.setWidth(0f);
-                crashArea.setHeight(0f);
-//                collisionInvisibleSquare.set(worldBounds.getRight(), 0f, 0f, 0f);
-            }
+
+
+
         }else { //if the rider crushes the flags stop
             pos.mulAdd(new Vector2(0f,0f), delta);
         }
         }
 
-    public float getBigRectLeft(){
-        return collisionInvisibleSquare.x;
-    }
-    public float getBigRectRight(){
-        return collisionInvisibleSquare.x+collisionInvisibleSquare.getWidth();
-    }
-    public float getBigRectTop(){
-        return collisionInvisibleSquare.y+collisionInvisibleSquare.getHeight();
-    }
-    public float getBigRectBot(){
-        return collisionInvisibleSquare.y;
-    }
+
 
     public void resize(Rect _worldBounds, float x, float y) {
         super.resize(_worldBounds);
@@ -115,11 +80,25 @@ public class Flag extends Sprite {
     @Override
     public void setDestroyed(boolean _destroyed) {
         super.setDestroyed(_destroyed);
-//        this.collisionInvisibleSquare.set(worldBounds.getRight(),0f,0f,0f);
     }
 
-    public Rect getCrashArea() {
-        return crashArea;
+
+
+    @Override
+    public boolean isOutside(Rect other) {
+
+        if (this.isItRed()) {
+            return     this.getLeft() + 0.9f * getWidth() > other.getRight()
+                    || this.getRight() < other.getLeft()
+                    || this.getBottom() + 0.2f * getHalfHeight() > other.getTop()
+                    || this.getTop() - 0.1f * getHalfHeight() < other.getBottom();
+        } else {
+            return     this.getLeft() + 0.9f * getWidth() > other.getRight()
+                    || this.getRight() < other.getLeft()
+                    || this.getBottom() + 0.1f * getHalfHeight() > other.getTop()
+                    || this.getTop() - 0.2f * getHalfHeight() < other.getBottom();
+        }
+
     }
 }
 
