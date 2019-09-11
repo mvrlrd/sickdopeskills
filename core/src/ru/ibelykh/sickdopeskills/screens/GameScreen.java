@@ -34,7 +34,7 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 public class GameScreen extends Base2DScreen {
 
     private static final String HEIGHPTS = "top: ";
-    private static final float FONT_SIZE = 4f;
+    private static final float FONT_SIZE = 0.1f;
 
     public static boolean isPlaying;
     public static boolean isGameOver;
@@ -80,8 +80,8 @@ public class GameScreen extends Base2DScreen {
     private static Snow[] snow;
     private static Splash[] splash;
 
-   private Matrix4 mx4Font;
-    private SpriteBatch spriteFont;
+//   private Matrix4 mx4Font;
+//    private SpriteBatch spriteFont;
 
 
     public GameScreen(Game game) {
@@ -115,7 +115,7 @@ public class GameScreen extends Base2DScreen {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setColor(Color.YELLOW);
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/lord_of_boards.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/bad_guy.mp3"));
         music.setLooping(true);
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
 
@@ -128,19 +128,19 @@ public class GameScreen extends Base2DScreen {
         }
         highScore = prefs.getInteger("pts");
 
-        font = new Font("font/snowCapFont.fnt", "font/snowCapFont.png");
+        font = new Font("font/mario_font.fnt", "font/mario_font.png");
         font.setColor(Color.BLACK);
         font.setFontSize(FONT_SIZE);
-        mx4Font = new Matrix4();
-        spriteFont = new SpriteBatch();
-        Vector3 fontRotationVector = new Vector3(1, 1, 0);
+//        mx4Font = new Matrix4();
+//        spriteFont = new SpriteBatch();
+//        Vector3 fontRotationVector = new Vector3(1, 1, 0);
+//
+//        Rect lBounds = new Rect(0, 0, 1f, 1f);
+//        MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, lBounds);
 
-        Rect lBounds = new Rect(0, 0, 1f, 1f);
-        MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, lBounds);
 
-
-        mx4Font.setToRotation(fontRotationVector, 180);
-        spriteFont.setTransformMatrix(mx4Font);
+//        mx4Font.setToRotation(fontRotationVector, 180);
+//        spriteFont.setTransformMatrix(mx4Font);
 
 
         //SPLASH
@@ -265,9 +265,9 @@ public class GameScreen extends Base2DScreen {
 //        }
 
 
-
-        batch.end();
         printInfo();
+        batch.end();
+//        printInfo();
 
 //Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
 //        shapeRenderer.setProjectionMatrix(worldToGl);
@@ -300,22 +300,23 @@ sbFrags.append(points);
 //
 
 
-        spriteFont.begin();
-
-        font.draw(spriteFont, sbFrags, 500, 1200);
-        spriteFont.end();
+//        spriteFont.begin();
+        font.draw(batch,
+                sbFrags,
+                worldBounds.getLeft()+FONT_SIZE, worldBounds.getBottom()+FONT_SIZE);
+//        spriteFont.end();
 
 //
 //        font.draw(batch,
 //                sbFrags.append(points),
 //                0f,
-//                0f,55);
+//                0f);
 
         // font.draw(batch, "Frags:"+ frags) --- так плохо потому что будет создаваться каждый раз новая строка для frags и для "frags" итого 120 строк в сек
-//        font.draw(batch,
-//                sbDist.append(rider.getVelocityY()),
-//                worldBounds.getLeft(),
-//                worldBounds.getBottom()+0.1f + FONT_SIZE);
+        font.draw(batch,
+                sbHeighPts.append(highScore),
+                worldBounds.getLeft()+FONT_SIZE, worldBounds.getTop()
+                );
 
 
 
