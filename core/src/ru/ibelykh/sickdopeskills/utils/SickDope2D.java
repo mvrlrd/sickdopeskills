@@ -3,7 +3,6 @@ package ru.ibelykh.sickdopeskills.utils;
 
 import com.badlogic.gdx.Game;
 
-import ru.ibelykh.sickdopeskills.screens.GameScreen;
 import ru.ibelykh.sickdopeskills.screens.MenuScreen;
 
 

@@ -1,7 +1,6 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
@@ -14,13 +13,8 @@ public class Tree extends Sprite{
     private static Vector2 stopSpeed = new Vector2(YSPEED,YSPEED);
     private Rect worldBounds;
 
-   private Rect trunk;
-   private Vector2 trunkPos;
-
     public Tree(Rect worldBounds) {
         this.worldBounds = worldBounds;
-        this.trunk = new Rect();
-        this.trunkPos= new Vector2(-100f,100f);
 
     }
 
@@ -32,11 +26,6 @@ public class Tree extends Sprite{
 
         if (GameScreen.getIsPlaying()) {
             if (!isDestroyed()) {
-                this.trunkPos.set(this.getLeft() + this.getHalfWidth() * 2.2f, this.getBottom() + this.getHalfHeight() * 1.06f);
-
-                this.trunk.setPos(trunkPos);
-                this.trunk.setHeight(this.getHeight() / 9f);
-                this.trunk.setWidth(this.getWidth() / 6f);
                 this.setAngle(90); //turn trees in right direction
                 pos.mulAdd(treeSpeed, delta);
                 // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана
@@ -67,7 +56,12 @@ public class Tree extends Sprite{
     }
 
 
-    public Rect getTrunk() {
-        return trunk;
+    @Override
+    public boolean isOutside(Rect other) {
+            return     this.getLeft() + this.getHalfWidth() * 2.2f > other.getRight()
+                    || this.getRight() < other.getLeft()
+                    || this.getBottom() + 0.9f * getHalfHeight() > other.getTop()
+                    || this.getTop() - 0.9f * getHalfHeight() < other.getBottom();
+
     }
 }

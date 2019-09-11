@@ -8,20 +8,15 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import java.util.List;
-
-import com.badlogic.gdx.math.Vector3;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
-import ru.ibelykh.sickdopeskills.math.MatrixUtils;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -276,13 +271,13 @@ public class GameScreen extends Base2DScreen {
 
         shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
 
-        for (Flag flag : flagList) {
-            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
-        }
-        for (Tree tree : treeList) {
-            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
-
-        }
+//        for (Flag flag : flagList) {
+//            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
+//        }
+//        for (Tree tree : treeList) {
+//            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
+//
+//        }
         shapeRenderer.end();
 
         spriteBatch.begin();
@@ -475,13 +470,13 @@ sbFrags.append(points);
     }
 
     private boolean isAccident(Flag flag) {
-//        return !rider.getBoard2().isOutside(flag.getCrashArea());
-//        return !rider.getBoard2().isOutside(flag);
         return !flag.isOutside(rider.getBoard2());
     }
 
     private boolean isAccident(Tree tree) {
-        return !rider.getBoard2().isOutside(tree.getTrunk());
+//        return !rider.getBoard2().isOutside(tree.getTrunk());
+        return !tree.isOutside(rider.getBoard2());
+
     }
 
 

@@ -1,8 +1,6 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.base.ScaledButton;
 import ru.ibelykh.sickdopeskills.math.Rect;
 

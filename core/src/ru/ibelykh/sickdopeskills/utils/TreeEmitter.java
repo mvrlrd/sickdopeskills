@@ -2,8 +2,6 @@ package ru.ibelykh.sickdopeskills.utils;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.TreePool;
@@ -16,7 +14,7 @@ private static final float MINTREESIZE = 0.1f;
     private static final float MAXTREESIZE = 0.3f;
 
     private static final float MINTREEINTERVAL = 0.5f;
-    private static final float MAXTREEINTERVAL = 1.2f;
+    private static final float MAXTREEINTERVAL = 1.3f;
     private Rect worldBounds;
     private float generateInterval;
     private float generateTimer;
