@@ -20,14 +20,14 @@ public class Base2DScreen implements Screen, InputProcessor {
     protected SpriteBatch batch;
 
     protected SpriteBatch batchFont;
-    Matrix4 matrix4;
+    private Matrix4 matrixForFont;
 
     private Rect screenBounds;  //для расчета соотношений сторон экрана
     protected Rect worldBounds;    // наша координатная сетка где высота 1f а ширина плавающая (1f*aspect)
     private Rect glBounds;  // координатная сетки openGl 2f*2f
 
-    protected Matrix4 worldToGl;
-    protected Matrix3 screenToWorld;
+    private Matrix4 worldToGl;
+    private Matrix3 screenToWorld;
 
     protected Game game;
 
@@ -42,7 +42,7 @@ public class Base2DScreen implements Screen, InputProcessor {
         this.worldToGl = new Matrix4();
         this.screenToWorld = new Matrix3();
 
-        this.matrix4 = new Matrix4();
+        this.matrixForFont = new Matrix4();
 
     }
 
@@ -61,8 +61,8 @@ public class Base2DScreen implements Screen, InputProcessor {
 //        batchFont.getProjectionMatrix().idt();
 
         Vector3 fontRotationVector = new Vector3(1, 1, 0);
-        matrix4.setToRotation(fontRotationVector, 180);
-        batchFont.setTransformMatrix(matrix4);
+        matrixForFont.setToRotation(fontRotationVector, 180);
+        batchFont.setTransformMatrix(matrixForFont);
 
     }
 
@@ -85,8 +85,8 @@ public class Base2DScreen implements Screen, InputProcessor {
         MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
         batch.setProjectionMatrix(worldToGl);
 
-        MatrixUtils.calcTransitionMatrix(matrix4, worldBounds, glBounds);
-        batchFont.setProjectionMatrix(matrix4);
+        MatrixUtils.calcTransitionMatrix(matrixForFont, worldBounds, glBounds);
+        batchFont.setProjectionMatrix(matrixForFont);
 
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
         resize(worldBounds);
