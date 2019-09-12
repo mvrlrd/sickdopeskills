@@ -292,14 +292,19 @@ public class GameScreen extends Base2DScreen {
 
         sbFrags.setLength(0);
         sbFrags.append(points);
-
-
+        float otstup;
+if (points<10){
+     otstup = FONT_SIZE/2f;
+}
+else {
+    otstup = FONT_SIZE;
+}
 
         batchFont.begin();
 
         font.draw(batchFont,
                 sbFrags,
-                worldBounds.getLeft()+worldBounds.getHalfWidth(), worldBounds.getTop());
+                worldBounds.getLeft()+worldBounds.getHalfWidth()-otstup, worldBounds.getTop()-0.3f);
 
 
 
@@ -308,7 +313,7 @@ public class GameScreen extends Base2DScreen {
             sbHeighPts.append(highScore);
             font.draw(batchFont,
                     sbHeighPts,
-                    worldBounds.getLeft()+worldBounds.getHalfWidth()-FONT_SIZE/2, worldBounds.getTop()-1f);
+                    worldBounds.getLeft()+worldBounds.getHalfWidth()-FONT_SIZE, worldBounds.getTop()-0.8f);
         }
         batchFont.end();
     }

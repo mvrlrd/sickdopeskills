@@ -55,7 +55,7 @@ public class StartGates extends Sprite {
     }
 
     public void setTheNewGame(){
-        
+
         pos.set(worldBounds.getLeft()+0.1f,0f);
 
         if (GameScreen.getCountClicks()==1) {

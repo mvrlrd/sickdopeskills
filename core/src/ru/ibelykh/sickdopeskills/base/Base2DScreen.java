@@ -60,8 +60,8 @@ public class Base2DScreen implements Screen, InputProcessor {
         batchFont = new SpriteBatch();
 //        batchFont.getProjectionMatrix().idt();
 
-        Vector3 fontRotationVector = new Vector3(1, 1, 0);
-        matrixForFont.setToRotation(fontRotationVector, 180);
+        Vector3 fontRotationVector = new Vector3(0, 0, 1);
+        matrixForFont.setToRotation(fontRotationVector, 90);
         batchFont.setTransformMatrix(matrixForFont);
 
     }
