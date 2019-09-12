@@ -430,7 +430,7 @@ public class GameScreen extends Base2DScreen {
             if ((isWrongWay(flag))) {
                 shouting.setFrame(3);
                 shouting.setSick(true);
-                flag.setDestroyed(true);
+//                flag.setDestroyed(true);
 
                 System.out.println("wrong way");
                 gameOver();
@@ -512,7 +512,7 @@ isGameOver=true;
     }
 
     private void startNewGame() {
-isGameOver=false;
+        isGameOver=false;
         for (Flag flag : flagList) {
             flag.setDestroyed(true);
         }
@@ -575,5 +575,9 @@ isGameOver=false;
 
     public static Rider getRider() {
         return rider;
+    }
+
+    public static int getCountClicks() {
+        return countClicks;
     }
 }

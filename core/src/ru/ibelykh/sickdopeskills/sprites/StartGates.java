@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
+import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 public class StartGates extends Sprite {
 
@@ -32,6 +33,9 @@ public class StartGates extends Sprite {
     public void update(float delta) {
         super.update(delta);
         pos.mulAdd(speed,delta);
+        if (GameScreen.isGameOver){
+            speed.set(0f,0f);
+        }
 
     }
 
@@ -51,8 +55,13 @@ public class StartGates extends Sprite {
     }
 
     public void setTheNewGame(){
-        speed.set(SPEED);
+        
         pos.set(worldBounds.getLeft()+0.1f,0f);
+
+        if (GameScreen.getCountClicks()==1) {
+            speed.set(SPEED);
+        }
+
     }
 
 //    public void gameOver(){
