@@ -2,6 +2,7 @@ package ru.ibelykh.sickdopeskills.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -47,6 +48,17 @@ public class MenuScreen extends Base2DScreen {
         buttonExit = new ButtonExit(allSprites);
         btnGetRider = new ButtonGetRider(allSprites.findRegion("riders"),3,2,6);
         buttonNewGame = new ButtonNewGame(allSprites,game);
+
+
+        Gdx.input.setCatchBackKey(true); // ловим касание по системной кнопке "Назад
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        if(keycode== Input.Keys.BACK){
+            Gdx.app.exit();
+        }
+        return false;
     }
 
     @Override

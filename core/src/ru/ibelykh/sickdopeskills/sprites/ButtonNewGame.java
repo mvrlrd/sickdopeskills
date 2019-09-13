@@ -27,5 +27,12 @@ public class ButtonNewGame extends ScaledButton {
     @Override
     public void actionPerformed() {
         game.setScreen(new GameScreen(game));
+        if (GameScreen.isGameOver){
+            GameScreen.isGameOver=false;
+
+        }
+        if (GameScreen.isOnPause()){
+            GameScreen.setOnPause(false);
+        }
     }
 }

@@ -171,6 +171,7 @@ public class GameScreen extends Base2DScreen {
            game.setScreen(new MenuScreen(game));
            music.dispose();
            gameOver();
+           isItNeedToShout=false;
         }
         return false;
     }
@@ -253,7 +254,6 @@ public class GameScreen extends Base2DScreen {
         }
         startGates.draw(batch);
         if ((isItNeedToShout)){
-
             shouting.draw(batch);
         }
         for (int i = 0; i < snow.length; i++) {
@@ -299,7 +299,7 @@ public class GameScreen extends Base2DScreen {
 
         sbFrags.setLength(0);
         sbFrags.append(points);
-        float otstup;
+        float otstup; // для того чтобы центрировать надпись с очками
 if (points<10){
      otstup = FONT_SIZE/2f;
 }
@@ -514,7 +514,7 @@ if (!flag.isDestroyed())
     }
 
     private void gameOver() {
-isGameOver=true;
+        isGameOver=true;
         countClicks = 0;
         isItNeedToShout = true;
 
@@ -596,4 +596,5 @@ isGameOver=true;
     public static int getCountClicks() {
         return countClicks;
     }
+
 }
