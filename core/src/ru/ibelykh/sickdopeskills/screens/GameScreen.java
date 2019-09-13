@@ -3,6 +3,7 @@ package ru.ibelykh.sickdopeskills.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -160,12 +161,18 @@ public class GameScreen extends Base2DScreen {
             snow[i] = new Snow(allSprites, snowSpeed);
         }
 
-//        fontt = new BitmapFont(Gdx.files.internal("font/snowCapFont.fnt"),
-//                Gdx.files.internal("font/snowCapFont.png"), true);
-//        fontt.setColor(Color.BLACK);
-//        fontt.getData().setScale(4f);
-//
-//        position = new Vector3(400, 400, 0f);
+
+        Gdx.input.setCatchBackKey(true); // ловим касание по системной кнопке "Назад
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        if(keycode== Input.Keys.BACK){
+           game.setScreen(new MenuScreen(game));
+           music.dispose();
+           gameOver();
+        }
+        return false;
     }
 
 
@@ -241,8 +248,8 @@ public class GameScreen extends Base2DScreen {
         }
         rider.draw(batch);
         treePool.drawActiveSprites(batch);
-        if ((points % 10 == 0) && (points != 0)) {
-            youCool.draw(batch);
+        if ((points  == highScore) && (points != 0)) {
+                youCool.draw(batch);
         }
         startGates.draw(batch);
         if ((isItNeedToShout)){
@@ -256,18 +263,18 @@ public class GameScreen extends Base2DScreen {
         buttonPause.draw(batch);
 
 
-//        if (isGameOver) {
-//
-//            if (prefs.getInteger("pts") != 0) {
-//                font.draw(batch, "gdf", 0f, 0f);
-//
-//            }
-//        }
-
-
-//        printInfo();
         batch.end();
         printInfo2();
+
+//        shapeRenderer.setProjectionMatrix(matrixForSnowboard);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
+//
+//        shapeRenderer.end();
+
+
+
+
 
 //Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
 //        shapeRenderer.setProjectionMatrix(worldToGl);
@@ -275,14 +282,14 @@ public class GameScreen extends Base2DScreen {
 //
 //
 //        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
-
-//        for (Flag flag : flagList) {
-//            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
-//        }
-//        for (Tree tree : treeList) {
-//            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
 //
-//        }
+////        for (Flag flag : flagList) {
+////            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
+////        }
+////        for (Tree tree : treeList) {
+////            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
+////
+////        }
 //        shapeRenderer.end();
 
 
@@ -424,7 +431,7 @@ else {
     private void checkCollisions() {
 
         for (Flag flag : flagList) {
-            if ((isAccident(flag))) {
+            if ((isAccident(flag))&&(isPlaying)) {
                 shouting.setFrame(1);
 
                 gameOver();
@@ -432,7 +439,7 @@ else {
 //                flag.setDestroyed(true);
 
             }
-            if ((isWrongWay(flag))) {
+            if ((isWrongWay(flag))&&(isPlaying)) {
                 shouting.setFrame(3);
                 shouting.setSick(true);
 //                flag.setDestroyed(true);
@@ -441,7 +448,7 @@ else {
                 gameOver();
 
             }
-            if (isOnRightWay(flag)) {
+            if ((isOnRightWay(flag))&&(isPlaying)) {
                 setShoutFrame(true, flag);
                 if (!flag.isDestroyed()) {
                     isItNeedToShout = true;
@@ -450,7 +457,7 @@ else {
             }
         }
         for (Tree tree : treeList) {
-            if ((isAccident(tree))) {
+            if (((isAccident(tree)))&&(isPlaying)) {
                 shouting.setFrame(1);
 //tree.setDestroyed(true);
                 System.out.println("tree Crush");
@@ -495,7 +502,7 @@ else {
 
     // WRONGWAY
     private boolean isWrongWay(Flag flag) {
-
+if (!flag.isDestroyed())
             return ((rider.getBoardNose() > flag.getRight())
                     && (rider.getBoardNose() - flag.getLeft() < rider.getBoard().width)
                     && (((flag.isItRed())
@@ -503,6 +510,7 @@ else {
                     || ((!flag.isItRed())
                     && (rider.getBoardTop() < flag.getTop()))));//ниже синего
 
+        return false;
     }
 
     private void gameOver() {
@@ -517,7 +525,7 @@ isGameOver=true;
     }
 
     private void startNewGame() {
-        isGameOver=false;
+
         for (Flag flag : flagList) {
             flag.setDestroyed(true);
         }
@@ -525,14 +533,17 @@ isGameOver=true;
             tree.setDestroyed(true);
         }
 
+
         setIsPlaying(true);
         isItNeedToShout = false;
         points = 0;
 
         shouting.setSick(false);
         music.setVolume(1f);
-        isPlaying = true;
+
         rider.setTheNewGame();
+        isGameOver=false;
+        isPlaying = true;
         startGates.setTheNewGame();
     }
 

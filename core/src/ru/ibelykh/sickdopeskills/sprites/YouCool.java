@@ -46,9 +46,9 @@ public class YouCool extends Sprite {
     }
     @Override
     public void draw(SpriteBatch batch) {
-        if (!Shouting.isSick()){
+//        if (!Shouting.isSick()){
             super.draw(batch);
-        }
+//        }
     }
 
 

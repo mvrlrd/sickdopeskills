@@ -19,14 +19,18 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     protected SpriteBatch batch;
 
-    protected SpriteBatch batchFont;
-    private Matrix4 matrixForFont;
+    protected static SpriteBatch batchFont;
+//    protected static SpriteBatch batchSnowboard;
+
+
+    private static Matrix4 matrixForFont;
+//    protected static Matrix4 matrixForSnowboard;
 
     private Rect screenBounds;  //для расчета соотношений сторон экрана
     protected Rect worldBounds;    // наша координатная сетка где высота 1f а ширина плавающая (1f*aspect)
     private Rect glBounds;  // координатная сетки openGl 2f*2f
 
-    private Matrix4 worldToGl;
+    protected Matrix4 worldToGl;
     private Matrix3 screenToWorld;
 
     protected Game game;
@@ -42,7 +46,8 @@ public class Base2DScreen implements Screen, InputProcessor {
         this.worldToGl = new Matrix4();
         this.screenToWorld = new Matrix3();
 
-        this.matrixForFont = new Matrix4();
+        matrixForFont = new Matrix4();
+//        matrixForSnowboard = new Matrix4();
 
     }
 
@@ -59,6 +64,7 @@ public class Base2DScreen implements Screen, InputProcessor {
 
         batchFont = new SpriteBatch();
 //        batchFont.getProjectionMatrix().idt();
+//batchSnowboard = new SpriteBatch();
 
         Vector3 fontRotationVector = new Vector3(0, 0, 1);
         matrixForFont.setToRotation(fontRotationVector, 90);
@@ -193,7 +199,12 @@ public class Base2DScreen implements Screen, InputProcessor {
 //        System.out.println("keydowm  keycode = "+ keycode);
         return false;
     }
+//public static void setToRot(float angle){
+//    Vector3 fontRotationVector = new Vector3(0, 0, 1);
+//    batchSnowboard.setTransformMatrix(matrixForSnowboard);
+//    matrixForSnowboard.setToRotation(fontRotationVector, angle);
 
+//}
 
 
     //SOUND

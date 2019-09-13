@@ -4,6 +4,7 @@ package ru.ibelykh.sickdopeskills.sprites;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.screens.MenuScreen;
@@ -84,7 +85,7 @@ public class Rider extends Sprite {
             v.set(0f,0f);
             pos.mulAdd(v.add(velocity), delta);
         }
-        if (this.getBottom()<worldBounds.getBottom()&&(v.add(velocity)).y<-0.3f){
+        if (this.getBottom() < worldBounds.getBottom()&&(v.add(velocity)).y < -0.3f){
             velocity.set(velocity.x,velocityY);
             v.set(0f,0f);
             pos.mulAdd(v.add(velocity), delta);
@@ -97,13 +98,7 @@ public class Rider extends Sprite {
             boardPos.set(getLeft()+getHalfWidth()*1.3f,getBottom()+getHalfHeight()/1.1f);
             board2.setPos(boardPos);
 
-
-//            board2.setLeft(getLeft()+getWidth()*0.4f);
-//            board2.setBottom(getBottom()+getHalfWidth()/1.5f);
-
-//            board2.setRight(getLeft()+getWidth()*0.4f+getWidth()/1.7f);
-//            board2.setTop(getBottom()+getHalfWidth()/1.5f+getHeight()/3f);
-
+//            Base2DScreen.setToRot(angle);
 
         }
         if (velocity.y>0f){
@@ -113,10 +108,8 @@ public class Rider extends Sprite {
                     getWidth()/1.7f,getHeight()/3f);
             boardPos.set(getLeft()+getHalfWidth()*1.3f,getBottom()+getHalfHeight()/1.1f);
             board2.setPos(boardPos);
-//            board2.setLeft(getLeft()+getWidth()*0.4f);
-//            board2.setBottom(getBottom()+getHalfWidth()/1.5f);
-//            board2.setRight(getLeft()+getWidth()*0.4f+getWidth()/1.7f);
-//            board2.setTop(getBottom()+getHalfWidth()/1.5f+getHeight()/3f);
+
+//            Base2DScreen.setToRot(angle);
         }
     }
 
@@ -145,6 +138,7 @@ public class Rider extends Sprite {
     }
 
     public void gameOver(){
+
         v.set(-0.0f,0f);
         velocity.set(0.000f,-0.0f);
     }
