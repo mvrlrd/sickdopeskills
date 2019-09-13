@@ -13,8 +13,11 @@ import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.sprites.*;
 
 public class MenuScreen extends Base2DScreen {
-    private static final int STAR_COUNT = 3000;
 
+
+//    private static MenuScreen instance;
+
+    private static final int STAR_COUNT = 3000;
     private static TextureAtlas allSprites;
     private static Music menuMusic;
     private static Snow[] snow;
@@ -26,6 +29,14 @@ public class MenuScreen extends Base2DScreen {
     public MenuScreen(Game game) {
         super(game);
     }
+
+
+//    public static MenuScreen getInstance(Game game){
+//        if (instance==null){
+//            instance = new MenuScreen(game);
+//        }
+//        return instance;
+//    }
 
     @Override
     public void show() {

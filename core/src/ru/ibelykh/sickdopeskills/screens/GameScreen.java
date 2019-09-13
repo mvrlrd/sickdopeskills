@@ -168,6 +168,7 @@ public class GameScreen extends Base2DScreen {
     @Override
     public boolean keyUp(int keycode) {
         if(keycode== Input.Keys.BACK){
+
            game.setScreen(new MenuScreen(game));
            music.dispose();
            gameOver();
