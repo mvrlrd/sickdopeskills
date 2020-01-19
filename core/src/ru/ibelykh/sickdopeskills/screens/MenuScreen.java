@@ -31,12 +31,6 @@ public class MenuScreen extends Base2DScreen {
     }
 
 
-//    public static MenuScreen getInstance(Game game){
-//        if (instance==null){
-//            instance = new MenuScreen(game);
-//        }
-//        return instance;
-//    }
 
     @Override
     public void show() {

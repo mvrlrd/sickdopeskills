@@ -5,13 +5,14 @@ import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import ru.ibelykh.sickdopeskills.SickDopeSkillsMain;
+
+import ru.ibelykh.sickdopeskills.utils.SickDope2D;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new SickDopeSkillsMain(), config);
+        return new IOSApplication(new SickDope2D(), config);
     }
 
     public static void main(String[] argv) {
