@@ -9,19 +9,14 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import java.util.List;
-
-import com.badlogic.gdx.math.Vector3;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
-import ru.ibelykh.sickdopeskills.math.MatrixUtils;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -32,6 +27,8 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 
 
 public class GameScreen extends Base2DScreen {
+
+
 
     private static final String HEIGHPTS = "top: ";
     private static final float FONT_SIZE = 0.1f;
@@ -69,6 +66,7 @@ public class GameScreen extends Base2DScreen {
 
 
 
+
     private static Rider rider;
     private static Shouting shouting;
     private static YouCool youCool;
@@ -82,6 +80,8 @@ public class GameScreen extends Base2DScreen {
 //
 //   private Matrix4 mx4Font;
 //    private SpriteBatch spriteFont;
+
+    TextureAtlas testAtlas;
 
 
     public GameScreen(Game game) {
@@ -97,6 +97,9 @@ public class GameScreen extends Base2DScreen {
         worldBounds = getWorldBounds();
 
         allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
+//        testAtlas = new TextureAtlas("images/sprites/test.atlas");
+
+
         startGates = new StartGates(allSprites, worldBounds);
         rider = new Rider(allSprites, worldBounds);
         shouting = new Shouting(allSprites, worldBounds);
@@ -388,6 +391,7 @@ else {
         soundCheck.dispose();
         music.dispose();
         allSprites.dispose();
+        testAtlas.dispose();
 
 
     }
