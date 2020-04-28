@@ -2,8 +2,6 @@ package ru.ibelykh.sickdopeskills.base;
 
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.utils.Regions;
-
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;

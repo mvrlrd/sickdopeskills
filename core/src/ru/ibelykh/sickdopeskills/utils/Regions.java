@@ -11,9 +11,6 @@ public class Regions {
     @return  массив регионов
      */
 
-
-
-
     public static TextureRegion[] split(TextureRegion region, int rows, int cols, int frames){
         if (region==null) throw new RuntimeException("Split null region");
         TextureRegion[]regions = new TextureRegion[frames];

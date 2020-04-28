@@ -1,6 +1,5 @@
 package ru.ibelykh.sickdopeskills.screens;
 
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,21 +8,16 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import java.util.List;
-
-import com.badlogic.gdx.math.Vector3;
+import ru.ibelykh.sickdopeskills.GamePresenter;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
-import ru.ibelykh.sickdopeskills.math.MatrixUtils;
 import ru.ibelykh.sickdopeskills.math.Rect;
-import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
 import ru.ibelykh.sickdopeskills.pools.TreePool;
 import ru.ibelykh.sickdopeskills.sprites.*;
@@ -32,6 +26,8 @@ import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 
 
 public class GameScreen extends Base2DScreen {
+
+
 
     private static final String HEIGHPTS = "top: ";
     private static final float FONT_SIZE = 0.1f;
@@ -67,18 +63,14 @@ public class GameScreen extends Base2DScreen {
     private static TreePool treePool;
     private static TreeEmitter treeEmitter;
 
-
-
-    private static Rider rider;
     private static Shouting shouting;
     private static YouCool youCool;
-    private static StartGates startGates;
 
     private static ButtonGameSoundOffOn buttonGameSoundOffOn;
     private static ButtonPause buttonPause;
 
-    private static Snow[] snow;
-    private static Splash[] splash;
+
+    GamePresenter gamePresenter;
 //
 //   private Matrix4 mx4Font;
 //    private SpriteBatch spriteFont;
@@ -94,11 +86,15 @@ public class GameScreen extends Base2DScreen {
     public void show() {
         super.show();
 
+
+
         worldBounds = getWorldBounds();
 
+        gamePresenter = new GamePresenter(getWorldBounds());
+        gamePresenter.show();
+
         allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
-        startGates = new StartGates(allSprites, worldBounds);
-        rider = new Rider(allSprites, worldBounds);
+
         shouting = new Shouting(allSprites, worldBounds);
         youCool = new YouCool(allSprites, worldBounds);
 
@@ -144,22 +140,10 @@ public class GameScreen extends Base2DScreen {
 //        spriteFont.setTransformMatrix(mx4Font);
 
 
-        //SPLASH
-        int SPLASH_COUNT = 20;
-        splash = new Splash[SPLASH_COUNT];
-        for (int i = 0; i < splash.length; i++) {
-            splash[i] = new Splash(allSprites);
-        }
-        //SNOW
-        int SNOW_COUNT = Rnd.nextInt(500, 10000);
-        snow = new Snow[SNOW_COUNT];
-        float windDirectionX = Rnd.nextFloat(-0.7f, 0.7f); //wind speed on X
-        float windDirectionY = Rnd.nextFloat(-0.7f, 0.7f); //wind speed on Y
-        for (int i = 0; i < snow.length; i++) {
-            Vector2 snowSpeed = new Vector2();
-            snowSpeed.set(Rnd.nextFloat(windDirectionX - 0.1f, windDirectionX + 0.1f), Rnd.nextFloat(windDirectionY - 0.1f, windDirectionY + 0.1f));
-            snow[i] = new Snow(allSprites, snowSpeed);
-        }
+
+
+
+
 
 
         Gdx.input.setCatchBackKey(true); // ловим касание по системной кнопке "Назад
@@ -191,14 +175,12 @@ public class GameScreen extends Base2DScreen {
 
 
     public void update(float delta) {
-        startGates.update(delta);
-        rider.update(delta);
-        for (int i = 0; i < snow.length; i++) {
-            snow[i].update(delta);
-        }
-        for (int i = 0; i < splash.length; i++) {
-            splash[i].update(delta);
-        }
+
+
+        gamePresenter.update(delta);
+
+
+
 
 
         if (((shouting.getFrame() == Shouting.DOPE) ||
@@ -242,23 +224,19 @@ public class GameScreen extends Base2DScreen {
         Gdx.gl.glClearColor(.8f, .8f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         flagPool.drawActiveSprites(batch);
-        if (isPlaying) {
-            for (int i = 0; i < splash.length; i++) {
-                splash[i].draw(batch);
-            }
-        }
-        rider.draw(batch);
+
+
+        gamePresenter.draw(batch);
+
         treePool.drawActiveSprites(batch);
         if ((points  == highScore) && (points != 0)) {
                 youCool.draw(batch);
         }
-        startGates.draw(batch);
+
         if ((isItNeedToShout)){
             shouting.draw(batch);
         }
-        for (int i = 0; i < snow.length; i++) {
-            snow[i].draw(batch);
-        }
+
         buttonGameSoundOffOn.draw(batch);
         buttonPause.draw(batch);
 
@@ -346,16 +324,12 @@ else {
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-        startGates.resize(worldBounds, worldBounds.getLeft() + 0.1f, 0f);
-        rider.resize(worldBounds, worldBounds.getLeft() + 1.2f * rider.getWidth(), 0f);
-        //snow
-        for (int i = 0; i < snow.length; i++) {
-            snow[i].resize(worldBounds);
-        }
-        //splash
-        for (int i = 0; i < splash.length; i++) {
-            splash[i].resize(worldBounds);
-        }
+
+
+        gamePresenter.resize(worldBounds);
+
+
+
         buttonGameSoundOffOn.resize(worldBounds);
         buttonPause.resize(worldBounds);
     }
@@ -400,7 +374,9 @@ else {
             if (countClicks == 1) {
                 startNewGame();
             }
-            rider.touchDown(touch, pointer);
+
+            gamePresenter.touchDown(touch,pointer);
+
         }
         if ((onPause)||(isPlaying)) {
             buttonPause.touchDown(touch, pointer);
@@ -420,7 +396,9 @@ else {
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
         if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))) {
-            rider.touchUp(touch, pointer);
+
+            gamePresenter.touchUp(touch,pointer);
+
         }
 
         buttonGameSoundOffOn.touchUp(touch, pointer);
@@ -480,21 +458,21 @@ else {
 
     private boolean isOnRightWay(Flag flag) {
 
-            return ((rider.getBoardNose() > flag.getLeft())
+            return ((gamePresenter.getRider().getBoardNose() > flag.getLeft())
                     && (((flag.isItRed())
-                    && (rider.getBoardTop() < flag.getBottom())) //ниже красного
+                    && (gamePresenter.getRider().getBoardTop() < flag.getBottom())) //ниже красного
                     || ((!flag.isItRed())
-                    && (rider.getBoardBottom() > flag.getTop()))));//выше синего
+                    && (gamePresenter.getRider().getBoardBottom() > flag.getTop()))));//выше синего
 
     }
 
     private boolean isAccident(Flag flag) {
-        return !flag.isOutside(rider.getBoard2());
+        return !flag.isOutside(gamePresenter.getRider().getBoard2());
     }
 
     private boolean isAccident(Tree tree) {
 //        return !rider.getBoard2().isOutside(tree.getTrunk());
-        return !tree.isOutside(rider.getBoard2());
+        return !tree.isOutside(gamePresenter.getRider().getBoard2());
 
     }
 
@@ -503,12 +481,12 @@ else {
     // WRONGWAY
     private boolean isWrongWay(Flag flag) {
 if (!flag.isDestroyed())
-            return ((rider.getBoardNose() > flag.getRight())
-                    && (rider.getBoardNose() - flag.getLeft() < rider.getBoard().width)
+            return ((gamePresenter.getRider().getBoardNose() > flag.getRight())
+                    && (gamePresenter.getRider().getBoardNose() - flag.getLeft() < gamePresenter.getRider().getBoard().width)
                     && (((flag.isItRed())
-                    && (rider.getBoardBottom() > flag.getBottom())) //Выше красного
+                    && (gamePresenter.getRider().getBoardBottom() > flag.getBottom())) //Выше красного
                     || ((!flag.isItRed())
-                    && (rider.getBoardTop() < flag.getTop()))));//ниже синего
+                    && (gamePresenter.getRider().getBoardTop() < flag.getTop()))));//ниже синего
 
         return false;
     }
@@ -521,7 +499,7 @@ if (!flag.isDestroyed())
         music.setVolume(0.3f);
         setIsPlaying(false);
 
-        rider.gameOver();
+        gamePresenter.getRider().gameOver();
     }
 
     private void startNewGame() {
@@ -541,10 +519,11 @@ if (!flag.isDestroyed())
         shouting.setSick(false);
         music.setVolume(1f);
 
-        rider.setTheNewGame();
+        gamePresenter.setTheNewGame();
+
         isGameOver=false;
         isPlaying = true;
-        startGates.setTheNewGame();
+
     }
 
     public static Music getMusic() {
@@ -589,9 +568,7 @@ if (!flag.isDestroyed())
         }
     }
 
-    public static Rider getRider() {
-        return rider;
-    }
+
 
     public static int getCountClicks() {
         return countClicks;

@@ -32,17 +32,9 @@ public class YouCool extends Sprite {
 
     @Override
     public void update(float delta) {
-
         super.update(delta);
         setAngle(90);
         pos.set(worldBounds.getRight()-getHalfWidth(),worldBounds.getBottom()+getHalfHeight());
-
-
-//        this.coolMoments++;
-//			System.out.println(coolMoments+"  COooll");setAngle(90);
-
-
-
     }
     @Override
     public void draw(SpriteBatch batch) {
@@ -50,7 +42,4 @@ public class YouCool extends Sprite {
             super.draw(batch);
 //        }
     }
-
-
-
 }

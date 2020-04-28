@@ -1,14 +1,11 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
-
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.screens.MenuScreen;
-
 
 public class Rider extends Sprite {
     private final static int RIGHT_FRAME_RUS = 2;
@@ -17,14 +14,17 @@ public class Rider extends Sprite {
     private final static int LEFT_FRAME_DARK = 1;
     private final static int RIGHT_FRAME_GRAY = 4;
     private final static int LEFT_FRAME_GRAY = 5;
-    private static final String REGIONNAME = "riders";
-    private Rect worldBounds;
+    private static final String REGION_NAME = "riders";
+    private final float VELOCITY_Y = 0.045f;  //было    0.06f
+    private final float PROPORTION = 0.1f;
+    private static TextureAtlas textureAtlas;
 
-    private Vector2 v = new Vector2();
-    private Vector2 velocity = new Vector2();
-    private float velocityY=0.045f;  //было    0.06f
-    private Vector2 lastVelocity= new Vector2(0,velocityY);
-    private  int rightHandedFrame;
+    private Rect worldBounds;
+    private Vector2 v;
+    private Vector2 velocity;
+
+    private Vector2 lastVelocity;
+    private int rightHandedFrame;
     private int leftHandedFrame;
 
     private Vector2 prePauseSpeed;
@@ -33,18 +33,20 @@ public class Rider extends Sprite {
     private Vector2 speed;
     private Rectangle board;
 
-   private Rect board2;
-   private Vector2 boardPos;
-
+    private Rect board2;
+    private Vector2 boardPos;
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
-        super(atlas.findRegion(REGIONNAME), 3, 2, 6);
-        speed=new Vector2();
+        super(atlas.findRegion(REGION_NAME), 3, 2, 6);
+        v = new Vector2();
+        velocity = new Vector2();
+        lastVelocity = new Vector2(0,VELOCITY_Y);
+        speed = new Vector2();
         framer(MenuScreen.getBtnGetRider().getFrame());
         frame = rightHandedFrame;
-        float proportion = 0.1f;
-        setHeightProportion(proportion);
+        setHeightProportion(PROPORTION);
         this.worldBounds = worldBounds;
+
         board = new Rectangle();
 
         board2 = new Rect();
@@ -54,8 +56,6 @@ public class Rider extends Sprite {
 
         prePauseSpeed = new Vector2();
         preVelocity = new Vector2();
-
-
     }
 
     private void framer(int frame){
@@ -81,12 +81,12 @@ public class Rider extends Sprite {
         pos.mulAdd(speed,delta);
 
         if (this.getTop()>worldBounds.getTop()&&((v.add(velocity)).y>0.3f)){
-            velocity.set(velocity.x,-velocityY);
+            velocity.set(velocity.x,-VELOCITY_Y);
             v.set(0f,0f);
             pos.mulAdd(v.add(velocity), delta);
         }
         if (this.getBottom() < worldBounds.getBottom()&&(v.add(velocity)).y < -0.3f){
-            velocity.set(velocity.x,velocityY);
+            velocity.set(velocity.x,VELOCITY_Y);
             v.set(0f,0f);
             pos.mulAdd(v.add(velocity), delta);
         }
@@ -146,11 +146,9 @@ public class Rider extends Sprite {
     public Rect getBoard2() {
         return board2;
     }
-
     public Rectangle getBoard() {
         return board;
     }
-
     public float getBoardBack(){
         return board.x;
     }
@@ -165,11 +163,11 @@ public class Rider extends Sprite {
     }
 
 
-    public void pause(){
-prePauseSpeed.set(speed);
-preVelocity.set(velocity);
-        speed.set(0f,0f);
-        velocity.set(0f,0f);
+    public void pause() {
+        prePauseSpeed.set(speed);
+        preVelocity.set(velocity);
+        speed.set(0f, 0f);
+        velocity.set(0f, 0f);
     }
 
     public void resume(){

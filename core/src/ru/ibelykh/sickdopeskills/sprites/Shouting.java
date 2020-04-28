@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
 
-
 public class Shouting extends Sprite {
 
     private static boolean isSick;

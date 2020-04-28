@@ -14,10 +14,11 @@ public class Splash extends Sprite {
 
    static float posX = -0.67f;
    static float posY = 0f;
-    private Rider rider = GameScreen.getRider();
+    private static Rider rider;
 
-    public Splash(TextureAtlas atlas) {
+    public Splash(TextureAtlas atlas, Rider _rider) {
         super(atlas.findRegion("snow"));
+        rider = _rider;
 
         setHeightProportion(Rnd.nextFloat(0.02f,0.025f));
         pos.set(posX,posY);
@@ -28,9 +29,9 @@ public class Splash extends Sprite {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         this.worldBounds = worldBounds;
-//        float posX = -0.67f;
-//        float posY = 0f;
-//        pos.set(posX,rider.getBoardBottom());
+        float posX = -0.67f;
+        float posY = 0f;
+        pos.set(posX,rider.getBoardBottom());
     }
 
     @Override

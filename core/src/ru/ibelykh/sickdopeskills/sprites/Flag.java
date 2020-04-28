@@ -33,10 +33,6 @@ public class Flag extends Sprite {
     public void update(float delta) {
         super.update(delta);
         if (GameScreen.getIsPlaying()) {
-
-
-
-
             pos.mulAdd(flagSpeed, delta);
             // видимо изза поворота на 90 getRight остался тем которое было до поворота/ для плавного ухода елок с экрана;
             if (getRight() < worldBounds.getLeft()) {
@@ -45,9 +41,6 @@ public class Flag extends Sprite {
                 GameScreen.setIsItNeedToShout(false);
                 Shouting.framer(Rnd.nextInt(0, 4));  //there are just 3 types of shouting frames ("sick","dope","whoa");
             }
-
-
-
         }else { //if the rider crushes the flags stop
             pos.mulAdd(new Vector2(0f,0f), delta);
         }
@@ -58,7 +51,6 @@ public class Flag extends Sprite {
     public void resize(Rect _worldBounds, float x, float y) {
         super.resize(_worldBounds);
         pos.set(x,y);
-
     }
 
     public void set(

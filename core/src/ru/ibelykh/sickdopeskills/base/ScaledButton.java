@@ -47,7 +47,6 @@ public abstract class ScaledButton extends Sprite {
     }
 
 
-
     public abstract void actionPerformed();
 
 }

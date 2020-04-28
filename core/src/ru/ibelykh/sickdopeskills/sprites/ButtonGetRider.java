@@ -6,15 +6,10 @@ import ru.ibelykh.sickdopeskills.math.Rect;
 
 public class ButtonGetRider extends ScaledButton {
 
-
-
-
     public ButtonGetRider(TextureRegion region, int rows, int cols, int frames) {
         super(region, rows, cols, frames);
         setHeightProportion(0.3f);
     }
-
-
 
     @Override
     public void actionPerformed() {
@@ -27,14 +22,10 @@ public class ButtonGetRider extends ScaledButton {
         }
     }
 
-
-
-
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         setBottom(worldBounds.getBottom()+worldBounds.getHalfHeight()-getHalfHeight());
         setRight(worldBounds.getRight()-worldBounds.getHalfWidth());
-
     }
 }

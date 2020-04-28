@@ -1,9 +1,6 @@
 package ru.ibelykh.sickdopeskills.base;
 
-
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
 import java.util.List;
 

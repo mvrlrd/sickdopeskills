@@ -47,13 +47,12 @@ boolean musicStatus;
             if (GameScreen.isOnPause()){
             setFrame(0);
             GameScreen.setOnPause(false);
-            GameScreen.getRider().resume();
+//            GameScreen.getRider().resume();
             GameScreen.isPlaying = true;
             if (!GameScreen.getMusic().isPlaying()) {
                 GameScreen.setMusic(musicStatus);
             }
         }
-//            System.out.println("play");
     }
 
     public void onPause(){
@@ -66,13 +65,8 @@ boolean musicStatus;
             }
             setFrame(1);
             GameScreen.setOnPause(true);
-            GameScreen.getRider().pause();
+//            GameScreen.getRider().pause();
             GameScreen.isPlaying = false;
-
-//            System.out.println("pause");
         }
     }
-
-
-
 }

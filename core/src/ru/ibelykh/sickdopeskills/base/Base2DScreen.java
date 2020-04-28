@@ -8,21 +8,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-
 import com.badlogic.gdx.math.Vector3;
 import ru.ibelykh.sickdopeskills.math.MatrixUtils;
 import ru.ibelykh.sickdopeskills.math.Rect;
 
 
 public class Base2DScreen implements Screen, InputProcessor {
-
-
     protected SpriteBatch batch;
-
     protected static SpriteBatch batchFont;
 //    protected static SpriteBatch batchSnowboard;
-
-
     private static Matrix4 matrixForFont;
 //    protected static Matrix4 matrixForSnowboard;
 
@@ -57,29 +51,25 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-//            System.out.println("show");
         batch = new SpriteBatch();
         batch.getProjectionMatrix().idt();
         Gdx.input.setInputProcessor(this);
 
         batchFont = new SpriteBatch();
 //        batchFont.getProjectionMatrix().idt();
-//batchSnowboard = new SpriteBatch();
+//        batchSnowboard = new SpriteBatch();
 
         Vector3 fontRotationVector = new Vector3(0, 0, 1);
         matrixForFont.setToRotation(fontRotationVector, 90);
         batchFont.setTransformMatrix(matrixForFont);
-
     }
 
     @Override
     public void render(float delta) {
-
     }
 
     @Override
     public void resize(int width, int height) {
-//            System.out.println("resize");
         screenBounds.setSize(width, height);
         screenBounds.setLeft(0);
         screenBounds.setBottom(0);
@@ -96,8 +86,6 @@ public class Base2DScreen implements Screen, InputProcessor {
 
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
         resize(worldBounds);
-
-
     }
 
     public void resize(Rect worldBounds) {
@@ -156,7 +144,6 @@ public class Base2DScreen implements Screen, InputProcessor {
     public boolean touchDown(Vector2 touch, int pointer) {
         System.out.println("touchdown touch.x= " + touch.x + " " + " touch.y= " + touch.y + "  POINTER " + pointer);
         System.out.println();
-
         return false;
     }
 
@@ -170,7 +157,6 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     public boolean touchUp(Vector2 touch, int pointer) {
 //        System.out.println("touchup  touch.x= "+ touch.x+" touch.y = "+ touch.y);
-
         return false;
     }
 
@@ -199,14 +185,7 @@ public class Base2DScreen implements Screen, InputProcessor {
 //        System.out.println("keydowm  keycode = "+ keycode);
         return false;
     }
-//public static void setToRot(float angle){
-//    Vector3 fontRotationVector = new Vector3(0, 0, 1);
-//    batchSnowboard.setTransformMatrix(matrixForSnowboard);
-//    matrixForSnowboard.setToRotation(fontRotationVector, angle);
-
-//}
 
 
-    //SOUND
 
 }

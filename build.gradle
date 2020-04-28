@@ -80,6 +80,8 @@ project(":ios") {
         compile "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
         compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+
+
         
     }
 }
