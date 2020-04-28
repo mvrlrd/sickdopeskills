@@ -10,7 +10,7 @@ import ru.ibelykh.sickdopeskills.sprites.Snow;
 import ru.ibelykh.sickdopeskills.sprites.Splash;
 import ru.ibelykh.sickdopeskills.sprites.StartGates;
 
-public class Model {
+public class GameSpritesModel {
     private final TextureAtlas ALL_SPRITES_TEXTURE_ATLAS = new TextureAtlas("images/sprites/allSprites.atlas");
     private static final int SPLASH_COUNT = 20;
     private static final int SNOW_COUNT = Rnd.nextInt(500, 10000);
@@ -24,7 +24,7 @@ public class Model {
 
 
 
-    public Model(Rect worldBounds) {
+    public GameSpritesModel(Rect worldBounds) {
         this.worldBounds = worldBounds;
     }
 

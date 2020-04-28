@@ -8,35 +8,37 @@ import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
 import ru.ibelykh.sickdopeskills.sprites.Flag;
 import ru.ibelykh.sickdopeskills.sprites.Rider;
+import ru.ibelykh.sickdopeskills.sprites.Snow;
+import ru.ibelykh.sickdopeskills.sprites.Splash;
 import ru.ibelykh.sickdopeskills.sprites.Tree;
 
 public class GamePresenter implements GameProcess {
-    private Model model;
+    private GameSpritesModel gameSpritesModel;
 
 
     public GamePresenter(Rect worldBounds) {
-        this.model = new Model(worldBounds);
+        this.gameSpritesModel = new GameSpritesModel(worldBounds);
     }
 
     @Override
     public void show() {
-        model.init();
+        gameSpritesModel.init();
     }
 
     @Override
     public void draw(SpriteBatch batch) {
         //splashes(only if the rider is moving)
         if (GameScreen.getIsPlaying()){
-            for (int i = 0; i < model.getSplash().length; i++) {
-                model.getSplash()[i].draw(batch);
+            for (int i = 0; i < gameSpritesModel.getSplash().length; i++) {
+                gameSpritesModel.getSplash()[i].draw(batch);
             }
         }
-        model.getRider().draw(batch);
-        model.getStartGates().draw(batch);
+        gameSpritesModel.getRider().draw(batch);
+        gameSpritesModel.getStartGates().draw(batch);
 
         //snows
-        for (int i = 0; i < model.getSnows().length; i++) {
-            model.getSnows()[i].draw(batch);
+        for (int i = 0; i < gameSpritesModel.getSnows().length; i++) {
+            gameSpritesModel.getSnows()[i].draw(batch);
         }
 
 
@@ -44,16 +46,17 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void update(float delta) {
-        model.getStartGates().update(delta);
-        model.getRider().update(delta);
+        gameSpritesModel.getStartGates().update(delta);
+        gameSpritesModel.getRider().update(delta);
         //splashes
-        for (int i = 0; i < model.getSplash().length; i++) {
-            model.getSplash()[i].update(delta);
+        for (Splash oneSingleSplash : gameSpritesModel.getSplash()) {
+            oneSingleSplash.update(delta);
         }
         //snows
-        for (int i = 0; i < model.getSnows().length; i++) {
-            model.getSnows()[i].update(delta);
+        for (Snow oneSingleSnowflake : gameSpritesModel.getSnows()) {
+            oneSingleSnowflake.update(delta);
         }
+
     }
 
     @Override
@@ -63,15 +66,15 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void resize(Rect worldBounds) {
-        model.getStartGates().resize(worldBounds, worldBounds.getLeft() + 0.1f, 0f);
-        model.getRider().resize(worldBounds, worldBounds.getLeft() + 1.2f * model.getRider().getWidth(), 0f);
+        gameSpritesModel.getStartGates().resize(worldBounds, worldBounds.getLeft() + 0.1f, 0f);
+        gameSpritesModel.getRider().resize(worldBounds, worldBounds.getLeft() + 1.2f * gameSpritesModel.getRider().getWidth(), 0f);
         //splashes
-        for (int i = 0; i < model.getSplash().length; i++) {
-            model.getSplash()[i].resize(worldBounds);
+        for (Splash oneSingleSplash : gameSpritesModel.getSplash()) {
+            oneSingleSplash.resize(worldBounds);
         }
-        //snow
-        for (int i = 0; i < model.getSnows().length; i++) {
-            model.getSnows()[i].resize(worldBounds);
+        //snows
+        for (Snow oneSingleSnowflake : gameSpritesModel.getSnows()) {
+            oneSingleSnowflake.resize(worldBounds);
         }
     }
 
@@ -117,12 +120,12 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        return model.getRider().touchDown(touch,pointer);
+        return gameSpritesModel.getRider().touchDown(touch,pointer);
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        return model.getRider().touchUp(touch, pointer);
+        return gameSpritesModel.getRider().touchUp(touch, pointer);
     }
 
     @Override
@@ -161,16 +164,16 @@ public class GamePresenter implements GameProcess {
     }
 
     public Rider getRider() {
-        return model.getRider();
+        return gameSpritesModel.getRider();
     }
 
-    public Model getModel() {
-        return model;
+    public GameSpritesModel getGameSpritesModel() {
+        return gameSpritesModel;
     }
 
     @Override
     public void setTheNewGame() {
-        model.getStartGates().setTheNewGame();
-        model.getRider().setTheNewGame();
+        gameSpritesModel.getStartGates().setTheNewGame();
+        gameSpritesModel.getRider().setTheNewGame();
     }
 }
