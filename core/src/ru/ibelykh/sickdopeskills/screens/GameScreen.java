@@ -22,7 +22,6 @@ import ru.ibelykh.sickdopeskills.sprites.*;
 public class GameScreen extends Base2DScreen {
     private static final String HEIGHPTS = "top: ";
     private static final float FONT_SIZE = 0.1f;
-
     public static boolean isPlaying;
     public static boolean isGameOver;
     private static boolean onPause;
@@ -40,12 +39,10 @@ public class GameScreen extends Base2DScreen {
     private static Sound soundCheck;
     private static Preferences prefs;
     private static ShapeRenderer shapeRenderer;
-
     private static Shouting shouting;
     private static YouCool youCool;
     private static ButtonGameSoundOffOn buttonGameSoundOffOn;
     private static ButtonPause buttonPause;
-
     private GamePresenter gamePresenter;
 //   private Matrix4 mx4Font;
 //    private SpriteBatch spriteFont;
@@ -59,23 +56,19 @@ public class GameScreen extends Base2DScreen {
         super.show();
         worldBounds = getWorldBounds();
         gamePresenter = new GamePresenter(getWorldBounds());
-
         allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
-
         shouting = new Shouting(allSprites, worldBounds);
         youCool = new YouCool(allSprites, worldBounds);
         buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites);
         buttonPause = new ButtonPause(allSprites);
-
-
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setColor(Color.RED);
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/bad_guy.mp3"));
         music.setLooping(true);
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
         //preferences (music, high score)
-        prefs=Gdx.app.getPreferences("high score and sound");
-        if (prefs.getBoolean("soundOff")){
+        prefs = Gdx.app.getPreferences("high score and sound");
+        if (prefs.getBoolean("soundOff")) {
             music.pause();
         } else {
             music.play();
@@ -94,11 +87,11 @@ public class GameScreen extends Base2DScreen {
 
     @Override
     public boolean keyUp(int keycode) {
-        if(keycode== Input.Keys.BACK){
-           game.setScreen(new MenuScreen(game));
-           music.dispose();
-           gameOver();
-           isItNeedToShout=false;
+        if (keycode == Input.Keys.BACK) {
+            game.setScreen(new MenuScreen(game));
+            music.dispose();
+            gameOver();
+            isItNeedToShout = false;
         }
         return false;
     }
@@ -111,7 +104,6 @@ public class GameScreen extends Base2DScreen {
         draw();
     }
 
-
     public void update(float delta) {
         gamePresenter.update(delta);
         if (((shouting.getFrame() == Shouting.DOPE) ||
@@ -122,16 +114,16 @@ public class GameScreen extends Base2DScreen {
             isItNeedToShout = false;
             interval = 0;
         }
-        if (points>prefs.getInteger("pts")){
-            prefs.putInteger("pts",points);
+        if (points > prefs.getInteger("pts")) {
+            prefs.putInteger("pts", points);
             prefs.flush();
-            highScore=points;
+            highScore = points;
         }
-        if (music.isPlaying()){
-            prefs.putBoolean("soundOff",false);
+        if (music.isPlaying()) {
+            prefs.putBoolean("soundOff", false);
             prefs.flush();
-        } else if(!music.isPlaying()){
-            prefs.putBoolean("soundOff",true);
+        } else if (!music.isPlaying()) {
+            prefs.putBoolean("soundOff", true);
             prefs.flush();
         }
         youCool.update(delta);
@@ -148,10 +140,10 @@ public class GameScreen extends Base2DScreen {
         Gdx.gl.glClearColor(.8f, .8f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gamePresenter.draw(batch);
-        if ((points  == highScore) && (points != 0)) {
-                youCool.draw(batch);
+        if ((points == highScore) && (points != 0)) {
+            youCool.draw(batch);
         }
-        if ((isItNeedToShout)){
+        if ((isItNeedToShout)) {
             shouting.draw(batch);
         }
         buttonGameSoundOffOn.draw(batch);
@@ -174,6 +166,7 @@ public class GameScreen extends Base2DScreen {
 ////        }
 //        shapeRenderer.end();
     }
+
     private void printInfo2() {
         sbFrags.setLength(0);
         sbFrags.append(points);
@@ -263,11 +256,10 @@ public class GameScreen extends Base2DScreen {
         return super.touchDown(touch, pointer);
     }
 
-
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))) {
-            gamePresenter.touchUp(touch,pointer);
+        if ((!buttonGameSoundOffOn.isMe(touch)) && (!buttonPause.isMe(touch))) {
+            gamePresenter.touchUp(touch, pointer);
         }
         buttonGameSoundOffOn.touchUp(touch, pointer);
         buttonPause.touchUp(touch, pointer);
@@ -307,23 +299,22 @@ public class GameScreen extends Base2DScreen {
         }
     }
 
-    private void setShoutFrame(boolean isEverythingOk,Flag flag){
+    private void setShoutFrame(boolean isEverythingOk, Flag flag) {
         if (isEverythingOk) {
-            int[] frames = {0,2};
+            int[] frames = {0, 2};
             shouting.setFrame(frames[flag.getShoutFrame()]);
-        }
-        else {
+        } else {
             shouting.setFrame(1);
         }
         shouting.setSick(true);
     }
 
     private boolean isOnRightWay(Flag flag) {
-            return ((gamePresenter.getRider().getBoardNose() > flag.getLeft())
-                    && (((flag.isItRed())
-                    && (gamePresenter.getRider().getBoardTop() < flag.getBottom())) //ниже красного
-                    || ((!flag.isItRed())
-                    && (gamePresenter.getRider().getBoardBottom() > flag.getTop()))));//выше синего
+        return ((gamePresenter.getRider().getBoardNose() > flag.getLeft())
+                && (((flag.isItRed())
+                && (gamePresenter.getRider().getBoardTop() < flag.getBottom())) //ниже красного
+                || ((!flag.isItRed())
+                && (gamePresenter.getRider().getBoardBottom() > flag.getTop()))));//выше синего
     }
 
     private boolean isAccident(Flag flag) {
@@ -334,7 +325,6 @@ public class GameScreen extends Base2DScreen {
 //        return !rider.getBoard2().isOutside(tree.getTrunk());
         return !tree.isOutside(gamePresenter.getRider().getBoard2());
     }
-
     // WRONGWAY
     private boolean isWrongWay(Flag flag) {
         if (!flag.isDestroyed())
