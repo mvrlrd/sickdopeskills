@@ -11,24 +11,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import java.util.List;
 import ru.ibelykh.sickdopeskills.GamePresenter;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
 import ru.ibelykh.sickdopeskills.math.Rect;
-import ru.ibelykh.sickdopeskills.pools.FlagPool;
-import ru.ibelykh.sickdopeskills.pools.TreePool;
 import ru.ibelykh.sickdopeskills.sprites.*;
-import ru.ibelykh.sickdopeskills.utils.FlagEmitter;
-import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
-
 
 public class GameScreen extends Base2DScreen {
-
-
-
     private static final String HEIGHPTS = "top: ";
     private static final float FONT_SIZE = 0.1f;
 
@@ -36,85 +27,52 @@ public class GameScreen extends Base2DScreen {
     public static boolean isGameOver;
     private static boolean onPause;
     private static boolean isItNeedToShout;
-
     private static int points;
     private static int highScore;
     private static int countClicks;
-
     private static float interval = 0f;
-
     private static StringBuilder sbFrags = new StringBuilder();
     private static StringBuilder sbDist = new StringBuilder();
     private static StringBuilder sbHeighPts = new StringBuilder();
-
-    private static List<Flag> flagList;
-    private static List<Tree> treeList;
-
     private TextureAtlas allSprites;
     private static Font font;
     private static Music music;
     private static Sound soundCheck;
-
     private static Preferences prefs;
     private static ShapeRenderer shapeRenderer;
 
-    private static FlagPool flagPool;
-    private static FlagEmitter flagEmitter;
-    private static TreePool treePool;
-    private static TreeEmitter treeEmitter;
-
     private static Shouting shouting;
     private static YouCool youCool;
-
     private static ButtonGameSoundOffOn buttonGameSoundOffOn;
     private static ButtonPause buttonPause;
 
-
-    GamePresenter gamePresenter;
-//
+    private GamePresenter gamePresenter;
 //   private Matrix4 mx4Font;
 //    private SpriteBatch spriteFont;
-
 
     public GameScreen(Game game) {
         super(game);
     }
 
-
-
     @Override
     public void show() {
         super.show();
-
-
-
         worldBounds = getWorldBounds();
-
         gamePresenter = new GamePresenter(getWorldBounds());
-        gamePresenter.show();
 
         allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
 
         shouting = new Shouting(allSprites, worldBounds);
         youCool = new YouCool(allSprites, worldBounds);
-
-        treePool = new TreePool( worldBounds);
-        flagPool = new FlagPool(worldBounds);
-        flagList = flagPool.getActiveObjects();
-        treeList = treePool.getActiveObjects();
-        flagEmitter = new FlagEmitter(worldBounds, flagPool, allSprites);
-        treeEmitter = new TreeEmitter(worldBounds, treePool, allSprites);
-
         buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites);
         buttonPause = new ButtonPause(allSprites);
 
+
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setColor(Color.RED);
-
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/bad_guy.mp3"));
         music.setLooping(true);
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
-
         //preferences (music, high score)
         prefs=Gdx.app.getPreferences("high score and sound");
         if (prefs.getBoolean("soundOff")){
@@ -123,29 +81,14 @@ public class GameScreen extends Base2DScreen {
             music.play();
         }
         highScore = prefs.getInteger("pts");
-
         font = new Font("font/mario_font.fnt", "font/mario_font.png");
         font.setColor(Color.BLACK);
         font.setFontSize(FONT_SIZE);
-
-
 //        mx4Font = new Matrix4();
 //        spriteFont = new SpriteBatch();
 //        Vector3 fontRotationVector = new Vector3(1, 1, 0);
-//
-//
-//
-//
 //        mx4Font.setToRotation(fontRotationVector, 180);
 //        spriteFont.setTransformMatrix(mx4Font);
-
-
-
-
-
-
-
-
         Gdx.input.setCatchBackKey(true); // ловим касание по системной кнопке "Назад
     }
 
@@ -160,29 +103,17 @@ public class GameScreen extends Base2DScreen {
         return false;
     }
 
-
     @Override
     public void render(float delta) {
         super.render(delta);
         update(delta);
         deleteAllDestroyed();
         draw();
-
-
-
-
     }
 
 
     public void update(float delta) {
-
-
         gamePresenter.update(delta);
-
-
-
-
-
         if (((shouting.getFrame() == Shouting.DOPE) ||
                 (shouting.getFrame() == Shouting.WHOA)) && (isItNeedToShout)) {
             interval += delta;
@@ -191,7 +122,6 @@ public class GameScreen extends Base2DScreen {
             isItNeedToShout = false;
             interval = 0;
         }
-
         if (points>prefs.getInteger("pts")){
             prefs.putInteger("pts",points);
             prefs.flush();
@@ -204,13 +134,7 @@ public class GameScreen extends Base2DScreen {
             prefs.putBoolean("soundOff",true);
             prefs.flush();
         }
-        treePool.updateActiveSprites(delta);
-        treeEmitter.generateTreesTop(delta);
-        treeEmitter.generateTreesBottom(delta);
-        flagPool.updateActiveSprites(delta);
-        flagEmitter.generateFlags(delta);
         youCool.update(delta);
-
         shouting.update(delta);
         checkCollisions();
         buttonGameSoundOffOn.update(delta);
@@ -223,82 +147,52 @@ public class GameScreen extends Base2DScreen {
         batch.begin();
         Gdx.gl.glClearColor(.8f, .8f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        flagPool.drawActiveSprites(batch);
-
-
         gamePresenter.draw(batch);
-
-        treePool.drawActiveSprites(batch);
         if ((points  == highScore) && (points != 0)) {
                 youCool.draw(batch);
         }
-
         if ((isItNeedToShout)){
             shouting.draw(batch);
         }
-
         buttonGameSoundOffOn.draw(batch);
         buttonPause.draw(batch);
-
-
         batch.end();
         printInfo2();
-
 //        shapeRenderer.setProjectionMatrix(matrixForSnowboard);
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 //        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
-//
 //        shapeRenderer.end();
-
-
-
-
-
 //Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
 //        shapeRenderer.setProjectionMatrix(worldToGl);
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//
-//
 //        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
-//
 ////        for (Flag flag : flagList) {
 ////            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
 ////        }
 ////        for (Tree tree : treeList) {
 ////            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
-////
 ////        }
 //        shapeRenderer.end();
-
-
     }
     private void printInfo2() {
-
-
         sbFrags.setLength(0);
         sbFrags.append(points);
         float otstup; // для того чтобы центрировать надпись с очками
-if (points<10){
-     otstup = FONT_SIZE/2f;
-}
-else {
-    otstup = FONT_SIZE;
-}
-
+        if (points < 10) {
+            otstup = FONT_SIZE / 2f;
+        } else {
+            otstup = FONT_SIZE;
+        }
         batchFont.begin();
-
         font.draw(batchFont,
                 sbFrags,
-                worldBounds.getLeft()+worldBounds.getHalfWidth()-otstup, worldBounds.getTop()-0.3f);
-
-
-
-        if (isGameOver){
+                worldBounds.getLeft() + worldBounds.getHalfWidth() - otstup, worldBounds.getTop() - 0.3f);
+        if (isGameOver) {
             sbHeighPts.setLength(0);
             sbHeighPts.append(highScore);
             font.draw(batchFont,
                     sbHeighPts,
-                    worldBounds.getLeft()+worldBounds.getHalfWidth()-FONT_SIZE, worldBounds.getTop()-0.8f);
+                    worldBounds.getLeft() + worldBounds.getHalfWidth() - FONT_SIZE, worldBounds.getTop() - 0.8f);
         }
         batchFont.end();
     }
@@ -306,10 +200,7 @@ else {
 //        sbDist.setLength(0);
 //        sbHeighPts.setLength(0);
 //        sbFrags.setLength(0);
-//
-//
 //sbFrags.append(points);
-//
 //        font.draw(batch,
 //                sbHeighPts.append(highScore),
 //                worldBounds.getLeft()+FONT_SIZE, worldBounds.getTop()
@@ -317,36 +208,25 @@ else {
 //    }
 
     private void deleteAllDestroyed() {
-        flagPool.freeAllDestroyedActiveSprites();
-        treePool.freeAllDestroyedActiveSprites();
+        gamePresenter.deleteAllDestroyed();
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-
-
         gamePresenter.resize(worldBounds);
-
-
-
         buttonGameSoundOffOn.resize(worldBounds);
         buttonPause.resize(worldBounds);
     }
 
-
     @Override
     public void pause() {
         super.pause();
-
-
     }
 
     @Override
     public void resume() {
         super.resume();
-
-
     }
 
     @Override
@@ -358,37 +238,28 @@ else {
     public void dispose() {
         super.dispose();
         font.dispose();
-        flagPool.dispose();
         soundCheck.dispose();
         music.dispose();
         allSprites.dispose();
-
-
+        gamePresenter.dispose();
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-
-        if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))&&(!onPause)) {
+        if ((!buttonGameSoundOffOn.isMe(touch)) && (!buttonPause.isMe(touch)) && (!onPause)) {
             countClicks++;
             if (countClicks == 1) {
                 startNewGame();
             }
-
-            gamePresenter.touchDown(touch,pointer);
-
+            gamePresenter.touchDown(touch, pointer);
         }
-        if ((onPause)||(isPlaying)) {
+        if ((onPause) || (isPlaying)) {
             buttonPause.touchDown(touch, pointer);
         }
-
-        if ((buttonPause.getFrame()==1)&&(!buttonPause.isMe(touch))&&(!buttonGameSoundOffOn.isMe(touch))){
-          buttonPause.onPlay();
+        if ((buttonPause.getFrame() == 1) && (!buttonPause.isMe(touch)) && (!buttonGameSoundOffOn.isMe(touch))) {
+            buttonPause.onPlay();
         }
-
-
         buttonGameSoundOffOn.touchDown(touch, pointer);
-
         return super.touchDown(touch, pointer);
     }
 
@@ -396,37 +267,29 @@ else {
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
         if((!buttonGameSoundOffOn.isMe(touch))&&(!buttonPause.isMe(touch))) {
-
             gamePresenter.touchUp(touch,pointer);
-
         }
-
         buttonGameSoundOffOn.touchUp(touch, pointer);
         buttonPause.touchUp(touch, pointer);
         return super.touchUp(touch, pointer);
     }
 
     private void checkCollisions() {
-
-        for (Flag flag : flagList) {
-            if ((isAccident(flag))&&(isPlaying)) {
+        for (Flag flag : gamePresenter.getGameSpritesModel().getFlagList()) {
+            if ((isAccident(flag)) && (isPlaying)) {
                 shouting.setFrame(1);
-
                 gameOver();
                 System.out.println("flag Crush");
 //                flag.setDestroyed(true);
-
             }
-            if ((isWrongWay(flag))&&(isPlaying)) {
+            if ((isWrongWay(flag)) && (isPlaying)) {
                 shouting.setFrame(3);
                 shouting.setSick(true);
 //                flag.setDestroyed(true);
-
                 System.out.println("wrong way");
                 gameOver();
-
             }
-            if ((isOnRightWay(flag))&&(isPlaying)) {
+            if ((isOnRightWay(flag)) && (isPlaying)) {
                 setShoutFrame(true, flag);
                 if (!flag.isDestroyed()) {
                     isItNeedToShout = true;
@@ -434,8 +297,8 @@ else {
                 }
             }
         }
-        for (Tree tree : treeList) {
-            if (((isAccident(tree)))&&(isPlaying)) {
+        for (Tree tree : gamePresenter.getGameSpritesModel().getTreeList()) {
+            if (((isAccident(tree))) && (isPlaying)) {
                 shouting.setFrame(1);
 //tree.setDestroyed(true);
                 System.out.println("tree Crush");
@@ -455,15 +318,12 @@ else {
         shouting.setSick(true);
     }
 
-
     private boolean isOnRightWay(Flag flag) {
-
             return ((gamePresenter.getRider().getBoardNose() > flag.getLeft())
                     && (((flag.isItRed())
                     && (gamePresenter.getRider().getBoardTop() < flag.getBottom())) //ниже красного
                     || ((!flag.isItRed())
                     && (gamePresenter.getRider().getBoardBottom() > flag.getTop()))));//выше синего
-
     }
 
     private boolean isAccident(Flag flag) {
@@ -473,57 +333,44 @@ else {
     private boolean isAccident(Tree tree) {
 //        return !rider.getBoard2().isOutside(tree.getTrunk());
         return !tree.isOutside(gamePresenter.getRider().getBoard2());
-
     }
-
-
 
     // WRONGWAY
     private boolean isWrongWay(Flag flag) {
-if (!flag.isDestroyed())
+        if (!flag.isDestroyed())
             return ((gamePresenter.getRider().getBoardNose() > flag.getRight())
                     && (gamePresenter.getRider().getBoardNose() - flag.getLeft() < gamePresenter.getRider().getBoard().width)
                     && (((flag.isItRed())
                     && (gamePresenter.getRider().getBoardBottom() > flag.getBottom())) //Выше красного
                     || ((!flag.isItRed())
                     && (gamePresenter.getRider().getBoardTop() < flag.getTop()))));//ниже синего
-
         return false;
     }
 
     private void gameOver() {
-        isGameOver=true;
+        isGameOver = true;
         countClicks = 0;
         isItNeedToShout = true;
-
         music.setVolume(0.3f);
         setIsPlaying(false);
-
         gamePresenter.getRider().gameOver();
     }
 
     private void startNewGame() {
-
-        for (Flag flag : flagList) {
+        for (Flag flag : gamePresenter.getGameSpritesModel().getFlagList()) {
             flag.setDestroyed(true);
         }
-        for (Tree tree : treeList) {
+        for (Tree tree : gamePresenter.getGameSpritesModel().getTreeList()) {
             tree.setDestroyed(true);
         }
-
-
         setIsPlaying(true);
         isItNeedToShout = false;
         points = 0;
-
         shouting.setSick(false);
         music.setVolume(1f);
-
         gamePresenter.setTheNewGame();
-
-        isGameOver=false;
+        isGameOver = false;
         isPlaying = true;
-
     }
 
     public static Music getMusic() {
@@ -546,11 +393,9 @@ if (!flag.isDestroyed())
         return points;
     }
 
-
     public static void setIsItNeedToShout(boolean isItNeedToShout) {
         GameScreen.isItNeedToShout = isItNeedToShout;
     }
-
 
     public static boolean isOnPause() {
         return onPause;
@@ -563,12 +408,10 @@ if (!flag.isDestroyed())
     public static void setMusic(Boolean status) {
         if (status) {
             music.play();
-        }else {
+        } else {
             music.pause();
         }
     }
-
-
 
     public static int getCountClicks() {
         return countClicks;

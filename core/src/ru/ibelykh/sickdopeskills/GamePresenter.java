@@ -2,7 +2,6 @@ package ru.ibelykh.sickdopeskills;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-
 import ru.ibelykh.sickdopeskills.interfaces.GameProcess;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
@@ -15,14 +14,14 @@ import ru.ibelykh.sickdopeskills.sprites.Tree;
 public class GamePresenter implements GameProcess {
     private GameSpritesModel gameSpritesModel;
 
-
     public GamePresenter(Rect worldBounds) {
         this.gameSpritesModel = new GameSpritesModel(worldBounds);
+        show();
     }
 
     @Override
     public void show() {
-        gameSpritesModel.init();
+        gameSpritesModel.initGameSpriteModels();
     }
 
     @Override
@@ -36,10 +35,14 @@ public class GamePresenter implements GameProcess {
         gameSpritesModel.getRider().draw(batch);
         gameSpritesModel.getStartGates().draw(batch);
 
+        gameSpritesModel.getFlagPool().drawActiveSprites(batch);
+        gameSpritesModel.getTreePool().drawActiveSprites(batch);
         //snows
         for (int i = 0; i < gameSpritesModel.getSnows().length; i++) {
             gameSpritesModel.getSnows()[i].draw(batch);
         }
+
+
 
 
     }
@@ -56,6 +59,13 @@ public class GamePresenter implements GameProcess {
         for (Snow oneSingleSnowflake : gameSpritesModel.getSnows()) {
             oneSingleSnowflake.update(delta);
         }
+
+        gameSpritesModel.getTreePool().updateActiveSprites(delta);
+        gameSpritesModel.getTreeEmitter().generateTreesTop(delta);
+        gameSpritesModel.getTreeEmitter().generateTreesBottom(delta);
+
+        gameSpritesModel.getFlagPool().updateActiveSprites(delta);
+        gameSpritesModel.getFlagEmitter().generateFlags(delta);
 
     }
 
@@ -95,7 +105,8 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void dispose() {
-
+        gameSpritesModel.getFlagPool().dispose();
+        gameSpritesModel.getTreePool().dispose();
     }
 
     @Override
@@ -105,7 +116,8 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void deleteAllDestroyed() {
-
+        gameSpritesModel.getFlagPool().freeAllDestroyedActiveSprites();
+        gameSpritesModel.getTreePool().freeAllDestroyedActiveSprites();
     }
 
     @Override
@@ -176,4 +188,25 @@ public class GamePresenter implements GameProcess {
         gameSpritesModel.getStartGates().setTheNewGame();
         gameSpritesModel.getRider().setTheNewGame();
     }
+//    public void startNewGame() {
+//        for (Flag flag : getGameSpritesModel().getFlagList()) {
+//            flag.setDestroyed(true);
+//        }
+//        for (Tree tree : getGameSpritesModel().getTreeList()) {
+//            tree.setDestroyed(true);
+//        }
+//        setIsPlaying(true);
+//        isItNeedToShout = false;
+//        points = 0;
+//        shouting.setSick(false);
+//        music.setVolume(1f);
+//
+//        gameSpritesModel.getStartGates().setTheNewGame();
+//        gameSpritesModel.getRider().setTheNewGame();
+//
+//        isGameOver = false;
+//        isPlaying = true;
+//    }
+
+
 }
