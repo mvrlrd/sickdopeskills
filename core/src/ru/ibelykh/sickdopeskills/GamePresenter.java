@@ -43,6 +43,9 @@ public class GamePresenter implements GameProcess {
         }
 
 
+        gameSpritesModel.getButtonPause().draw(batch);
+        gameSpritesModel.getButtonGameSoundOffOn().draw(batch);
+
 
 
     }
@@ -67,6 +70,9 @@ public class GamePresenter implements GameProcess {
         gameSpritesModel.getFlagPool().updateActiveSprites(delta);
         gameSpritesModel.getFlagEmitter().generateFlags(delta);
 
+        gameSpritesModel.getButtonPause().update(delta);
+        gameSpritesModel.getButtonGameSoundOffOn().update(delta);
+
     }
 
     @Override
@@ -86,6 +92,9 @@ public class GamePresenter implements GameProcess {
         for (Snow oneSingleSnowflake : gameSpritesModel.getSnows()) {
             oneSingleSnowflake.resize(worldBounds);
         }
+
+        gameSpritesModel.getButtonGameSoundOffOn().resize(worldBounds);
+        gameSpritesModel.getButtonPause().resize(worldBounds);
     }
 
     @Override
@@ -188,25 +197,6 @@ public class GamePresenter implements GameProcess {
         gameSpritesModel.getStartGates().setTheNewGame();
         gameSpritesModel.getRider().setTheNewGame();
     }
-//    public void startNewGame() {
-//        for (Flag flag : getGameSpritesModel().getFlagList()) {
-//            flag.setDestroyed(true);
-//        }
-//        for (Tree tree : getGameSpritesModel().getTreeList()) {
-//            tree.setDestroyed(true);
-//        }
-//        setIsPlaying(true);
-//        isItNeedToShout = false;
-//        points = 0;
-//        shouting.setSick(false);
-//        music.setVolume(1f);
-//
-//        gameSpritesModel.getStartGates().setTheNewGame();
-//        gameSpritesModel.getRider().setTheNewGame();
-//
-//        isGameOver = false;
-//        isPlaying = true;
-//    }
 
 
 }

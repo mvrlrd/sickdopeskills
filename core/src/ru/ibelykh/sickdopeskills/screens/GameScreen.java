@@ -41,8 +41,6 @@ public class GameScreen extends Base2DScreen {
     private static ShapeRenderer shapeRenderer;
     private static Shouting shouting;
     private static YouCool youCool;
-    private static ButtonGameSoundOffOn buttonGameSoundOffOn;
-    private static ButtonPause buttonPause;
     private GamePresenter gamePresenter;
 //   private Matrix4 mx4Font;
 //    private SpriteBatch spriteFont;
@@ -59,8 +57,6 @@ public class GameScreen extends Base2DScreen {
         allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
         shouting = new Shouting(allSprites, worldBounds);
         youCool = new YouCool(allSprites, worldBounds);
-        buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites);
-        buttonPause = new ButtonPause(allSprites);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setColor(Color.RED);
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/bad_guy.mp3"));
@@ -129,8 +125,6 @@ public class GameScreen extends Base2DScreen {
         youCool.update(delta);
         shouting.update(delta);
         checkCollisions();
-        buttonGameSoundOffOn.update(delta);
-        buttonPause.update(delta);
 //        System.out.println("tree  "+treePool.getActiveObjects().size()+" free: "+treePool.getFreeObjects().size());
 //        System.out.println("flag  "+flagPool.getActiveObjects().size()+" free: "+flagPool.getFreeObjects().size());
     }
@@ -146,8 +140,6 @@ public class GameScreen extends Base2DScreen {
         if ((isItNeedToShout)) {
             shouting.draw(batch);
         }
-        buttonGameSoundOffOn.draw(batch);
-        buttonPause.draw(batch);
         batch.end();
         printInfo2();
 //        shapeRenderer.setProjectionMatrix(matrixForSnowboard);
@@ -208,8 +200,6 @@ public class GameScreen extends Base2DScreen {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         gamePresenter.resize(worldBounds);
-        buttonGameSoundOffOn.resize(worldBounds);
-        buttonPause.resize(worldBounds);
     }
 
     @Override
@@ -239,7 +229,7 @@ public class GameScreen extends Base2DScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        if ((!buttonGameSoundOffOn.isMe(touch)) && (!buttonPause.isMe(touch)) && (!onPause)) {
+        if ((!gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().isMe(touch)) && (!gamePresenter.getGameSpritesModel().getButtonPause().isMe(touch)) && (!onPause)) {
             countClicks++;
             if (countClicks == 1) {
                 startNewGame();
@@ -247,22 +237,22 @@ public class GameScreen extends Base2DScreen {
             gamePresenter.touchDown(touch, pointer);
         }
         if ((onPause) || (isPlaying)) {
-            buttonPause.touchDown(touch, pointer);
+            gamePresenter.getGameSpritesModel().getButtonPause().touchDown(touch, pointer);
         }
-        if ((buttonPause.getFrame() == 1) && (!buttonPause.isMe(touch)) && (!buttonGameSoundOffOn.isMe(touch))) {
-            buttonPause.onPlay();
+        if ((gamePresenter.getGameSpritesModel().getButtonPause().getFrame() == 1) && (!gamePresenter.getGameSpritesModel().getButtonPause().isMe(touch)) && (!gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().isMe(touch))) {
+            gamePresenter.getGameSpritesModel().getButtonPause().onPlay();
         }
-        buttonGameSoundOffOn.touchDown(touch, pointer);
+        gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().touchDown(touch, pointer);
         return super.touchDown(touch, pointer);
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        if ((!buttonGameSoundOffOn.isMe(touch)) && (!buttonPause.isMe(touch))) {
+        if ((!gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().isMe(touch)) && (!gamePresenter.getGameSpritesModel().getButtonPause().isMe(touch))) {
             gamePresenter.touchUp(touch, pointer);
         }
-        buttonGameSoundOffOn.touchUp(touch, pointer);
-        buttonPause.touchUp(touch, pointer);
+        gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().touchUp(touch, pointer);
+        gamePresenter.getGameSpritesModel().getButtonPause().touchUp(touch, pointer);
         return super.touchUp(touch, pointer);
     }
 

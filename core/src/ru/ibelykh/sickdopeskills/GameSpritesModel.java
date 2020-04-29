@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
 
+import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
+import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -36,6 +38,9 @@ public class GameSpritesModel {
     private List<Flag> flagList;
     private FlagPool flagPool;
     private FlagEmitter flagEmitter;
+
+    private ButtonGameSoundOffOn buttonGameSoundOffOn;
+    private ButtonPause buttonPause;
 
 
 
@@ -69,6 +74,9 @@ public class GameSpritesModel {
         flagPool = new FlagPool(worldBounds);
         flagList = flagPool.getActiveObjects();
         flagEmitter = new FlagEmitter(worldBounds, flagPool, ALL_SPRITES_TEXTURE_ATLAS);
+
+        buttonGameSoundOffOn = new ButtonGameSoundOffOn(ALL_SPRITES_TEXTURE_ATLAS);
+        buttonPause = new ButtonPause(ALL_SPRITES_TEXTURE_ATLAS);
 
     }
 
@@ -110,5 +118,13 @@ public class GameSpritesModel {
 
     public FlagEmitter getFlagEmitter() {
         return flagEmitter;
+    }
+
+    public ButtonGameSoundOffOn getButtonGameSoundOffOn() {
+        return buttonGameSoundOffOn;
+    }
+
+    public ButtonPause getButtonPause() {
+        return buttonPause;
     }
 }
