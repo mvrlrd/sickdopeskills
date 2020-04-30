@@ -6,7 +6,9 @@ import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 public class ButtonPause extends ScaledButton {
-boolean musicStatus;
+private boolean musicStatus;
+private boolean tapped;
+
 
     public ButtonPause(TextureAtlas atlas) {
         super(atlas.findRegion("stopPlay"),2,1,2);
@@ -18,8 +20,10 @@ boolean musicStatus;
     public void actionPerformed() {
         if (frame==1){
             onPlay();
+            tapped = false;
         } else if (frame == 0){
            onPause();
+           tapped = true;
         }
     }
 
@@ -68,5 +72,9 @@ boolean musicStatus;
 //            GameScreen.getRider().pause();
             GameScreen.isPlaying = false;
         }
+    }
+
+    public boolean isTapped() {
+        return tapped;
     }
 }

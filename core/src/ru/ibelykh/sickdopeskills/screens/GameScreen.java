@@ -205,6 +205,7 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void pause() {
         super.pause();
+
     }
 
     @Override
@@ -238,9 +239,14 @@ public class GameScreen extends Base2DScreen {
         }
         if ((onPause) || (isPlaying)) {
             gamePresenter.getGameSpritesModel().getButtonPause().touchDown(touch, pointer);
+
+
         }
-        if ((gamePresenter.getGameSpritesModel().getButtonPause().getFrame() == 1) && (!gamePresenter.getGameSpritesModel().getButtonPause().isMe(touch)) && (!gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().isMe(touch))) {
+        if ((gamePresenter.getGameSpritesModel().getButtonPause().getFrame() == 1)
+                && (!gamePresenter.getGameSpritesModel().getButtonPause().isMe(touch))
+                && (!gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().isMe(touch))) {
             gamePresenter.getGameSpritesModel().getButtonPause().onPlay();
+
         }
         gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().touchDown(touch, pointer);
         return super.touchDown(touch, pointer);
@@ -248,7 +254,8 @@ public class GameScreen extends Base2DScreen {
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        if ((!gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().isMe(touch)) && (!gamePresenter.getGameSpritesModel().getButtonPause().isMe(touch))) {
+        if ((!gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().isMe(touch))
+                &&(!gamePresenter.getGameSpritesModel().getButtonPause().isMe(touch))) {
             gamePresenter.touchUp(touch, pointer);
         }
         gamePresenter.getGameSpritesModel().getButtonGameSoundOffOn().touchUp(touch, pointer);

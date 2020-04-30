@@ -17,7 +17,6 @@ public class Rider extends Sprite {
     private static final String REGION_NAME = "riders";
     private final float VELOCITY_Y = 0.045f;  //было    0.06f
     private final float PROPORTION = 0.1f;
-    private static TextureAtlas textureAtlas;
 
     private Rect worldBounds;
     private Vector2 v;
@@ -38,6 +37,7 @@ public class Rider extends Sprite {
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion(REGION_NAME), 3, 2, 6);
+        this.worldBounds = worldBounds;
         v = new Vector2();
         velocity = new Vector2();
         lastVelocity = new Vector2(0,VELOCITY_Y);
@@ -45,77 +45,66 @@ public class Rider extends Sprite {
         framer(MenuScreen.getBtnGetRider().getFrame());
         frame = rightHandedFrame;
         setHeightProportion(PROPORTION);
-        this.worldBounds = worldBounds;
-
         board = new Rectangle();
-
         board2 = new Rect();
         boardPos = new Vector2();
         board2.setWidth(getWidth()/2f);
         board2.setHeight(getHeight()/3f);
-
         prePauseSpeed = new Vector2();
         preVelocity = new Vector2();
     }
 
     private void framer(int frame){
-        if (frame==2){
-            this.rightHandedFrame=RIGHT_FRAME_RUS;
-            this.leftHandedFrame=LEFT_FRAME_RUS;
-        }
-        else if (frame==0) {
-            this.rightHandedFrame=RIGHT_FRAME_DARK;
-            this.leftHandedFrame=LEFT_FRAME_DARK;
-        }
-        else if (frame==4) {
-            this.rightHandedFrame=RIGHT_FRAME_GRAY;
-            this.leftHandedFrame=LEFT_FRAME_GRAY;
+        if (frame == RIGHT_FRAME_RUS) {
+            this.rightHandedFrame = RIGHT_FRAME_RUS;
+            this.leftHandedFrame = LEFT_FRAME_RUS;
+        } else if (frame == RIGHT_FRAME_DARK) {
+            this.rightHandedFrame = RIGHT_FRAME_DARK;
+            this.leftHandedFrame = LEFT_FRAME_DARK;
+        } else if (frame == RIGHT_FRAME_GRAY) {
+            this.rightHandedFrame = RIGHT_FRAME_GRAY;
+            this.leftHandedFrame = LEFT_FRAME_GRAY;
         }
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
-
-        speed=v.add(velocity);
-        pos.mulAdd(speed,delta);
-
-        if (this.getTop()>worldBounds.getTop()&&((v.add(velocity)).y>0.3f)){
-            velocity.set(velocity.x,-VELOCITY_Y);
-            v.set(0f,0f);
+        speed = v.add(velocity);
+        pos.mulAdd(speed, delta);
+        if (this.getTop() > worldBounds.getTop() && ((v.add(velocity)).y > 0.3f)) {
+            velocity.set(0, -VELOCITY_Y);
+            v.set(0f, 0f);
             pos.mulAdd(v.add(velocity), delta);
         }
-        if (this.getBottom() < worldBounds.getBottom()&&(v.add(velocity)).y < -0.3f){
-            velocity.set(velocity.x,VELOCITY_Y);
-            v.set(0f,0f);
+        if (this.getBottom() < worldBounds.getBottom() && (v.add(velocity)).y < -0.3f) {
+            velocity.set(0, VELOCITY_Y);
+            v.set(0f, 0f);
             pos.mulAdd(v.add(velocity), delta);
         }
         if (velocity.y < 0f) {
-            frame=rightHandedFrame;
-            this.angle=v.y*30;
-            board.set(getLeft()+getWidth()*0.4f,getBottom()+getHalfWidth()/1.5f,
-                    getWidth()/1.7f,getHeight()/3f);
-            boardPos.set(getLeft()+getHalfWidth()*1.3f,getBottom()+getHalfHeight()/1.1f);
+            frame = rightHandedFrame;
+            this.angle = v.y * 30;
+            board.set(getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f,
+                    getWidth() / 1.7f, getHeight() / 3f);
+            boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHalfHeight() / 1.1f);
             board2.setPos(boardPos);
-
 //            Base2DScreen.setToRot(angle);
-
         }
-        if (velocity.y>0f){
+        if (velocity.y > 0f) {
             frame = leftHandedFrame;
-            this.angle = v.y*30;
-            board.set(getLeft()+getWidth()*0.385f,getBottom()+getHalfWidth()/3.9f,
-                    getWidth()/1.7f,getHeight()/3f);
-            boardPos.set(getLeft()+getHalfWidth()*1.3f,getBottom()+getHalfHeight()/1.1f);
+            this.angle = v.y * 30;
+            board.set(getLeft() + getWidth() * 0.385f, getBottom() + getHalfWidth() / 3.9f,
+                    getWidth() / 1.7f, getHeight() / 3f);
+            boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHalfHeight() / 1.1f);
             board2.setPos(boardPos);
-
 //            Base2DScreen.setToRot(angle);
         }
     }
 
     public void resize(Rect worldBounds, float x, float y) {
         super.resize(worldBounds);
-        pos.set(x,y);
+        pos.set(x, y);
     }
 
     @Override
@@ -133,14 +122,13 @@ public class Rider extends Sprite {
 
     public void setTheNewGame(){
         v.set(0.0f, 0.0f);
-        pos.set(worldBounds.getLeft()+1.2f*this.getWidth(),0f);
+        pos.set(worldBounds.getLeft() + 1.2f * this.getWidth(), 0f);
         velocity.set(lastVelocity.rotate(180));
     }
 
     public void gameOver(){
-
-        v.set(-0.0f,0f);
-        velocity.set(0.000f,-0.0f);
+        v.set(-0.0f, 0.0f);
+        velocity.set(0.0f, -0.0f);
     }
 
     public Rect getBoard2() {

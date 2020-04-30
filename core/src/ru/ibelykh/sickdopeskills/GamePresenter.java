@@ -24,6 +24,7 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void update(float delta) {
+
         gameSpritesModel.update(delta);
     }
 
@@ -39,6 +40,7 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void pause() {
+
 
     }
 
