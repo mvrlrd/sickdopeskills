@@ -4,75 +4,27 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.interfaces.GameProcess;
 import ru.ibelykh.sickdopeskills.math.Rect;
-import ru.ibelykh.sickdopeskills.screens.GameScreen;
 import ru.ibelykh.sickdopeskills.sprites.Flag;
 import ru.ibelykh.sickdopeskills.sprites.Rider;
-import ru.ibelykh.sickdopeskills.sprites.Snow;
-import ru.ibelykh.sickdopeskills.sprites.Splash;
 import ru.ibelykh.sickdopeskills.sprites.Tree;
 
 public class GamePresenter implements GameProcess {
     private GameSpritesModel gameSpritesModel;
+    
 
     public GamePresenter(Rect worldBounds) {
         this.gameSpritesModel = new GameSpritesModel(worldBounds);
-        show();
     }
 
-    @Override
-    public void show() {
-        gameSpritesModel.initGameSpriteModels();
-    }
 
     @Override
     public void draw(SpriteBatch batch) {
-        //splashes(only if the rider is moving)
-        if (GameScreen.getIsPlaying()){
-            for (int i = 0; i < gameSpritesModel.getSplash().length; i++) {
-                gameSpritesModel.getSplash()[i].draw(batch);
-            }
-        }
-        gameSpritesModel.getRider().draw(batch);
-        gameSpritesModel.getStartGates().draw(batch);
-
-        gameSpritesModel.getFlagPool().drawActiveSprites(batch);
-        gameSpritesModel.getTreePool().drawActiveSprites(batch);
-        //snows
-        for (int i = 0; i < gameSpritesModel.getSnows().length; i++) {
-            gameSpritesModel.getSnows()[i].draw(batch);
-        }
-
-
-        gameSpritesModel.getButtonPause().draw(batch);
-        gameSpritesModel.getButtonGameSoundOffOn().draw(batch);
-
-
-
+        gameSpritesModel.draw(batch);
     }
 
     @Override
     public void update(float delta) {
-        gameSpritesModel.getStartGates().update(delta);
-        gameSpritesModel.getRider().update(delta);
-        //splashes
-        for (Splash oneSingleSplash : gameSpritesModel.getSplash()) {
-            oneSingleSplash.update(delta);
-        }
-        //snows
-        for (Snow oneSingleSnowflake : gameSpritesModel.getSnows()) {
-            oneSingleSnowflake.update(delta);
-        }
-
-        gameSpritesModel.getTreePool().updateActiveSprites(delta);
-        gameSpritesModel.getTreeEmitter().generateTreesTop(delta);
-        gameSpritesModel.getTreeEmitter().generateTreesBottom(delta);
-
-        gameSpritesModel.getFlagPool().updateActiveSprites(delta);
-        gameSpritesModel.getFlagEmitter().generateFlags(delta);
-
-        gameSpritesModel.getButtonPause().update(delta);
-        gameSpritesModel.getButtonGameSoundOffOn().update(delta);
-
+        gameSpritesModel.update(delta);
     }
 
     @Override
@@ -82,19 +34,7 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void resize(Rect worldBounds) {
-        gameSpritesModel.getStartGates().resize(worldBounds, worldBounds.getLeft() + 0.1f, 0f);
-        gameSpritesModel.getRider().resize(worldBounds, worldBounds.getLeft() + 1.2f * gameSpritesModel.getRider().getWidth(), 0f);
-        //splashes
-        for (Splash oneSingleSplash : gameSpritesModel.getSplash()) {
-            oneSingleSplash.resize(worldBounds);
-        }
-        //snows
-        for (Snow oneSingleSnowflake : gameSpritesModel.getSnows()) {
-            oneSingleSnowflake.resize(worldBounds);
-        }
-
-        gameSpritesModel.getButtonGameSoundOffOn().resize(worldBounds);
-        gameSpritesModel.getButtonPause().resize(worldBounds);
+        gameSpritesModel.resize(worldBounds);
     }
 
     @Override
@@ -114,8 +54,7 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void dispose() {
-        gameSpritesModel.getFlagPool().dispose();
-        gameSpritesModel.getTreePool().dispose();
+       gameSpritesModel.dispose();
     }
 
     @Override
@@ -125,8 +64,7 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void deleteAllDestroyed() {
-        gameSpritesModel.getFlagPool().freeAllDestroyedActiveSprites();
-        gameSpritesModel.getTreePool().freeAllDestroyedActiveSprites();
+        gameSpritesModel.deleteAllDestroyed();
     }
 
     @Override
@@ -194,8 +132,7 @@ public class GamePresenter implements GameProcess {
 
     @Override
     public void setTheNewGame() {
-        gameSpritesModel.getStartGates().setTheNewGame();
-        gameSpritesModel.getRider().setTheNewGame();
+       gameSpritesModel.startNewGame();
     }
 
 

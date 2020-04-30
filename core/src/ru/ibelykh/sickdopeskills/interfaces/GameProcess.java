@@ -9,7 +9,7 @@ import ru.ibelykh.sickdopeskills.sprites.Tree;
 
 public interface GameProcess {
 
-    void show();
+
     void draw(SpriteBatch batch);
     void update(float delta);
     void render(float delta);
