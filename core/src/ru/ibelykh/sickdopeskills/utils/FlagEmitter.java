@@ -28,9 +28,7 @@ public class FlagEmitter {
     public FlagEmitter(Rect worldBounds, FlagPool flagPool, TextureAtlas atlas) {
         this.worldBounds = worldBounds;
         this.flagPool = flagPool;
-        TextureRegion textureRegion = atlas.findRegion("flags");
-        this.flagTextureRegion = Regions.split(textureRegion, 1, 2, 2);
-
+        this.flagTextureRegion = Regions.split(atlas.findRegion("flags"), 1, 2, 2);
 
     }
 

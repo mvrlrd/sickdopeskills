@@ -11,15 +11,18 @@ import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
 import ru.ibelykh.sickdopeskills.interfaces.GameModelMethods;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
+import ru.ibelykh.sickdopeskills.pools.BrizgiPool;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
 import ru.ibelykh.sickdopeskills.pools.TreePool;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
+import ru.ibelykh.sickdopeskills.sprites.Brizgi;
 import ru.ibelykh.sickdopeskills.sprites.Flag;
 import ru.ibelykh.sickdopeskills.sprites.Rider;
 import ru.ibelykh.sickdopeskills.sprites.Snow;
 import ru.ibelykh.sickdopeskills.sprites.Splash;
 import ru.ibelykh.sickdopeskills.sprites.StartGates;
 import ru.ibelykh.sickdopeskills.sprites.Tree;
+import ru.ibelykh.sickdopeskills.utils.BrizgiEmitter;
 import ru.ibelykh.sickdopeskills.utils.FlagEmitter;
 import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
 
@@ -39,6 +42,10 @@ public class GameSpritesModel implements GameModelMethods {
     private FlagEmitter flagEmitter;
     private ButtonGameSoundOffOn buttonGameSoundOffOn;
     private ButtonPause buttonPause;
+
+    private List<Brizgi>brizgiList;
+    private BrizgiPool brizgiPool;
+    private BrizgiEmitter brizgiEmitter;
 
     public GameSpritesModel(Rect worldBounds) {
         this.rider = new Rider(ALL_SPRITES_TEXTURE_ATLAS,worldBounds);
@@ -65,6 +72,10 @@ public class GameSpritesModel implements GameModelMethods {
         flagEmitter = new FlagEmitter(worldBounds, flagPool, ALL_SPRITES_TEXTURE_ATLAS);
         buttonGameSoundOffOn = new ButtonGameSoundOffOn(ALL_SPRITES_TEXTURE_ATLAS);
         buttonPause = new ButtonPause(ALL_SPRITES_TEXTURE_ATLAS);
+
+        brizgiPool = new BrizgiPool(worldBounds);
+        brizgiList = brizgiPool.getActiveObjects();
+        brizgiEmitter = new BrizgiEmitter(worldBounds,brizgiPool,ALL_SPRITES_TEXTURE_ATLAS,rider);
     }
 
     public Rider getRider() {
@@ -120,9 +131,10 @@ public class GameSpritesModel implements GameModelMethods {
         //splashes(only if the rider is moving)
         if (GameScreen.getIsPlaying()){
             for (Splash singleSplash : splashes) {
-                singleSplash.draw(batch);
+//                singleSplash.draw(batch);
             }
         }
+        brizgiPool.drawActiveSprites(batch);
         rider.draw(batch);
         startGates.draw(batch);
         flagPool.drawActiveSprites(batch);
@@ -133,6 +145,8 @@ public class GameSpritesModel implements GameModelMethods {
         }
         buttonPause.draw(batch);
         buttonGameSoundOffOn.draw(batch);
+
+
     }
 
     @Override
@@ -154,6 +168,9 @@ public class GameSpritesModel implements GameModelMethods {
         flagEmitter.generateFlags(delta);
         buttonPause.update(delta);
         buttonGameSoundOffOn.update(delta);
+
+        brizgiPool.updateActiveSprites(delta);
+        brizgiEmitter.generateBrizgi(delta);
     }
 
     @Override
@@ -189,5 +206,6 @@ public class GameSpritesModel implements GameModelMethods {
     public void deleteAllDestroyed() {
         flagPool.freeAllDestroyedActiveSprites();
         treePool.freeAllDestroyedActiveSprites();
+        brizgiPool.freeAllDestroyedActiveSprites();
     }
 }
