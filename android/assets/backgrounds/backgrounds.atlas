@@ -1,0 +1,25 @@
+backgrounds-0.png
+size: 1026, 1026
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+lvl1bg
+  rotate: false
+  xy: 1, 1
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+
+backgrounds-1.png
+size: 1026, 1026
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+menubg
+  rotate: false
+  xy: 1, 1
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1

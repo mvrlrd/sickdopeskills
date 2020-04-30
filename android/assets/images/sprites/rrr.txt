@@ -1,0 +1,19 @@
+rrr.png
+size: 99, 434
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bigTree
+  rotate: false
+  xy: 1, 1
+  size: 97, 242
+  orig: 138, 261
+  offset: 19, 13
+  index: -1
+smallTree
+  rotate: false
+  xy: 1, 245
+  size: 89, 188
+  orig: 122, 232
+  offset: 20, 21
+  index: -1

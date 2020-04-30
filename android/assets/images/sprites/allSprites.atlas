@@ -1,0 +1,74 @@
+allSprites-0.png
+size: 1910, 1974
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flags
+  rotate: false
+  xy: 2, 1355
+  size: 791, 458
+  orig: 795, 462
+  offset: 2, 2
+  index: -1
+riders
+  rotate: false
+  xy: 2, 2
+  size: 1389, 1350
+  orig: 1393, 1354
+  offset: 2, 2
+  index: -1
+snow
+  rotate: false
+  xy: 796, 1520
+  size: 146, 146
+  orig: 256, 256
+  offset: 47, 63
+  index: -1
+sound
+  rotate: false
+  xy: 796, 1355
+  size: 327, 162
+  orig: 331, 166
+  offset: 2, 2
+  index: -1
+stopPlay
+  rotate: false
+  xy: 1394, 2
+  size: 514, 1970
+  orig: 518, 1974
+  offset: 2, 2
+  index: -1
+
+allSprites-1.png
+size: 1990, 2028
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+forest
+  rotate: false
+  xy: 2, 2
+  size: 1986, 306
+  orig: 1988, 308
+  offset: 1, 1
+  index: -1
+labels
+  rotate: false
+  xy: 2, 311
+  size: 1868, 954
+  orig: 1872, 958
+  offset: 2, 2
+  index: -1
+startGates
+  rotate: false
+  xy: 682, 1268
+  size: 669, 603
+  orig: 671, 605
+  offset: 0, 2
+  index: -1
+youCool
+  rotate: false
+  xy: 2, 1268
+  size: 677, 758
+  orig: 681, 762
+  offset: 2, 2
+  index: -1
