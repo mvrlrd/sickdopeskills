@@ -146,16 +146,16 @@ public class GameScreen extends Base2DScreen {
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 //        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
 //        shapeRenderer.end();
-//Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
+////Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
 //        shapeRenderer.setProjectionMatrix(worldToGl);
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 //        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
-////        for (Flag flag : flagList) {
-////            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
-////        }
-////        for (Tree tree : treeList) {
-////            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
-////        }
+//        for (Flag flag : flagList) {
+//            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
+//        }
+//        for (Tree tree : treeList) {
+//            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
+//        }
 //        shapeRenderer.end();
     }
 
