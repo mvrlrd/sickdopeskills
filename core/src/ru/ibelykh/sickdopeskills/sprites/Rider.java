@@ -1,6 +1,7 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.base.Sprite;
@@ -35,6 +36,8 @@ public class Rider extends Sprite {
     private Rect board2;
     private Vector2 boardPos;
 
+    Polygon polygon;
+
     public Rider(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion(REGION_NAME), 3, 2, 6);
         this.worldBounds = worldBounds;
@@ -52,6 +55,22 @@ public class Rider extends Sprite {
         board2.setHeight(getHeight()/3f);
         prePauseSpeed = new Vector2();
         preVelocity = new Vector2();
+
+//        polygon = new Polygon(new float[]{0,0,
+//                this.getWidth(),0,
+//                this.getWidth(),this.getHeight()
+//                ,0,this.getHeight()});
+
+
+
+
+        polygon = new Polygon(new float[]{
+                getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f,
+                getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f - getHeight()/3f,
+                getLeft() + getWidth() * 0.4f + getWidth() / 1.7f, getBottom() + getHalfWidth() / 1.5f - getHeight()/3f,
+                getLeft() + getWidth() * 0.4f + getWidth() / 1.7f, getBottom() + getHalfWidth() / 1.5f ,
+        });
+        polygon.setPosition(0f,0f);
     }
 
     private void framer(int frame){
@@ -72,6 +91,10 @@ public class Rider extends Sprite {
         super.update(delta);
         speed = v.add(velocity);
         pos.mulAdd(speed, delta);
+
+        polygon.setPosition(this.pos.x,this.pos.y);
+
+
         if (this.getTop() > worldBounds.getTop() && ((v.add(velocity)).y > 0.3f)) {
             velocity.set(0, -VELOCITY_Y);
             v.set(0f, 0f);
@@ -85,6 +108,7 @@ public class Rider extends Sprite {
         if (velocity.y < 0f) {
             frame = rightHandedFrame;
             this.angle = v.y * 43;
+            polygon.setRotation(angle);
             board.set(getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f,
                     getWidth() / 1.7f, getHeight() / 3f);
             boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHalfHeight() / 1.1f);
@@ -94,6 +118,7 @@ public class Rider extends Sprite {
         if (velocity.y > 0f) {
             frame = leftHandedFrame;
             this.angle = v.y * 43;
+            polygon.setRotation(angle);
             board.set(getLeft() + getWidth() * 0.385f, getBottom() + getHalfWidth() / 3.9f,
                     getWidth() / 1.7f, getHeight() / 3f);
             boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHalfHeight() / 1.1f);
@@ -163,4 +188,7 @@ public class Rider extends Sprite {
         velocity.set(preVelocity);
     }
 
+    public Polygon getPolygon() {
+        return polygon;
+    }
 }

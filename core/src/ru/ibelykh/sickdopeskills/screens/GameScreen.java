@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.GamePresenter;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
@@ -45,6 +47,8 @@ public class GameScreen extends Base2DScreen {
 //   private Matrix4 mx4Font;
 //    private SpriteBatch spriteFont;
 
+//    Polygon polygon;
+
     public GameScreen(Game game) {
         super(game);
     }
@@ -79,6 +83,7 @@ public class GameScreen extends Base2DScreen {
 //        mx4Font.setToRotation(fontRotationVector, 180);
 //        spriteFont.setTransformMatrix(mx4Font);
         Gdx.input.setCatchBackKey(true); // ловим касание по системной кнопке "Назад
+//        polygon = gamePresenter.getRider().getPolygon();
     }
 
     @Override
@@ -127,6 +132,7 @@ public class GameScreen extends Base2DScreen {
         checkCollisions();
 //        System.out.println("tree  "+treePool.getActiveObjects().size()+" free: "+treePool.getFreeObjects().size());
 //        System.out.println("flag  "+flagPool.getActiveObjects().size()+" free: "+flagPool.getFreeObjects().size());
+
     }
 
     private void draw() {
@@ -142,21 +148,26 @@ public class GameScreen extends Base2DScreen {
         }
         batch.end();
         printInfo2();
+//        Matrix4 matrixForSnowboard = new Matrix4();
 //        shapeRenderer.setProjectionMatrix(matrixForSnowboard);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.rect(gamePresenter.getRider().getBoard2().getLeft(),gamePresenter.getRider().getBoard2().getBottom(),gamePresenter.getRider().getBoard2().getWidth(),gamePresenter.getRider().getBoard2().getHeight());
+//        shapeRenderer.polygon(gamePresenter.getRider().getPolygon().getTransformedVertices());
 //        shapeRenderer.end();
 ////Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
-//        shapeRenderer.setProjectionMatrix(worldToGl);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
+        shapeRenderer.setProjectionMatrix(worldToGl);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.rect(gamePresenter.getRider().getBoard2().getLeft(),gamePresenter.getRider().getBoard2().getBottom(),gamePresenter.getRider().getBoard2().getWidth(),gamePresenter.getRider().getBoard2().getHeight());
+        shapeRenderer.polygon(gamePresenter.getRider().getPolygon().getTransformedVertices());
+
+
 //        for (Flag flag : flagList) {
 //            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
 //        }
 //        for (Tree tree : treeList) {
 //            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
 //        }
-//        shapeRenderer.end();
+        shapeRenderer.end();
     }
 
     private void printInfo2() {
