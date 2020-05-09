@@ -84,7 +84,7 @@ public class Rider extends Sprite {
         }
         if (velocity.y < 0f) {
             frame = rightHandedFrame;
-            this.angle = v.y * 30;
+            this.angle = v.y * 43;
             board.set(getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f,
                     getWidth() / 1.7f, getHeight() / 3f);
             boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHalfHeight() / 1.1f);
@@ -93,7 +93,7 @@ public class Rider extends Sprite {
         }
         if (velocity.y > 0f) {
             frame = leftHandedFrame;
-            this.angle = v.y * 30;
+            this.angle = v.y * 43;
             board.set(getLeft() + getWidth() * 0.385f, getBottom() + getHalfWidth() / 3.9f,
                     getWidth() / 1.7f, getHeight() / 3f);
             boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHalfHeight() / 1.1f);
