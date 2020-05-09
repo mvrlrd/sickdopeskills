@@ -16,8 +16,8 @@ public class Rider extends Sprite {
     private final static int RIGHT_FRAME_GRAY = 4;
     private final static int LEFT_FRAME_GRAY = 5;
     private static final String REGION_NAME = "riders";
-    private final float VELOCITY_Y = 0.045f;  //было    0.06f
-    private final float PROPORTION = 0.1f;
+    private final float VELOCITY_Y = 0.001f;  //0.045f  было    0.06f
+    private final float PROPORTION = 0.4f; //0.1f
 
     private Rect worldBounds;
     private Vector2 v;
@@ -37,6 +37,8 @@ public class Rider extends Sprite {
     private Vector2 boardPos;
 
     Polygon polygon;
+    float[] vertexArrayRightHand;
+    float[] vertexArrayLeftHand = new float[8];
 
     public Rider(TextureAtlas atlas, Rect worldBounds) {
         super(atlas.findRegion(REGION_NAME), 3, 2, 6);
@@ -56,21 +58,25 @@ public class Rider extends Sprite {
         prePauseSpeed = new Vector2();
         preVelocity = new Vector2();
 
+
+
 //        polygon = new Polygon(new float[]{0,0,
 //                this.getWidth(),0,
 //                this.getWidth(),this.getHeight()
 //                ,0,this.getHeight()});
 
-
-
-
-        polygon = new Polygon(new float[]{
-                getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f,
+        vertexArrayRightHand =  new float[]{ getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f,
                 getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f - getHeight()/3f,
-                getLeft() + getWidth() * 0.4f + getWidth() / 1.7f, getBottom() + getHalfWidth() / 1.5f - getHeight()/3f,
-                getLeft() + getWidth() * 0.4f + getWidth() / 1.7f, getBottom() + getHalfWidth() / 1.5f ,
-        });
+                getLeft() + getWidth() * 0.4f + getHalfWidth() / 1.7f, getBottom() + getHalfWidth() / 1.5f - getHeight()/3f,
+                getLeft() + getWidth() * 0.4f + getHalfWidth() / 1.7f, getBottom() + getHalfWidth() / 1.5f };
+        vertexArrayLeftHand =  new float[]{ getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f,
+                getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f - getHeight()/3.1f,
+                getLeft() + getWidth() * 0.4f + getHalfWidth() / 1.7f, getBottom() + getHalfWidth() / 1.5f - getHeight()/3f,
+                getLeft() + getWidth() * 0.4f + getHalfWidth() / 1.7f, getBottom() + getHalfWidth() / 1.5f,};
+
+        polygon = new Polygon(vertexArrayRightHand);
         polygon.setPosition(0f,0f);
+
     }
 
     private void framer(int frame){
@@ -92,7 +98,7 @@ public class Rider extends Sprite {
         speed = v.add(velocity);
         pos.mulAdd(speed, delta);
 
-        polygon.setPosition(this.pos.x,this.pos.y);
+
 
 
         if (this.getTop() > worldBounds.getTop() && ((v.add(velocity)).y > 0.3f)) {
@@ -107,22 +113,36 @@ public class Rider extends Sprite {
         }
         if (velocity.y < 0f) {
             frame = rightHandedFrame;
-            this.angle = v.y * 43;
+            this.angle = v.y * 70;
+
             polygon.setRotation(angle);
+
+            polygon.setVertices(vertexArrayRightHand);
+
             board.set(getLeft() + getWidth() * 0.4f, getBottom() + getHalfWidth() / 1.5f,
                     getWidth() / 1.7f, getHeight() / 3f);
-            boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHalfHeight() / 1.1f);
+            boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHeight()/1.2f );
             board2.setPos(boardPos);
+
+            polygon.setOrigin(boardPos.x,boardPos.y);
+            polygon.setPosition(this.boardPos.x,this.boardPos.y);
 //            Base2DScreen.setToRot(angle);
         }
         if (velocity.y > 0f) {
             frame = leftHandedFrame;
-            this.angle = v.y * 43;
+            this.angle = v.y * 70;
+
+
+            polygon.setVertices(vertexArrayLeftHand);
             polygon.setRotation(angle);
+
+
             board.set(getLeft() + getWidth() * 0.385f, getBottom() + getHalfWidth() / 3.9f,
                     getWidth() / 1.7f, getHeight() / 3f);
             boardPos.set(getLeft() + getHalfWidth() * 1.3f, getBottom() + getHalfHeight() / 1.1f);
             board2.setPos(boardPos);
+//            polygon.setOrigin(boardPos.x,boardPos.y);
+            polygon.setPosition(boardPos.x,boardPos.y);
 //            Base2DScreen.setToRot(angle);
         }
     }
