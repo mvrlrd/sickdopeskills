@@ -1,6 +1,7 @@
 package ru.ibelykh.sickdopeskills.sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.base.Sprite;
 import ru.ibelykh.sickdopeskills.math.Rect;
@@ -12,6 +13,8 @@ public class Flag extends Sprite {
     private Vector2 flagSpeed;
     private Rect worldBounds;
 
+    Polygon polygon;
+
 
 
 
@@ -19,7 +22,14 @@ public class Flag extends Sprite {
         this.worldBounds = worldBounds;
         float X_FLAG_SPEED = -0.55f;
         this.flagSpeed = new Vector2(X_FLAG_SPEED,0f);
-    }
+
+
+        polygon = new Polygon(new float[]{getLeft(),getBottom(),
+        getLeft(),getTop(),
+        getRight(),getTop(),
+        getRight(),getBottom()});
+
+}
 
     public int getShoutFrame() {
         return shoutFrame;
@@ -39,10 +49,16 @@ public class Flag extends Sprite {
                 setDestroyed(true);
                 GameScreen.setIsItNeedToShout(false);
                 Shouting.framer(Rnd.nextInt(0, 4));  //there are just 3 types of shouting frames ("sick","dope","whoa");
+
+
             }
         }else { //if the rider crushes the flags stop
             pos.mulAdd(new Vector2(0f,0f), delta);
         }
+        polygon.setVertices(new float[]{getLeft() + 0.03f,getBottom(),
+                getLeft() + 0.03f,getTop(),
+                getRight(),getTop(),
+                getRight(),getBottom()});
         }
 
 
@@ -89,6 +105,10 @@ public class Flag extends Sprite {
                     || this.getTop() - 0.2f * getHalfHeight() < other.getBottom();
         }
 
+    }
+
+    public Polygon getPolygon() {
+        return polygon;
     }
 }
 

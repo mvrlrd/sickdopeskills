@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import ru.ibelykh.sickdopeskills.GamePresenter;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
@@ -63,6 +65,8 @@ public class GameScreen extends Base2DScreen {
         youCool = new YouCool(allSprites, worldBounds);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setColor(Color.RED);
+
+
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/bad_guy.mp3"));
         music.setLooping(true);
         soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
@@ -157,13 +161,15 @@ public class GameScreen extends Base2DScreen {
 ////Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
         shapeRenderer.setProjectionMatrix(worldToGl);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
 //        shapeRenderer.rect(gamePresenter.getRider().getBoard2().getLeft(),gamePresenter.getRider().getBoard2().getBottom(),gamePresenter.getRider().getBoard2().getWidth(),gamePresenter.getRider().getBoard2().getHeight());
         shapeRenderer.polygon(gamePresenter.getRider().getPolygon().getTransformedVertices());
+        shapeRenderer.polygon(gamePresenter.getRider().getEntirePic().getTransformedVertices());
 
+        for (Flag flag : gamePresenter.getGameSpritesModel().getFlagList()) {
+            shapeRenderer.polygon(flag.getPolygon().getTransformedVertices());
 
-//        for (Flag flag : flagList) {
-//            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
-//        }
+        }
 //        for (Tree tree : treeList) {
 //            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
 //        }
@@ -318,15 +324,27 @@ public class GameScreen extends Base2DScreen {
     }
 
     private boolean isOnRightWay(Flag flag) {
-        return ((gamePresenter.getRider().getBoardNose() > flag.getLeft())
-                && (((flag.isItRed())
-                && (gamePresenter.getRider().getBoardTop() < flag.getBottom())) //ниже красного
-                || ((!flag.isItRed())
-                && (gamePresenter.getRider().getBoardBottom() > flag.getTop()))));//выше синего
+//        return ((gamePresenter.getRider().getBoardNose() > flag.getLeft())
+//                && (((flag.isItRed())
+//                && (gamePresenter.getRider().getBoardTop() < flag.getBottom())) //ниже красного
+//                || ((!flag.isItRed())
+//                && (gamePresenter.getRider().getBoardBottom() > flag.getTop()))));//выше синего
+        return true;
     }
 
     private boolean isAccident(Flag flag) {
-        return !flag.isOutside(gamePresenter.getRider().getBoard2());
+//        return !flag.isOutside(gamePresenter.getRider().getBoard2());
+//        return false;
+        return Intersector.overlapConvexPolygons(gamePresenter.getRider().getPolygon(),flag.getPolygon());
+    }
+
+    public static Polygon rectangleToPolygon(Rectangle rect) {
+        float[] xpoints = {rect.x,rect.y,
+                rect.x + rect.width,rect.y,
+                rect.x + rect.width, rect.y + rect.height,
+                rect.x, rect.y + rect.height};
+
+        return new Polygon(xpoints);
     }
 
     private boolean isAccident(Tree tree) {
@@ -335,13 +353,14 @@ public class GameScreen extends Base2DScreen {
     }
     // WRONGWAY
     private boolean isWrongWay(Flag flag) {
-        if (!flag.isDestroyed())
-            return ((gamePresenter.getRider().getBoardNose() > flag.getRight())
-                    && (gamePresenter.getRider().getBoardNose() - flag.getLeft() < gamePresenter.getRider().getBoard().width)
-                    && (((flag.isItRed())
-                    && (gamePresenter.getRider().getBoardBottom() > flag.getBottom())) //Выше красного
-                    || ((!flag.isItRed())
-                    && (gamePresenter.getRider().getBoardTop() < flag.getTop()))));//ниже синего
+//        if (!flag.isDestroyed())
+//            return ((gamePresenter.getRider().getBoardNose() > flag.getRight())
+//                    && (gamePresenter.getRider().getBoardNose() - flag.getLeft() < gamePresenter.getRider().getBoard().width)
+//                    && (((flag.isItRed())
+//                    && (gamePresenter.getRider().getBoardBottom() > flag.getBottom())) //Выше красного
+//                    || ((!flag.isItRed())
+//                    && (gamePresenter.getRider().getBoardTop() < flag.getTop()))));//ниже синего
+
         return false;
     }
 
