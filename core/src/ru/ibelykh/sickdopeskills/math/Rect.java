@@ -7,8 +7,11 @@ public class Rect {
     protected float halfWidth; // половина ширины
     protected float halfHeight; // половина высоты
 
+
+
     public Rect() {
         this.pos = new Vector2();
+
     }
 
     public Rect(Rect from) {
@@ -104,5 +107,7 @@ public class Rect {
     public String toString() {
         return "Rectangle: pos" + this.pos + " size(" + this.getWidth() + ", " + this.getHeight() + ")";
     }
+
+
 
 }
