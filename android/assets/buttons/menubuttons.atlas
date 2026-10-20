@@ -1,0 +1,19 @@
+menubuttons-0.png
+size: 577, 602
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+btexit
+  rotate: false
+  xy: 1, 1
+  size: 317, 600
+  orig: 317, 600
+  offset: 0, 0
+  index: -1
+btplay
+  rotate: false
+  xy: 320, 1
+  size: 256, 560
+  orig: 282, 582
+  offset: 11, 0
+  index: -1
