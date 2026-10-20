@@ -28,9 +28,9 @@ public class Splash extends Sprite {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         this.worldBounds = worldBounds;
-//        float posX = -0.67f;
-//        float posY = 0f;
-//        pos.set(posX,rider.getBoardBottom());
+        float posX = -0.67f;
+        float posY = 0f;
+        pos.set(posX,rider.getBoardBottom());
     }
 
     @Override

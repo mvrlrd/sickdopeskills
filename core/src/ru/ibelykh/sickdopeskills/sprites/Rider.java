@@ -18,6 +18,7 @@ public class Rider extends Sprite {
     private final static int RIGHT_FRAME_GRAY = 4;
     private final static int LEFT_FRAME_GRAY = 5;
     private static final String REGIONNAME = "riders";
+
     private Rect worldBounds;
 
     private Vector2 v = new Vector2();
@@ -42,7 +43,7 @@ public class Rider extends Sprite {
         speed=new Vector2();
         framer(MenuScreen.getBtnGetRider().getFrame());
         frame = rightHandedFrame;
-        float proportion = 0.1f;
+        float proportion = 0.15f;  //0.1
         setHeightProportion(proportion);
         this.worldBounds = worldBounds;
         board = new Rectangle();

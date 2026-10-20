@@ -23,6 +23,8 @@ public class MenuScreen extends Base2DScreen {
     private static ButtonNewGame buttonNewGame;
 
 
+
+
     public MenuScreen(Game game) {
         super(game);
     }
@@ -50,6 +52,9 @@ public class MenuScreen extends Base2DScreen {
         buttonNewGame = new ButtonNewGame(allSprites,game);
 
 
+
+
+
         Gdx.input.setCatchBackKey(true); // ловим касание по системной кнопке "Назад
     }
 
@@ -72,6 +77,7 @@ public class MenuScreen extends Base2DScreen {
         for (int i = 0; i <snow.length ; i++) {
             snow[i].update(delta);
         }
+
     }
 
     private void draw() {
@@ -84,6 +90,8 @@ public class MenuScreen extends Base2DScreen {
         buttonExit.draw(batch);
         btnGetRider.draw(batch);
         buttonNewGame.draw(batch);
+
+
         batch.end();
     }
 
@@ -96,12 +104,18 @@ public class MenuScreen extends Base2DScreen {
         buttonExit.resize(worldBounds);
         btnGetRider.resize(worldBounds);
         buttonNewGame.resize(worldBounds);
+
+//        vectorRider.resize(worldBounds);
     }
 
     @Override
     public void dispose() {
         allSprites.dispose();
         menuMusic.dispose();
+
+
+
+
         super.dispose();
     }
 

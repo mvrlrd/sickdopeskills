@@ -48,7 +48,6 @@ private static final float MINTREESIZE = 0.1f;
 //                tree.setFrame(Rnd.nextInt(0,9));
                 if (GameScreen.getCountPoints() < 10) {
                     tree.setFrame(2);
-
                 }
                 if ((GameScreen.getCountPoints() >= 10) && (GameScreen.getCountPoints() < 20)) {
                     tree.setFrame(Rnd.nextIntInterval(5, 6));
