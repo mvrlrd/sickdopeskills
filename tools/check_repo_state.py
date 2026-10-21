@@ -99,7 +99,9 @@ def check_nothing_orphaned(repo, tags, failures, verbose):
     Проверяются все ветки, кроме develop: это ловит и локальную ветку, которая
     разошлась с origin и чья вершина под тегом не лежит.
     """
-    code, out = git(repo, "branch", "--format=%(refname)")
+    # for-each-ref, а не branch: у branch в выводе есть псевдострока
+    # «(HEAD detached at ...)», которая не является ref и ломает rev-list.
+    code, out = git(repo, "for-each-ref", "--format=%(refname)", "refs/heads")
     if code != 0:
         print("ОШИБКА: не удалось перечислить локальные ветки", file=sys.stderr)
         return False
@@ -158,7 +160,12 @@ def check_assets(repo, failures, verbose):
     """Переиспользует шов из тикета 03 вместо того, чтобы дублировать логику."""
     script = os.path.join(repo, "tools", "check_assets.py")
     if not os.path.isfile(script):
-        failures.append("нет tools/check_assets.py")
+        # Скрипт живёт на develop. Если его нет, рабочее дерево не на develop,
+        # и утверждение про ассеты здесь просто нечем проверить.
+        failures.append(
+            "ассеты не проверены: нет tools/check_assets.py, "
+            "рабочее дерево не на develop"
+        )
         return
 
     command = [sys.executable, script, "--repo", repo]
