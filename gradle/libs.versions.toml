@@ -1,0 +1,16 @@
+[versions]
+agp = "8.7.3"
+gdx = "1.13.1"
+java = "1.8"
+compileSdk = "35"
+minSdk = "21"
+targetSdk = "35"
+
+[libraries]
+gdx = { module = "com.badlogicgames.gdx:gdx", version.ref = "gdx" }
+gdx-backend-android = { module = "com.badlogicgames.gdx:gdx-backend-android", version.ref = "gdx" }
+gdx-backend-lwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "gdx" }
+gdx-platform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "gdx" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
