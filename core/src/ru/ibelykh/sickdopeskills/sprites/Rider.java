@@ -120,7 +120,7 @@ public class Rider extends Sprite {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        velocity.rotate(180);
+        velocity.rotateDeg(180);
         lastVelocity.set(velocity);
         return false;
     }
@@ -134,7 +134,7 @@ public class Rider extends Sprite {
     public void setTheNewGame(){
         v.set(0.0f, 0.0f);
         pos.set(worldBounds.getLeft()+1.2f*this.getWidth(),0f);
-        velocity.set(lastVelocity.rotate(180));
+        velocity.set(lastVelocity.rotateDeg(180));
     }
 
     public void gameOver(){

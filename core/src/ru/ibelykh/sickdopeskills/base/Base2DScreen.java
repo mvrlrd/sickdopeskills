@@ -174,6 +174,14 @@ public class Base2DScreen implements Screen, InputProcessor {
         return false;
     }
 
+    // До libGDX 1.9.11 отменённое касание приходило в touchUp. Отдельный колбэк
+    // появился позже, поэтому перенаправляем его туда же — иначе кнопки залипают
+    // в нажатом состоянии, а baseline вёл себя иначе.
+    @Override
+    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
+        return touchUp(screenX, screenY, pointer, button);
+    }
+
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 //        System.out.println("touchdragged = " + screenX + " " + screenY);
@@ -195,7 +203,7 @@ public class Base2DScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean scrolled(int amount) {
+    public boolean scrolled(float amountX, float amountY) {
 //        System.out.println("keydowm  keycode = "+ keycode);
         return false;
     }

@@ -55,7 +55,7 @@ public class MenuScreen extends Base2DScreen {
         buttonNewGame = new ButtonNewGame(allSprites,game);
 
 
-        Gdx.input.setCatchBackKey(true); // ловим касание по системной кнопке "Назад
+        Gdx.input.setCatchKey(Input.Keys.BACK, true); // ловим касание по системной кнопке "Назад
     }
 
     @Override

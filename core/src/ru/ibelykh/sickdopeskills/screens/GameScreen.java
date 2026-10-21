@@ -162,7 +162,7 @@ public class GameScreen extends Base2DScreen {
         }
 
 
-        Gdx.input.setCatchBackKey(true); // ловим касание по системной кнопке "Назад
+        Gdx.input.setCatchKey(Input.Keys.BACK, true); // ловим касание по системной кнопке "Назад
     }
 
     @Override

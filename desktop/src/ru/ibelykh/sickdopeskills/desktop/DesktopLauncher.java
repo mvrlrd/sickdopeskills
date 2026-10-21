@@ -1,23 +1,21 @@
 package ru.ibelykh.sickdopeskills.desktop;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import ru.ibelykh.sickdopeskills.utils.SickDope2D;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		if (StartupHelper.startNewJvmIfRequired()) return;
+
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
 		float aspect = 3f/4f;
-		config.width=650;
-		config.height=(int)(config.width/aspect);
-		config.resizable=false;
-		new LwjglApplication(new SickDope2D(), config);
+		int width = 650;
+		int height = (int)(width/aspect);
+		config.setWindowedMode(width, height);
+		config.setResizable(false);
+		new Lwjgl3Application(new SickDope2D(), config);
 
 	}
 }
-
-
-
-
-
