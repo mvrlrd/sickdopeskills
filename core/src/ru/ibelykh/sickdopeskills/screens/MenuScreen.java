@@ -3,13 +3,14 @@ package ru.ibelykh.sickdopeskills.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import ru.ibelykh.sickdopeskills.audio.AudioPort;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
+import ru.ibelykh.sickdopeskills.platform.GdxMusicAudio;
 import ru.ibelykh.sickdopeskills.sprites.*;
 
 public class MenuScreen extends Base2DScreen {
@@ -19,7 +20,7 @@ public class MenuScreen extends Base2DScreen {
 
     private static final int STAR_COUNT = 3000;
     private static TextureAtlas allSprites;
-    private static Music menuMusic;
+    private static AudioPort menuMusic;
     private static Snow[] snow;
     private static ButtonExit buttonExit;
     private static ButtonGetRider btnGetRider;
@@ -38,10 +39,11 @@ public class MenuScreen extends Base2DScreen {
 
         allSprites = new TextureAtlas("images/sprites/allSprites.atlas");
 
+        // Эта музыка не играется ни разу: play() не зовут нигде, только создают и освобождают.
+        // Поведение сохранено как есть, зацикливание теперь ставит сам порт.
         float musicVolume = 0.5f;
-        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/strange.mp3"));
+        menuMusic = new GdxMusicAudio("sounds/strange.mp3");
         menuMusic.setVolume(musicVolume);
-        menuMusic.setLooping(true);
 
         snow = new Snow[STAR_COUNT];
         for (int i = 0; i <snow.length ; i++) {
