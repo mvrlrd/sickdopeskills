@@ -1,15 +1,17 @@
 package ru.ibelykh.sickdopeskills.buttons;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ru.ibelykh.sickdopeskills.audio.AudioPort;
 import ru.ibelykh.sickdopeskills.base.ScaledButton;
 import ru.ibelykh.sickdopeskills.math.Rect;
-import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 public class ButtonGameSoundOffOn extends ScaledButton {
 
-    public ButtonGameSoundOffOn(TextureAtlas atlas) {
+    private final AudioPort audio;
+
+    public ButtonGameSoundOffOn(TextureAtlas atlas, AudioPort audio) {
         super(atlas.findRegion("sound"),1,2,2);
+        this.audio = audio;
         setHeightProportion(0.08f);
         setFrame(1);
     }
@@ -18,14 +20,14 @@ public class ButtonGameSoundOffOn extends ScaledButton {
     public void actionPerformed() {
         if (frame==0){
             setFrame(1);
-            if (!GameScreen.getMusic().isPlaying()) {
-                GameScreen.getMusic().play();
+            if (!audio.isPlaying()) {
+                audio.play();
 
             }
         } else {
             setFrame(0);
-            if (GameScreen.getMusic().isPlaying()) {
-                GameScreen.getMusic().pause();
+            if (audio.isPlaying()) {
+                audio.pause();
             }
         }
     }
@@ -42,7 +44,7 @@ public class ButtonGameSoundOffOn extends ScaledButton {
     @Override
     public void update(float delta) {
         super.update(delta);
-        if(GameScreen.getMusic().isPlaying()){
+        if(audio.isPlaying()){
             setFrame(1);
         }else {
             setFrame(0);

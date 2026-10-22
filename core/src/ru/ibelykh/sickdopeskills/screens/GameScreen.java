@@ -4,19 +4,20 @@ package ru.ibelykh.sickdopeskills.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import java.util.List;
 
+import ru.ibelykh.sickdopeskills.audio.AudioPort;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
+import ru.ibelykh.sickdopeskills.platform.GdxMusicAudio;
 import ru.ibelykh.sickdopeskills.platform.PreferencesScoreStore;
 import ru.ibelykh.sickdopeskills.platform.PreferencesSettingsStore;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -52,7 +53,7 @@ public class GameScreen extends Base2DScreen {
 
     private TextureAtlas allSprites;
     private static Font font;
-    private static Music music;
+    private static AudioPort audio;
 
     private static ScoreStore scoreStore;
     private static SettingsStore settingsStore;
@@ -101,19 +102,20 @@ public class GameScreen extends Base2DScreen {
         flagEmitter = new FlagEmitter(worldBounds, flagPool, allSprites);
         treeEmitter = new TreeEmitter(worldBounds, treePool, allSprites);
 
-        buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites);
-        buttonPause = new ButtonPause(allSprites);
+        // Создание звука поднято выше кнопок: обе получают порт конструктором, а не через
+        // статический геттер. Между прежним местом создания и этим ничего не читает звук.
+        audio = new GdxMusicAudio("sounds/bad_guy.mp3");
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/bad_guy.mp3"));
-        music.setLooping(true);
+        buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites, audio);
+        buttonPause = new ButtonPause(allSprites, audio);
 
         //preferences (music, high score)
         scoreStore = new PreferencesScoreStore();
         settingsStore = new PreferencesSettingsStore();
         if (settingsStore.isSoundOff()){
-            music.pause();
+            audio.pause();
         } else {
-            music.play();
+            audio.play();
         }
         highScore = scoreStore.highScore();
 
@@ -198,10 +200,10 @@ public class GameScreen extends Base2DScreen {
             scoreStore.saveHighScore(points);
             highScore=points;
         }
-        // Раньше здесь был if/else-if по music.isPlaying(), который безусловно писал настройку и
+        // Раньше здесь был if/else-if по isPlaying(), который безусловно писал настройку и
         // делал flush КАЖДЫЙ кадр. Условия были взаимно отрицательными, то есть это ровно одна
         // запись значения !isPlaying(); порт пишет её только при изменении.
-        settingsStore.setSoundOff(!music.isPlaying());
+        settingsStore.setSoundOff(!audio.isPlaying());
         treePool.updateActiveSprites(delta);
         treeEmitter.generateTreesTop(delta);
         treeEmitter.generateTreesBottom(delta);
@@ -325,7 +327,7 @@ else {
         super.dispose();
         font.dispose();
         flagPool.dispose();
-        music.dispose();
+        audio.dispose();
         allSprites.dispose();
 
 
@@ -457,7 +459,7 @@ if (!flag.isDestroyed())
         countClicks = 0;
         isItNeedToShout = true;
 
-        music.setVolume(0.3f);
+        audio.setVolume(0.3f);
         setIsPlaying(false);
 
         rider.gameOver();
@@ -478,16 +480,12 @@ if (!flag.isDestroyed())
         points = 0;
 
         shouting.setSick(false);
-        music.setVolume(1f);
+        audio.setVolume(1f);
 
         rider.setTheNewGame();
         isGameOver=false;
         isPlaying = true;
         startGates.setTheNewGame();
-    }
-
-    public static Music getMusic() {
-        return music;
     }
 
     public static boolean getIsPlaying() {
@@ -518,14 +516,6 @@ if (!flag.isDestroyed())
 
     public static void setOnPause(boolean onPause) {
         GameScreen.onPause = onPause;
-    }
-
-    public static void setMusic(Boolean status) {
-        if (status) {
-            music.play();
-        }else {
-            music.pause();
-        }
     }
 
     public static Rider getRider() {

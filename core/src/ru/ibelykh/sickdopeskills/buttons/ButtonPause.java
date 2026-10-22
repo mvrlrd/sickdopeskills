@@ -1,15 +1,18 @@
 package ru.ibelykh.sickdopeskills.buttons;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import ru.ibelykh.sickdopeskills.audio.AudioPort;
 import ru.ibelykh.sickdopeskills.base.ScaledButton;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.screens.GameScreen;
 
 public class ButtonPause extends ScaledButton {
 boolean musicStatus;
+    private final AudioPort audio;
 
-    public ButtonPause(TextureAtlas atlas) {
+    public ButtonPause(TextureAtlas atlas, AudioPort audio) {
         super(atlas.findRegion("stopPlay"),2,1,2);
+        this.audio = audio;
         setHeightProportion(0.08f);
         setFrame(0);
     }
@@ -49,8 +52,15 @@ boolean musicStatus;
             GameScreen.setOnPause(false);
             GameScreen.getRider().resume();
             GameScreen.isPlaying = true;
-            if (!GameScreen.getMusic().isPlaying()) {
-                GameScreen.setMusic(musicStatus);
+            if (!audio.isPlaying()) {
+                // Прежний GameScreen.setMusic(musicStatus) разворачивался ровно в это:
+                // true -> play, false -> pause. Звук восстанавливается в то состояние,
+                // в котором был до паузы.
+                if (musicStatus) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
             }
         }
 //            System.out.println("play");
@@ -58,9 +68,9 @@ boolean musicStatus;
 
     public void onPause(){
         if (GameScreen.isPlaying) {
-            if (GameScreen.getMusic().isPlaying()) {
+            if (audio.isPlaying()) {
                 musicStatus = true;
-                GameScreen.setMusic(false);
+                audio.pause();
             } else {
                 musicStatus = false;
             }
