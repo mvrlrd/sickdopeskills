@@ -2,6 +2,9 @@
 agp = "8.7.3"
 gdx = "1.13.1"
 java = "1.8"
+# 5.11.x — последняя ветка JUnit 5 с байткодом Java 8: java = "1.8" общая с модулем android,
+# поднимать её нельзя (desugaring при minSdk 21).
+junit = "5.11.4"
 compileSdk = "35"
 minSdk = "21"
 targetSdk = "35"
@@ -11,6 +14,11 @@ gdx = { module = "com.badlogicgames.gdx:gdx", version.ref = "gdx" }
 gdx-backend-android = { module = "com.badlogicgames.gdx:gdx-backend-android", version.ref = "gdx" }
 gdx-backend-lwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "gdx" }
 gdx-platform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "gdx" }
+
+# Версии jupiter и launcher приезжают из BOM, поэтому здесь без version.ref.
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
