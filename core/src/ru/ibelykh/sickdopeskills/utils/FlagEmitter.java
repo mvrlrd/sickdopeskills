@@ -42,7 +42,9 @@ public class FlagEmitter {
             if (generateTimer >= generateInterval) {
                 generateTimer = 0f;
                 Flag flag = flagPool.obtain();
-                flag.setShoutFrame((int)(Math.random()*2));
+                // Было (int)(Math.random()*2) — мимо хелпера. nextInt(0, 2) это ровно та же
+                // формула ((int)(rawDouble()*2) + 0) и ровно одна вытяжка, порядок не сдвинулся.
+                flag.setShoutFrame(Rnd.nextInt(0, 2));
                 if (flagCount%2==0){
                     flag.set(
                             flagTextureRegion,
