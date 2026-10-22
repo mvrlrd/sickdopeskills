@@ -4,7 +4,6 @@ package ru.ibelykh.sickdopeskills.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,8 +17,12 @@ import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
+import ru.ibelykh.sickdopeskills.platform.PreferencesScoreStore;
+import ru.ibelykh.sickdopeskills.platform.PreferencesSettingsStore;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
 import ru.ibelykh.sickdopeskills.pools.TreePool;
+import ru.ibelykh.sickdopeskills.store.ScoreStore;
+import ru.ibelykh.sickdopeskills.store.SettingsStore;
 import ru.ibelykh.sickdopeskills.sprites.*;
 import ru.ibelykh.sickdopeskills.utils.FlagEmitter;
 import ru.ibelykh.sickdopeskills.utils.TreeEmitter;
@@ -51,7 +54,8 @@ public class GameScreen extends Base2DScreen {
     private static Font font;
     private static Music music;
 
-    private static Preferences prefs;
+    private static ScoreStore scoreStore;
+    private static SettingsStore settingsStore;
 
     private static FlagPool flagPool;
     private static FlagEmitter flagEmitter;
@@ -104,13 +108,14 @@ public class GameScreen extends Base2DScreen {
         music.setLooping(true);
 
         //preferences (music, high score)
-        prefs=Gdx.app.getPreferences("high score and sound");
-        if (prefs.getBoolean("soundOff")){
+        scoreStore = new PreferencesScoreStore();
+        settingsStore = new PreferencesSettingsStore();
+        if (settingsStore.isSoundOff()){
             music.pause();
         } else {
             music.play();
         }
-        highScore = prefs.getInteger("pts");
+        highScore = scoreStore.highScore();
 
         font = new Font("font/mario_font.fnt", "font/mario_font.png");
         font.setColor(Color.BLACK);
@@ -187,18 +192,16 @@ public class GameScreen extends Base2DScreen {
             interval = 0;
         }
 
-        if (points>prefs.getInteger("pts")){
-            prefs.putInteger("pts",points);
-            prefs.flush();
+        // Сравнение идёт с ХРАНИЛИЩЕМ, а не с полем highScore, и порядок строк важен: сразу после
+        // сохранения highScore равен points, и именно в этом кадре появляется «корона».
+        if (points>scoreStore.highScore()){
+            scoreStore.saveHighScore(points);
             highScore=points;
         }
-        if (music.isPlaying()){
-            prefs.putBoolean("soundOff",false);
-            prefs.flush();
-        } else if(!music.isPlaying()){
-            prefs.putBoolean("soundOff",true);
-            prefs.flush();
-        }
+        // Раньше здесь был if/else-if по music.isPlaying(), который безусловно писал настройку и
+        // делал flush КАЖДЫЙ кадр. Условия были взаимно отрицательными, то есть это ровно одна
+        // запись значения !isPlaying(); порт пишет её только при изменении.
+        settingsStore.setSoundOff(!music.isPlaying());
         treePool.updateActiveSprites(delta);
         treeEmitter.generateTreesTop(delta);
         treeEmitter.generateTreesBottom(delta);
