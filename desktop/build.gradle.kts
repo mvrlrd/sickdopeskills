@@ -41,6 +41,9 @@ tasks.register<JavaExec>("debug") {
 
 tasks.register<Jar>("dist") {
     dependsOn(tasks.classes)
+    // runtimeClasspath ниже завёрнут в ленивый from({...}), поэтому Gradle не выводит из него
+    // зависимость на :core:jar — из чистого build-каталога dist падал на отсутствии core-1.0.jar.
+    dependsOn(configurations.runtimeClasspath)
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     from(files(sourceSets["main"].output.classesDirs))
