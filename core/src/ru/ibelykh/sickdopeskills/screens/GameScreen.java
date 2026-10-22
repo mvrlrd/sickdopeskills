@@ -6,22 +6,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import java.util.List;
 
-import com.badlogic.gdx.math.Vector3;
 import ru.ibelykh.sickdopeskills.base.Base2DScreen;
 import ru.ibelykh.sickdopeskills.base.Font;
 import ru.ibelykh.sickdopeskills.buttons.ButtonGameSoundOffOn;
 import ru.ibelykh.sickdopeskills.buttons.ButtonPause;
-import ru.ibelykh.sickdopeskills.math.MatrixUtils;
 import ru.ibelykh.sickdopeskills.math.Rect;
 import ru.ibelykh.sickdopeskills.math.Rnd;
 import ru.ibelykh.sickdopeskills.pools.FlagPool;
@@ -48,7 +42,6 @@ public class GameScreen extends Base2DScreen {
     private static float interval = 0f;
 
     private static StringBuilder sbFrags = new StringBuilder();
-    private static StringBuilder sbDist = new StringBuilder();
     private static StringBuilder sbHeighPts = new StringBuilder();
 
     private static List<Flag> flagList;
@@ -57,10 +50,8 @@ public class GameScreen extends Base2DScreen {
     private TextureAtlas allSprites;
     private static Font font;
     private static Music music;
-    private static Sound soundCheck;
 
     private static Preferences prefs;
-    private static ShapeRenderer shapeRenderer;
 
     private static FlagPool flagPool;
     private static FlagEmitter flagEmitter;
@@ -79,9 +70,6 @@ public class GameScreen extends Base2DScreen {
 
     private static Snow[] snow;
     private static Splash[] splash;
-//
-//   private Matrix4 mx4Font;
-//    private SpriteBatch spriteFont;
 
 
     public GameScreen(Game game) {
@@ -112,12 +100,8 @@ public class GameScreen extends Base2DScreen {
         buttonGameSoundOffOn = new ButtonGameSoundOffOn(allSprites);
         buttonPause = new ButtonPause(allSprites);
 
-        shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setColor(Color.RED);
-
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/bad_guy.mp3"));
         music.setLooping(true);
-        soundCheck = Gdx.audio.newSound(Gdx.files.internal("sounds/pau.wav"));
 
         //preferences (music, high score)
         prefs=Gdx.app.getPreferences("high score and sound");
@@ -131,18 +115,6 @@ public class GameScreen extends Base2DScreen {
         font = new Font("font/mario_font.fnt", "font/mario_font.png");
         font.setColor(Color.BLACK);
         font.setFontSize(FONT_SIZE);
-
-
-//        mx4Font = new Matrix4();
-//        spriteFont = new SpriteBatch();
-//        Vector3 fontRotationVector = new Vector3(1, 1, 0);
-//
-//
-//
-//
-//        mx4Font.setToRotation(fontRotationVector, 180);
-//        spriteFont.setTransformMatrix(mx4Font);
-
 
         //SPLASH
         int SPLASH_COUNT = 20;
@@ -168,11 +140,15 @@ public class GameScreen extends Base2DScreen {
     @Override
     public boolean keyUp(int keycode) {
         if(keycode== Input.Keys.BACK){
-
-           game.setScreen(new MenuScreen(game));
-           music.dispose();
+           // Сброс состояния идёт ДО смены экрана. setScreen по цепочке hide -> dispose уже
+           // освобождает music, а gameOver() ставит ей громкость — на освобождённом объекте это
+           // обращение к мёртвой памяти. Второй music.dispose() здесь был лишним по той же причине.
+           // Сам сброс убрать нельзя: isPlaying, countClicks и isGameOver статические и переживают
+           // пересоздание экрана. Без него следующий заезд начался бы с isPlaying == true (флажки
+           // полетели бы до первого тапа) и countClicks == 1 (startNewGame не вызвался бы вовсе).
            gameOver();
            isItNeedToShout=false;
+           game.setScreen(new MenuScreen(game));
         }
         return false;
     }
@@ -266,35 +242,8 @@ public class GameScreen extends Base2DScreen {
 
         batch.end();
         printInfo2();
-
-//        shapeRenderer.setProjectionMatrix(matrixForSnowboard);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
-//
-//        shapeRenderer.end();
-
-
-
-
-
-//Это все показывает прямоугольники сноуборда и флажков, которые нужны для рассчета коллизий
-//        shapeRenderer.setProjectionMatrix(worldToGl);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//
-//
-//        shapeRenderer.rect(rider.getBoard2().getLeft(),rider.getBoard2().getBottom(),rider.getBoard2().getWidth(),rider.getBoard2().getHeight());
-//
-////        for (Flag flag : flagList) {
-////            shapeRenderer.rect(flag.getCrashArea().getLeft(),flag.getCrashArea().getBottom(), flag.getCrashArea().getWidth(), flag.getCrashArea().getHeight());
-////        }
-////        for (Tree tree : treeList) {
-////            shapeRenderer.rect(tree.getTrunk().getLeft(),tree.getTrunk().getBottom(),tree.getTrunk().getWidth(),tree.getTrunk().getHeight());
-////
-////        }
-//        shapeRenderer.end();
-
-
     }
+
     private void printInfo2() {
 
 
@@ -325,19 +274,6 @@ else {
         }
         batchFont.end();
     }
-//    private void printInfo() {
-//        sbDist.setLength(0);
-//        sbHeighPts.setLength(0);
-//        sbFrags.setLength(0);
-//
-//
-//sbFrags.append(points);
-//
-//        font.draw(batch,
-//                sbHeighPts.append(highScore),
-//                worldBounds.getLeft()+FONT_SIZE, worldBounds.getTop()
-//                );
-//    }
 
     private void deleteAllDestroyed() {
         flagPool.freeAllDestroyedActiveSprites();
@@ -386,7 +322,6 @@ else {
         super.dispose();
         font.dispose();
         flagPool.dispose();
-        soundCheck.dispose();
         music.dispose();
         allSprites.dispose();
 
