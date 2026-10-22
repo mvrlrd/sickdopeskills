@@ -20,11 +20,8 @@ public class Base2DScreen implements Screen, InputProcessor {
     protected SpriteBatch batch;
 
     protected static SpriteBatch batchFont;
-//    protected static SpriteBatch batchSnowboard;
-
 
     private static Matrix4 matrixForFont;
-//    protected static Matrix4 matrixForSnowboard;
 
     private Rect screenBounds;  //для расчета соотношений сторон экрана
     protected Rect worldBounds;    // наша координатная сетка где высота 1f а ширина плавающая (1f*aspect)
@@ -47,8 +44,6 @@ public class Base2DScreen implements Screen, InputProcessor {
         this.screenToWorld = new Matrix3();
 
         matrixForFont = new Matrix4();
-//        matrixForSnowboard = new Matrix4();
-
     }
 
     public Rect getWorldBounds() {
@@ -63,8 +58,6 @@ public class Base2DScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
 
         batchFont = new SpriteBatch();
-//        batchFont.getProjectionMatrix().idt();
-//batchSnowboard = new SpriteBatch();
 
         Vector3 fontRotationVector = new Vector3(0, 0, 1);
         matrixForFont.setToRotation(fontRotationVector, 90);
@@ -124,6 +117,9 @@ public class Base2DScreen implements Screen, InputProcessor {
     public void dispose() {
 //            System.out.println("dispose");
         batch.dispose();
+        // batchFont создаётся в show() вместе с batch, значит и освобождаться должен вместе с ним:
+        // иначе на каждой смене экрана утекает батч.
+        batchFont.dispose();
     }
 
 
@@ -207,14 +203,4 @@ public class Base2DScreen implements Screen, InputProcessor {
 //        System.out.println("keydowm  keycode = "+ keycode);
         return false;
     }
-//public static void setToRot(float angle){
-//    Vector3 fontRotationVector = new Vector3(0, 0, 1);
-//    batchSnowboard.setTransformMatrix(matrixForSnowboard);
-//    matrixForSnowboard.setToRotation(fontRotationVector, angle);
-
-//}
-
-
-    //SOUND
-
 }
